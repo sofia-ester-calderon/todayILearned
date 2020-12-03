@@ -10,6 +10,11 @@
       "StackName": "amplify-todayilearned-staging-11939",
       "StackId": "arn:aws:cloudformation:us-east-2:487651022905:stack/amplify-todayilearned-staging-11939/9d979e00-3505-11eb-8885-0aa2bf13b672",
       "AmplifyAppId": "d33zl0esb61egk"
+    },
+    "categories": {
+      "auth": {
+        "todayilearned1524cfb0": {}
+      }
     }
   }
 }
