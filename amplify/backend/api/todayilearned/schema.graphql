@@ -2,6 +2,7 @@ type Blog @model @auth(rules: [{ allow: owner, operations: [create, delete, upda
   id: ID!
   name: String!
   text: String!
+  image: String
   posts: [Post] @connection(keyName: "byBlog", fields: ["id"])
 }
 

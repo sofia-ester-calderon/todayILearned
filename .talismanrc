@@ -5,5 +5,7 @@ fileignoreconfig:
   checksum: 57e94ab4f0b5cfdca5173dd13f16adfdbd30c8cca663f048a74dc49f0a0ead3b
 - filename: amplify/backend/auth/userPoolGroups/template.json
   checksum: 1d71ef13b25ee37733cf8cf10a20f69a20563b79b08a4236684bc1bb8f019b3d
+- filename: src/App.js
+  checksum: 4a2c0766c5fb5ae37a0ffd4ce0eef66b24d52862e46f69f7c92072636ad4383e
 - filename: yarn.lock
   checksum: 4c5b58a63748ca3988c621277794732d11ffb3bca0d69a5c11c136a34b339f9e

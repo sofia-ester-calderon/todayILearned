@@ -10,6 +10,7 @@ export const createBlog = /* GraphQL */ `
       id
       name
       text
+      image
       posts {
         items {
           id
@@ -35,6 +36,7 @@ export const updateBlog = /* GraphQL */ `
       id
       name
       text
+      image
       posts {
         items {
           id
@@ -60,6 +62,7 @@ export const deleteBlog = /* GraphQL */ `
       id
       name
       text
+      image
       posts {
         items {
           id
@@ -89,6 +92,7 @@ export const createPost = /* GraphQL */ `
         id
         name
         text
+        image
         posts {
           nextToken
         }
@@ -124,6 +128,7 @@ export const updatePost = /* GraphQL */ `
         id
         name
         text
+        image
         posts {
           nextToken
         }
@@ -159,6 +164,7 @@ export const deletePost = /* GraphQL */ `
         id
         name
         text
+        image
         posts {
           nextToken
         }
@@ -197,6 +203,7 @@ export const createComment = /* GraphQL */ `
           id
           name
           text
+          image
           createdAt
           updatedAt
           owner
@@ -229,6 +236,7 @@ export const updateComment = /* GraphQL */ `
           id
           name
           text
+          image
           createdAt
           updatedAt
           owner
@@ -261,6 +269,7 @@ export const deleteComment = /* GraphQL */ `
           id
           name
           text
+          image
           createdAt
           updatedAt
           owner

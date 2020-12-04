@@ -7,6 +7,7 @@ export const onCreateBlog = /* GraphQL */ `
       id
       name
       text
+      image
       posts {
         items {
           id
@@ -29,6 +30,7 @@ export const onUpdateBlog = /* GraphQL */ `
       id
       name
       text
+      image
       posts {
         items {
           id
@@ -51,6 +53,7 @@ export const onDeleteBlog = /* GraphQL */ `
       id
       name
       text
+      image
       posts {
         items {
           id
@@ -77,6 +80,7 @@ export const onCreatePost = /* GraphQL */ `
         id
         name
         text
+        image
         posts {
           nextToken
         }
@@ -109,6 +113,7 @@ export const onUpdatePost = /* GraphQL */ `
         id
         name
         text
+        image
         posts {
           nextToken
         }
@@ -141,6 +146,7 @@ export const onDeletePost = /* GraphQL */ `
         id
         name
         text
+        image
         posts {
           nextToken
         }
@@ -176,6 +182,7 @@ export const onCreateComment = /* GraphQL */ `
           id
           name
           text
+          image
           createdAt
           updatedAt
           owner
@@ -205,6 +212,7 @@ export const onUpdateComment = /* GraphQL */ `
           id
           name
           text
+          image
           createdAt
           updatedAt
           owner
@@ -234,6 +242,7 @@ export const onDeleteComment = /* GraphQL */ `
           id
           name
           text
+          image
           createdAt
           updatedAt
           owner
