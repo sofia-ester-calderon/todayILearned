@@ -1,5 +1,9 @@
 fileignoreconfig:
+- filename: amplify/backend/api/todayilearned/schema.graphql
+  checksum: 318701c6a6644ecc85486c20c1ed247e87ac4827db983862e97196f9e239ba2a
 - filename: amplify/backend/auth/todayilearned1524cfb0/todayilearned1524cfb0-cloudformation-template.yml
   checksum: 57e94ab4f0b5cfdca5173dd13f16adfdbd30c8cca663f048a74dc49f0a0ead3b
+- filename: amplify/backend/auth/userPoolGroups/template.json
+  checksum: 1d71ef13b25ee37733cf8cf10a20f69a20563b79b08a4236684bc1bb8f019b3d
 - filename: yarn.lock
   checksum: 4c5b58a63748ca3988c621277794732d11ffb3bca0d69a5c11c136a34b339f9e
