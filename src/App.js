@@ -7,6 +7,7 @@ import {
   deleteBlog as deleteBlogGraphQL,
 } from "./graphql/mutations";
 import { useEffect, useState } from "react";
+import RoutingComponent from "./components/routing/RoutingComponent";
 
 function App() {
   const [formData, setFormData] = useState({ name: "", text: "" });
@@ -64,6 +65,7 @@ function App() {
 
   return (
     <div className="App">
+      <RoutingComponent />
       <header className="App-header">
         <h1>Today I learned</h1>
         <p>In this page I will post my daily learnings</p>
