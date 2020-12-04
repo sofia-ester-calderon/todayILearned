@@ -1,6 +1,6 @@
 import "./App.css";
 import { withAuthenticator, AmplifySignOut } from "@aws-amplify/ui-react";
-import { API } from "aws-amplify";
+import { API, Storage } from "aws-amplify";
 import { listBlogs } from "./graphql/queries";
 import {
   createBlog as createBlogGraphQL,
@@ -18,28 +18,48 @@ function App() {
 
   async function fetchBlogs() {
     const apiData = await API.graphql({ query: listBlogs });
-    console.log(apiData);
+    const blogsFromAPI = apiData.data.listBlogs.items;
+    await Promise.all(
+      blogsFromAPI.map(async (blog) => {
+        if (blog.image) {
+          const image = await Storage.get(blog.image);
+          blog.image = image;
+        }
+        return blog;
+      })
+    );
     setBlogs(apiData.data.listBlogs.items);
   }
 
   async function createBlog() {
     if (!formData.name || !formData.text) return;
-    console.log(formData);
     await API.graphql({
       query: createBlogGraphQL,
       variables: { input: formData },
     });
+    if (formData.image) {
+      const image = await Storage.get(formData.image);
+      formData.image = image;
+    }
     setBlogs([...blogs, formData]);
     setFormData({ name: "", text: "" });
   }
 
-  async function deleteNote({ id }) {
+  async function deleteBlog({ id }) {
     const newNotesArray = blogs.filter((note) => note.id !== id);
     setBlogs(newNotesArray);
     await API.graphql({
       query: deleteBlogGraphQL,
       variables: { input: { id } },
     });
+  }
+
+  async function onChange(e) {
+    if (!e.target.files[0]) return;
+    const file = e.target.files[0];
+    setFormData({ ...formData, image: file.name });
+    await Storage.put(file.name, file);
+    fetchBlogs();
   }
 
   return (
@@ -57,13 +77,15 @@ function App() {
           placeholder="Blog description"
           value={formData.text}
         />
+        <input type="file" onChange={onChange} />
         <button onClick={createBlog}>Create Blog</button>
         <div style={{ marginBottom: 30 }}>
           {blogs.map((blog) => (
             <div key={blog.id || blog.name}>
               <h2>{blog.name}</h2>
               <p>{blog.text}</p>
-              <button onClick={() => deleteNote(blog)}>Delete note</button>
+              <button onClick={() => deleteBlog(blog)}>Delete blog</button>
+              {blog.image && <img src={blog.image} style={{ width: 400 }} />}
             </div>
           ))}
         </div>
