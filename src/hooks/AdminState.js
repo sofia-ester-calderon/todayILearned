@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 
-const AdminContext = React.createContext();
+export const AdminContext = React.createContext();
 
 const AdminProvider = ({ children }) => {
   const [adminMode, setAdminMode] = useState(false);

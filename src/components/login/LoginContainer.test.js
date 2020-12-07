@@ -1,21 +1,15 @@
-import {
-  screen,
-  render,
-  fireEvent,
-  waitFor,
-  getByText,
-} from "@testing-library/react";
+import { screen, render, fireEvent, waitFor } from "@testing-library/react";
 import React from "react";
-import { act } from "react-dom/test-utils";
-import authHelper from "../../data/authHelper";
-import { AdminProvider } from "../../hooks/AdminState";
-import LoginContainer from "./LoginContainer";
 
-function renderLoginContainer(history) {
+import authHelper from "../../data/authHelper";
+import LoginContainer from "./LoginContainer";
+import { AdminContext } from "../../hooks/AdminState";
+
+function renderLoginContainer(history, adminMode, setAdminMode) {
   render(
-    <AdminProvider>
+    <AdminContext.Provider value={{ adminMode, setAdminMode }}>
       <LoginContainer history={history} />
-    </AdminProvider>
+    </AdminContext.Provider>
   );
 }
 
@@ -38,6 +32,15 @@ describe("given the page is rendered", () => {
     expect(password).toBe("");
     screen.getByText("Login");
     expect(screen.queryByTestId("spinner")).not.toBeInTheDocument();
+  });
+});
+
+describe("given the user is already logged in", () => {
+  it("should display message and not login form", () => {
+    renderLoginContainer(null, true);
+
+    screen.getByText("You are already logged in");
+    expect(screen.queryByText("Login")).not.toBeInTheDocument();
   });
 });
 
@@ -82,6 +85,7 @@ describe("given the login button is clicked", () => {
     fireEvent.click(screen.getByText("Login"));
 
     expect(authHelper.login).toHaveBeenCalledWith("email@email.com", "1234");
+    // eslint-disable-next-line testing-library/await-async-utils
     waitFor(() => {
       screen.getByText("User does not exist.");
       expect(screen.queryByTestId("spinner")).not.toBeInTheDocument();
@@ -90,14 +94,16 @@ describe("given the login button is clicked", () => {
 
   it("should reroute to all blogs if login suucessful", async () => {
     const history = { push: jest.fn() };
+    const setAdminMode = jest.fn();
     authHelper.login = jest.fn().mockResolvedValue({});
-    renderLoginContainer(history);
+    renderLoginContainer(history, false, setAdminMode);
 
     enterLoginCredentials();
     fireEvent.click(screen.getByText("Login"));
     waitFor(() => {
       expect(authHelper.login).toHaveBeenCalledWith("email@email.com", "1234");
       expect(history.push).toHaveBeenCalledWith("/");
+      expect(setAdminMode).toHaveBeenCalledWith(true);
     });
   });
 });

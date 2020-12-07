@@ -8,7 +8,7 @@ fileignoreconfig:
 - filename: src/App.js
   checksum: 324f58af820ae7034992d9f73fe78eaf1bb567f28e7328a823d41a375eb798cd
 - filename: src/components/login/LoginContainer.js
-  checksum: c3add019c8dc26735e7182c84bbdae3dfe13c48b89c9f799cfa62ec168fa84ca
+  checksum: c36032fb3f3bde8d5996fbdc342c018a84c27e6c4a0a94aedfcf99a888c17873
 - filename: src/components/login/LoginContainer.test.js
   checksum: 5d1ad9489e79ce0fbfffdf6250461cc7930bf8b4c10dcf186a0117893dda12ac
 - filename: src/components/login/LoginForm.test.js

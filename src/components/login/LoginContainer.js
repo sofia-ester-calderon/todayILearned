@@ -53,14 +53,21 @@ const LoginContainer = (props) => {
   }
 
   return (
-    <LoginForm
-      username={loginCredentials.username}
-      password={loginCredentials.password}
-      onChange={changeLoginCredentialsHandler}
-      onLogin={loginHandler}
-      errors={errors}
-      loading={loading}
-    />
+    <div className="m-5">
+      <h1 className="mb-4">Admin Login</h1>
+      {adminState.adminMode ? (
+        <p>You are already logged in</p>
+      ) : (
+        <LoginForm
+          username={loginCredentials.username}
+          password={loginCredentials.password}
+          onChange={changeLoginCredentialsHandler}
+          onLogin={loginHandler}
+          errors={errors}
+          loading={loading}
+        />
+      )}
+    </div>
   );
 };
 
