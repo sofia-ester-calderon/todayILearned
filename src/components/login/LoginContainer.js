@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import authHelper from "../../data/authHelper";
+import { useAdminContext } from "../../hooks/AdminState";
 import LoginForm from "./LoginForm";
 
-const LoginContainer = () => {
+const LoginContainer = (props) => {
+  const adminState = useAdminContext();
+
   const [loginCredentials, setLoginCredentials] = useState({
     username: "",
     password: "",
@@ -26,6 +29,8 @@ const LoginContainer = () => {
           loginCredentials.password
         );
         console.log("logged in", user);
+        adminState.setAdminMode(true);
+        props.history.push("/");
       } catch (err) {
         console.log("error logging is user", err);
         setErrors((prevErrors) => ({ ...prevErrors, login: err.message }));

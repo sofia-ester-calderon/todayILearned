@@ -3,14 +3,17 @@ import { render, screen } from "@testing-library/react";
 import { Router } from "react-router-dom";
 import RoutingComponent from "./RoutingComponent";
 import { createMemoryHistory } from "history";
+import { AdminProvider } from "../../hooks/AdminState";
 
 const history = createMemoryHistory();
 
 function renderRoutingComponent() {
   render(
-    <Router history={history}>
-      <RoutingComponent />
-    </Router>
+    <AdminProvider>
+      <Router history={history}>
+        <RoutingComponent />
+      </Router>
+    </AdminProvider>
   );
 }
 

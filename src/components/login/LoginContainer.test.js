@@ -1,10 +1,22 @@
-import { screen, render, fireEvent } from "@testing-library/react";
+import {
+  screen,
+  render,
+  fireEvent,
+  waitFor,
+  getByText,
+} from "@testing-library/react";
 import React from "react";
+import { act } from "react-dom/test-utils";
 import authHelper from "../../data/authHelper";
+import { AdminProvider } from "../../hooks/AdminState";
 import LoginContainer from "./LoginContainer";
 
-function renderLoginContainer() {
-  render(<LoginContainer />);
+function renderLoginContainer(history) {
+  render(
+    <AdminProvider>
+      <LoginContainer history={history} />
+    </AdminProvider>
+  );
 }
 
 describe("given the page is rendered", () => {
@@ -45,19 +57,6 @@ describe("given the login button is clicked", () => {
     expect(authHelper.login).not.toHaveBeenCalled();
   });
 
-  it("should call the login authHelper", () => {
-    authHelper.login = jest.fn();
-    renderLoginContainer();
-    fireEvent.change(screen.getByLabelText("Username"), {
-      target: { value: "email@email.com" },
-    });
-    fireEvent.change(screen.getByLabelText("Password"), {
-      target: { value: "1234" },
-    });
-    fireEvent.click(screen.getByText("Login"));
-    expect(authHelper.login).toHaveBeenCalledWith("email@email.com", "1234");
-  });
-
   it("should display the error message if authHelper throws error", async () => {
     authHelper.login = jest.fn().mockRejectedValue({
       code: "UserNotFoundException",
@@ -73,7 +72,29 @@ describe("given the login button is clicked", () => {
       target: { value: "1234" },
     });
     fireEvent.click(screen.getByText("Login"));
+
     expect(authHelper.login).toHaveBeenCalledWith("email@email.com", "1234");
-    await screen.findByText("User does not exist.");
+    waitFor(() => {
+      screen.getByText("User does not exist.");
+    });
+    // await screen.findByText("User does not exist.");
+  });
+
+  it("should reroute to all blogs if login suucessful", async () => {
+    const history = { push: jest.fn() };
+    authHelper.login = jest.fn().mockResolvedValue({});
+    renderLoginContainer(history);
+
+    fireEvent.change(screen.getByLabelText("Username"), {
+      target: { value: "email@email.com" },
+    });
+    fireEvent.change(screen.getByLabelText("Password"), {
+      target: { value: "1234" },
+    });
+    fireEvent.click(screen.getByText("Login"));
+    waitFor(() => {
+      expect(authHelper.login).toHaveBeenCalledWith("email@email.com", "1234");
+      expect(history.push).toHaveBeenCalledWith("/");
+    });
   });
 });

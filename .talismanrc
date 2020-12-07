@@ -6,7 +6,7 @@ fileignoreconfig:
 - filename: amplify/backend/auth/userPoolGroups/template.json
   checksum: 1d71ef13b25ee37733cf8cf10a20f69a20563b79b08a4236684bc1bb8f019b3d
 - filename: src/App.js
-  checksum: 4a2c0766c5fb5ae37a0ffd4ce0eef66b24d52862e46f69f7c92072636ad4383e
+  checksum: 324f58af820ae7034992d9f73fe78eaf1bb567f28e7328a823d41a375eb798cd
 - filename: src/components/login/LoginContainer.js
   checksum: c3add019c8dc26735e7182c84bbdae3dfe13c48b89c9f799cfa62ec168fa84ca
 - filename: src/components/login/LoginContainer.test.js
