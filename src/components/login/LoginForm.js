@@ -1,7 +1,14 @@
 import React from "react";
 import TextInput from "../common/text/TextInput";
 
-const LoginForm = ({ username, password, onChange, onLogin, errors }) => {
+const LoginForm = ({
+  username,
+  password,
+  onChange,
+  onLogin,
+  errors,
+  loading = false,
+}) => {
   return (
     <>
       <h1>Admin Login</h1>
@@ -24,6 +31,11 @@ const LoginForm = ({ username, password, onChange, onLogin, errors }) => {
         <button type="submit" className="btn btn btn-dark" onClick={onLogin}>
           Login
         </button>
+        {loading && (
+          <div className="spinner-border" role="status" data-testid="spinner">
+            <span className="sr-only">Loading...</span>
+          </div>
+        )}
         {errors.login && (
           <div role="alert" className="text-danger">
             {errors.login}

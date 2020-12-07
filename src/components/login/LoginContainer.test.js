@@ -19,6 +19,15 @@ function renderLoginContainer(history) {
   );
 }
 
+function enterLoginCredentials() {
+  fireEvent.change(screen.getByLabelText("Username"), {
+    target: { value: "email@email.com" },
+  });
+  fireEvent.change(screen.getByLabelText("Password"), {
+    target: { value: "1234" },
+  });
+}
+
 describe("given the page is rendered", () => {
   it("should display an empty login form", () => {
     renderLoginContainer();
@@ -28,18 +37,14 @@ describe("given the page is rendered", () => {
     const password = screen.getByLabelText("Password").value;
     expect(password).toBe("");
     screen.getByText("Login");
+    expect(screen.queryByTestId("spinner")).not.toBeInTheDocument();
   });
 });
 
 describe("given crendetials are typed", () => {
   it("should display the typed values in the form", () => {
     renderLoginContainer();
-    fireEvent.change(screen.getByLabelText("Username"), {
-      target: { value: "email@email.com" },
-    });
-    fireEvent.change(screen.getByLabelText("Password"), {
-      target: { value: "1234" },
-    });
+    enterLoginCredentials();
 
     screen.getByDisplayValue("email@email.com");
     screen.getByDisplayValue("1234");
@@ -57,6 +62,14 @@ describe("given the login button is clicked", () => {
     expect(authHelper.login).not.toHaveBeenCalled();
   });
 
+  it("should display spinner while logging in", () => {
+    authHelper.login = jest.fn();
+    renderLoginContainer();
+    enterLoginCredentials();
+    fireEvent.click(screen.getByText("Login"));
+    screen.getByTestId("spinner");
+  });
+
   it("should display the error message if authHelper throws error", async () => {
     authHelper.login = jest.fn().mockRejectedValue({
       code: "UserNotFoundException",
@@ -65,19 +78,14 @@ describe("given the login button is clicked", () => {
     });
     renderLoginContainer();
 
-    fireEvent.change(screen.getByLabelText("Username"), {
-      target: { value: "email@email.com" },
-    });
-    fireEvent.change(screen.getByLabelText("Password"), {
-      target: { value: "1234" },
-    });
+    enterLoginCredentials();
     fireEvent.click(screen.getByText("Login"));
 
     expect(authHelper.login).toHaveBeenCalledWith("email@email.com", "1234");
     waitFor(() => {
       screen.getByText("User does not exist.");
+      expect(screen.queryByTestId("spinner")).not.toBeInTheDocument();
     });
-    // await screen.findByText("User does not exist.");
   });
 
   it("should reroute to all blogs if login suucessful", async () => {
@@ -85,12 +93,7 @@ describe("given the login button is clicked", () => {
     authHelper.login = jest.fn().mockResolvedValue({});
     renderLoginContainer(history);
 
-    fireEvent.change(screen.getByLabelText("Username"), {
-      target: { value: "email@email.com" },
-    });
-    fireEvent.change(screen.getByLabelText("Password"), {
-      target: { value: "1234" },
-    });
+    enterLoginCredentials();
     fireEvent.click(screen.getByText("Login"));
     waitFor(() => {
       expect(authHelper.login).toHaveBeenCalledWith("email@email.com", "1234");

@@ -13,7 +13,7 @@ function renderLoginForm(args) {
   render(<LoginForm {...props} />);
 }
 
-it("should display the empty login form", () => {
+it("should display the empty login form and no spinner", () => {
   renderLoginForm();
 
   const username = screen.getByLabelText("Username").value;
@@ -21,6 +21,7 @@ it("should display the empty login form", () => {
   const password = screen.getByLabelText("Password").value;
   expect(password).toBe("");
   screen.getByText("Login");
+  expect(screen.queryByTestId("spinner")).not.toBeInTheDocument();
 });
 
 it("should display the passed values in the form", () => {
@@ -44,4 +45,10 @@ it("should display error messages", () => {
   screen.getByText("wrong username");
   screen.getByText("wrong password");
   screen.getByText("login failed");
+});
+
+it("should display spinner", () => {
+  renderLoginForm({ loading: true });
+
+  screen.getByTestId("spinner");
 });

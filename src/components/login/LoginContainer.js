@@ -11,6 +11,7 @@ const LoginContainer = (props) => {
     password: "",
   });
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
 
   function changeLoginCredentialsHandler(event) {
     const { name, value } = event.target;
@@ -23,18 +24,19 @@ const LoginContainer = (props) => {
   async function loginHandler(event) {
     event.preventDefault();
     if (isFormValid()) {
-      try {
-        const user = await authHelper.login(
-          loginCredentials.username,
-          loginCredentials.password
-        );
-        console.log("logged in", user);
-        adminState.setAdminMode(true);
-        props.history.push("/");
-      } catch (err) {
-        console.log("error logging is user", err);
-        setErrors((prevErrors) => ({ ...prevErrors, login: err.message }));
-      }
+      setLoading(true);
+      authHelper
+        .login(loginCredentials.username, loginCredentials.password)
+        .then((user) => {
+          console.log("logged in", user);
+          adminState.setAdminMode(true);
+          props.history.push("/");
+        })
+        .catch((err) => {
+          setLoading(false);
+          console.log("error logging is user", err);
+          setErrors((prevErrors) => ({ ...prevErrors, login: err.message }));
+        });
     }
   }
 
@@ -57,6 +59,7 @@ const LoginContainer = (props) => {
       onChange={changeLoginCredentialsHandler}
       onLogin={loginHandler}
       errors={errors}
+      loading={loading}
     />
   );
 };
