@@ -85,6 +85,7 @@ describe("given the login button is clicked", () => {
     fireEvent.click(screen.getByText("Login"));
 
     expect(authHelper.login).toHaveBeenCalledWith("email@email.com", "1234");
+    await screen.findByText("User does not exist.");
     // eslint-disable-next-line testing-library/await-async-utils
     waitFor(() => {
       screen.getByText("User does not exist.");
@@ -100,6 +101,7 @@ describe("given the login button is clicked", () => {
 
     enterLoginCredentials();
     fireEvent.click(screen.getByText("Login"));
+    // eslint-disable-next-line testing-library/await-async-utils
     waitFor(() => {
       expect(authHelper.login).toHaveBeenCalledWith("email@email.com", "1234");
       expect(history.push).toHaveBeenCalledWith("/");
