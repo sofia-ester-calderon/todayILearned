@@ -22,7 +22,7 @@ it("should render the blog list if rendered for the first time", () => {
 it("should render login page if url is /admin", () => {
   renderRoutingComponent();
   history.push("/admin");
-  screen.getByText("LoginContainer");
+  screen.getByText("Admin Login");
 });
 
 it("should render the about me page if url is /aboutme", () => {

@@ -7,5 +7,11 @@ fileignoreconfig:
   checksum: 1d71ef13b25ee37733cf8cf10a20f69a20563b79b08a4236684bc1bb8f019b3d
 - filename: src/App.js
   checksum: 4a2c0766c5fb5ae37a0ffd4ce0eef66b24d52862e46f69f7c92072636ad4383e
+- filename: src/components/login/LoginContainer.js
+  checksum: c3add019c8dc26735e7182c84bbdae3dfe13c48b89c9f799cfa62ec168fa84ca
+- filename: src/components/login/LoginContainer.test.js
+  checksum: 5d1ad9489e79ce0fbfffdf6250461cc7930bf8b4c10dcf186a0117893dda12ac
+- filename: src/components/login/LoginForm.test.js
+  checksum: 16b83c267affc308eaa6b4915d8d95df0277d238e1b18cc940934cd971d29a05
 - filename: yarn.lock
-  checksum: 4c5b58a63748ca3988c621277794732d11ffb3bca0d69a5c11c136a34b339f9e
+  checksum: 75d3b12cdbbb3fd739faaa62136622375d27b5a3e1baf1742399b0671515a7d6
