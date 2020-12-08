@@ -1,6 +1,5 @@
 import React from "react";
 import TextInput from "../../common/text/TextInput";
-import { EditorState, ContentState } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
@@ -13,14 +12,8 @@ const BlogForm = ({
   onEditorChange,
   editorState,
   errors = {},
+  onAddTag,
 }) => {
-  //   const [editorState, setEditorState] = React.useState(() =>
-  //     EditorState.createWithContent(ContentState.createFromText("Hello"))
-  //   );
-
-  //   const onEditorStateChange = (editorState) => {
-  //     setEditorState(editorState);
-  //   };
   return (
     <form>
       <TextInput
@@ -44,7 +37,7 @@ const BlogForm = ({
         value={newTag}
         onChange={onChange}
       />
-      <button>Add Tag</button>
+      <button onClick={onAddTag}>Add Tag</button>
       {tags.map((tag) => (
         <p key={tag}>{tag}</p>
       ))}

@@ -1,13 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import BlogForm from "./BlogForm";
+import { EditorState, convertToRaw } from "draft-js";
+var dateFormat = require("dateformat");
 
 const CreateBlogContainer = () => {
   const [newBlog, setNewBlog] = useState({
     title: "",
-    date: "",
+    date: dateFormat(new Date(), "yyyy-mm-dd"),
     tags: [],
     text: "",
   });
+  const [editorText, setEditorText] = useState(EditorState.createEmpty());
+  const [newTag, setNewTag] = useState("");
+
+  useEffect(() => {
+    console.log(newBlog);
+  }, [newBlog]);
 
   function onChangeBlogInfo(event) {
     const { name, value } = event.target;
@@ -19,6 +27,26 @@ const CreateBlogContainer = () => {
         [name]: value,
       }));
     }
+    if (name === "tag") {
+      setNewTag(value);
+    }
+  }
+
+  function onChangeEditorText(event) {
+    setNewBlog((prevDetails) => ({
+      ...prevDetails,
+      text: JSON.stringify(convertToRaw(event.getCurrentContent())),
+    }));
+    setEditorText(event);
+  }
+
+  function onAddTag(event) {
+    event.preventDefault();
+    setNewBlog((prevDetails) => ({
+      ...prevDetails,
+      tags: [...prevDetails.tags, newTag],
+    }));
+    setNewTag("");
   }
 
   return (
@@ -29,6 +57,10 @@ const CreateBlogContainer = () => {
         date={newBlog.date}
         tags={newBlog.tags}
         onChange={onChangeBlogInfo}
+        editorState={editorText}
+        onEditorChange={onChangeEditorText}
+        newTag={newTag}
+        onAddTag={onAddTag}
       />
     </>
   );
