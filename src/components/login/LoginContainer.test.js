@@ -65,14 +65,6 @@ describe("given the login button is clicked", () => {
     expect(authHelper.login).not.toHaveBeenCalled();
   });
 
-  it("should display spinner while logging in", () => {
-    authHelper.login = jest.fn();
-    renderLoginContainer();
-    enterLoginCredentials();
-    fireEvent.click(screen.getByText("Login"));
-    screen.getByTestId("spinner");
-  });
-
   it("should display the error message if authHelper throws error", async () => {
     authHelper.login = jest.fn().mockRejectedValue({
       code: "UserNotFoundException",
@@ -83,6 +75,7 @@ describe("given the login button is clicked", () => {
 
     enterLoginCredentials();
     fireEvent.click(screen.getByText("Login"));
+    screen.getByTestId("spinner");
 
     expect(authHelper.login).toHaveBeenCalledWith("email@email.com", "1234");
     // eslint-disable-next-line testing-library/await-async-utils
@@ -100,6 +93,7 @@ describe("given the login button is clicked", () => {
 
     enterLoginCredentials();
     fireEvent.click(screen.getByText("Login"));
+    screen.getByTestId("spinner");
     // eslint-disable-next-line testing-library/await-async-utils
     waitFor(() => {
       expect(authHelper.login).toHaveBeenCalledWith("email@email.com", "1234");

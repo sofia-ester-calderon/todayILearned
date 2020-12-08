@@ -1,4 +1,6 @@
 fileignoreconfig:
+- filename: .eslintcache
+  checksum: 8334d2c3c8f29711d0abd5d5824df6f259b1e0d8fe51d2c52844c8e24dd4d914
 - filename: amplify/backend/api/todayilearned/schema.graphql
   checksum: 318701c6a6644ecc85486c20c1ed247e87ac4827db983862e97196f9e239ba2a
 - filename: amplify/backend/auth/todayilearned1524cfb0/todayilearned1524cfb0-cloudformation-template.yml
@@ -7,6 +9,8 @@ fileignoreconfig:
   checksum: 1d71ef13b25ee37733cf8cf10a20f69a20563b79b08a4236684bc1bb8f019b3d
 - filename: src/App.js
   checksum: 324f58af820ae7034992d9f73fe78eaf1bb567f28e7328a823d41a375eb798cd
+- filename: src/components/blogs/edit-create/BlogForm.js
+  checksum: 8e63634869697c45e3b97ba428bd6c70575befd594a773eedf15792136f0ef5a
 - filename: src/components/login/LoginContainer.js
   checksum: c36032fb3f3bde8d5996fbdc342c018a84c27e6c4a0a94aedfcf99a888c17873
 - filename: src/components/login/LoginContainer.test.js
@@ -14,4 +18,4 @@ fileignoreconfig:
 - filename: src/components/login/LoginForm.test.js
   checksum: 16b83c267affc308eaa6b4915d8d95df0277d238e1b18cc940934cd971d29a05
 - filename: yarn.lock
-  checksum: 75d3b12cdbbb3fd739faaa62136622375d27b5a3e1baf1742399b0671515a7d6
+  checksum: 385e8896c2e498a56133e536dff8651826b53f089701a934632c498ec1cc466a
