@@ -2,7 +2,7 @@ fileignoreconfig:
 - filename: .eslintcache
   checksum: 8457eb327098e6ba62130fa70b7a8678597353413304108bbe89309e617edd9c
 - filename: amplify/backend/api/todayilearned/schema.graphql
-  checksum: 318701c6a6644ecc85486c20c1ed247e87ac4827db983862e97196f9e239ba2a
+  checksum: bb1b73d1dc6252b0230fe3e22446e5ac30fba186985ae43102adbcba810ffd35
 - filename: amplify/backend/auth/todayilearned1524cfb0/todayilearned1524cfb0-cloudformation-template.yml
   checksum: 57e94ab4f0b5cfdca5173dd13f16adfdbd30c8cca663f048a74dc49f0a0ead3b
 - filename: amplify/backend/auth/userPoolGroups/template.json

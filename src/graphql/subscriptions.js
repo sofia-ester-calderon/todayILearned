@@ -5,14 +5,15 @@ export const onCreateBlog = /* GraphQL */ `
   subscription OnCreateBlog {
     onCreateBlog {
       id
-      name
+      title
       text
+      date
       image
-      posts {
+      tag {
         items {
           id
-          title
           blogID
+          tagID
           createdAt
           updatedAt
         }
@@ -28,14 +29,15 @@ export const onUpdateBlog = /* GraphQL */ `
   subscription OnUpdateBlog {
     onUpdateBlog {
       id
-      name
+      title
       text
+      date
       image
-      posts {
+      tag {
         items {
           id
-          title
           blogID
+          tagID
           createdAt
           updatedAt
         }
@@ -51,14 +53,15 @@ export const onDeleteBlog = /* GraphQL */ `
   subscription OnDeleteBlog {
     onDeleteBlog {
       id
-      name
+      title
       text
+      date
       image
-      posts {
+      tag {
         items {
           id
-          title
           blogID
+          tagID
           createdAt
           updatedAt
         }
@@ -70,29 +73,16 @@ export const onDeleteBlog = /* GraphQL */ `
     }
   }
 `;
-export const onCreatePost = /* GraphQL */ `
-  subscription OnCreatePost {
-    onCreatePost {
+export const onCreateTag = /* GraphQL */ `
+  subscription OnCreateTag {
+    onCreateTag {
       id
-      title
-      blogID
+      name
       blog {
-        id
-        name
-        text
-        image
-        posts {
-          nextToken
-        }
-        createdAt
-        updatedAt
-        owner
-      }
-      comments {
         items {
           id
-          postID
-          content
+          blogID
+          tagID
           createdAt
           updatedAt
         }
@@ -103,29 +93,16 @@ export const onCreatePost = /* GraphQL */ `
     }
   }
 `;
-export const onUpdatePost = /* GraphQL */ `
-  subscription OnUpdatePost {
-    onUpdatePost {
+export const onUpdateTag = /* GraphQL */ `
+  subscription OnUpdateTag {
+    onUpdateTag {
       id
-      title
-      blogID
+      name
       blog {
-        id
-        name
-        text
-        image
-        posts {
-          nextToken
-        }
-        createdAt
-        updatedAt
-        owner
-      }
-      comments {
         items {
           id
-          postID
-          content
+          blogID
+          tagID
           createdAt
           updatedAt
         }
@@ -136,29 +113,16 @@ export const onUpdatePost = /* GraphQL */ `
     }
   }
 `;
-export const onDeletePost = /* GraphQL */ `
-  subscription OnDeletePost {
-    onDeletePost {
+export const onDeleteTag = /* GraphQL */ `
+  subscription OnDeleteTag {
+    onDeleteTag {
       id
-      title
-      blogID
+      name
       blog {
-        id
-        name
-        text
-        image
-        posts {
-          nextToken
-        }
-        createdAt
-        updatedAt
-        owner
-      }
-      comments {
         items {
           id
-          postID
-          content
+          blogID
+          tagID
           createdAt
           updatedAt
         }
@@ -169,91 +133,100 @@ export const onDeletePost = /* GraphQL */ `
     }
   }
 `;
-export const onCreateComment = /* GraphQL */ `
-  subscription OnCreateComment {
-    onCreateComment {
+export const onCreateTagBlogJoin = /* GraphQL */ `
+  subscription OnCreateTagBlogJoin {
+    onCreateTagBlogJoin {
       id
-      postID
-      post {
+      blogID
+      tagID
+      blog {
         id
         title
-        blogID
-        blog {
-          id
-          name
-          text
-          image
-          createdAt
-          updatedAt
-          owner
+        text
+        date
+        image
+        tag {
+          nextToken
         }
-        comments {
+        createdAt
+        updatedAt
+        owner
+      }
+      tag {
+        id
+        name
+        blog {
           nextToken
         }
         createdAt
         updatedAt
       }
-      content
       createdAt
       updatedAt
     }
   }
 `;
-export const onUpdateComment = /* GraphQL */ `
-  subscription OnUpdateComment {
-    onUpdateComment {
+export const onUpdateTagBlogJoin = /* GraphQL */ `
+  subscription OnUpdateTagBlogJoin {
+    onUpdateTagBlogJoin {
       id
-      postID
-      post {
+      blogID
+      tagID
+      blog {
         id
         title
-        blogID
-        blog {
-          id
-          name
-          text
-          image
-          createdAt
-          updatedAt
-          owner
+        text
+        date
+        image
+        tag {
+          nextToken
         }
-        comments {
+        createdAt
+        updatedAt
+        owner
+      }
+      tag {
+        id
+        name
+        blog {
           nextToken
         }
         createdAt
         updatedAt
       }
-      content
       createdAt
       updatedAt
     }
   }
 `;
-export const onDeleteComment = /* GraphQL */ `
-  subscription OnDeleteComment {
-    onDeleteComment {
+export const onDeleteTagBlogJoin = /* GraphQL */ `
+  subscription OnDeleteTagBlogJoin {
+    onDeleteTagBlogJoin {
       id
-      postID
-      post {
+      blogID
+      tagID
+      blog {
         id
         title
-        blogID
-        blog {
-          id
-          name
-          text
-          image
-          createdAt
-          updatedAt
-          owner
+        text
+        date
+        image
+        tag {
+          nextToken
         }
-        comments {
+        createdAt
+        updatedAt
+        owner
+      }
+      tag {
+        id
+        name
+        blog {
           nextToken
         }
         createdAt
         updatedAt
       }
-      content
       createdAt
       updatedAt
     }

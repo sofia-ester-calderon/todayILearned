@@ -5,14 +5,15 @@ export const getBlog = /* GraphQL */ `
   query GetBlog($id: ID!) {
     getBlog(id: $id) {
       id
-      name
+      title
       text
+      date
       image
-      posts {
+      tag {
         items {
           id
-          title
           blogID
+          tagID
           createdAt
           updatedAt
         }
@@ -33,10 +34,11 @@ export const listBlogs = /* GraphQL */ `
     listBlogs(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        name
+        title
         text
+        date
         image
-        posts {
+        tag {
           nextToken
         }
         createdAt
@@ -47,29 +49,16 @@ export const listBlogs = /* GraphQL */ `
     }
   }
 `;
-export const getPost = /* GraphQL */ `
-  query GetPost($id: ID!) {
-    getPost(id: $id) {
+export const getTag = /* GraphQL */ `
+  query GetTag($id: ID!) {
+    getTag(id: $id) {
       id
-      title
-      blogID
+      name
       blog {
-        id
-        name
-        text
-        image
-        posts {
-          nextToken
-        }
-        createdAt
-        updatedAt
-        owner
-      }
-      comments {
         items {
           id
-          postID
-          content
+          blogID
+          tagID
           createdAt
           updatedAt
         }
@@ -80,27 +69,17 @@ export const getPost = /* GraphQL */ `
     }
   }
 `;
-export const listPosts = /* GraphQL */ `
-  query ListPosts(
-    $filter: ModelPostFilterInput
+export const listTags = /* GraphQL */ `
+  query ListTags(
+    $filter: ModelTagFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listPosts(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listTags(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        title
-        blogID
+        name
         blog {
-          id
-          name
-          text
-          image
-          createdAt
-          updatedAt
-          owner
-        }
-        comments {
           nextToken
         }
         createdAt
@@ -110,54 +89,66 @@ export const listPosts = /* GraphQL */ `
     }
   }
 `;
-export const getComment = /* GraphQL */ `
-  query GetComment($id: ID!) {
-    getComment(id: $id) {
+export const getTagBlogJoin = /* GraphQL */ `
+  query GetTagBlogJoin($id: ID!) {
+    getTagBlogJoin(id: $id) {
       id
-      postID
-      post {
+      blogID
+      tagID
+      blog {
         id
         title
-        blogID
-        blog {
-          id
-          name
-          text
-          image
-          createdAt
-          updatedAt
-          owner
+        text
+        date
+        image
+        tag {
+          nextToken
         }
-        comments {
+        createdAt
+        updatedAt
+        owner
+      }
+      tag {
+        id
+        name
+        blog {
           nextToken
         }
         createdAt
         updatedAt
       }
-      content
       createdAt
       updatedAt
     }
   }
 `;
-export const listComments = /* GraphQL */ `
-  query ListComments(
-    $filter: ModelCommentFilterInput
+export const listTagBlogJoins = /* GraphQL */ `
+  query ListTagBlogJoins(
+    $filter: ModelTagBlogJoinFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listComments(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listTagBlogJoins(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        postID
-        post {
+        blogID
+        tagID
+        blog {
           id
           title
-          blogID
+          text
+          date
+          image
+          createdAt
+          updatedAt
+          owner
+        }
+        tag {
+          id
+          name
           createdAt
           updatedAt
         }
-        content
         createdAt
         updatedAt
       }

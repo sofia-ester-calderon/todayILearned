@@ -8,14 +8,15 @@ export const createBlog = /* GraphQL */ `
   ) {
     createBlog(input: $input, condition: $condition) {
       id
-      name
+      title
       text
+      date
       image
-      posts {
+      tag {
         items {
           id
-          title
           blogID
+          tagID
           createdAt
           updatedAt
         }
@@ -34,14 +35,15 @@ export const updateBlog = /* GraphQL */ `
   ) {
     updateBlog(input: $input, condition: $condition) {
       id
-      name
+      title
       text
+      date
       image
-      posts {
+      tag {
         items {
           id
-          title
           blogID
+          tagID
           createdAt
           updatedAt
         }
@@ -60,14 +62,15 @@ export const deleteBlog = /* GraphQL */ `
   ) {
     deleteBlog(input: $input, condition: $condition) {
       id
-      name
+      title
       text
+      date
       image
-      posts {
+      tag {
         items {
           id
-          title
           blogID
+          tagID
           createdAt
           updatedAt
         }
@@ -79,32 +82,19 @@ export const deleteBlog = /* GraphQL */ `
     }
   }
 `;
-export const createPost = /* GraphQL */ `
-  mutation CreatePost(
-    $input: CreatePostInput!
-    $condition: ModelPostConditionInput
+export const createTag = /* GraphQL */ `
+  mutation CreateTag(
+    $input: CreateTagInput!
+    $condition: ModelTagConditionInput
   ) {
-    createPost(input: $input, condition: $condition) {
+    createTag(input: $input, condition: $condition) {
       id
-      title
-      blogID
+      name
       blog {
-        id
-        name
-        text
-        image
-        posts {
-          nextToken
-        }
-        createdAt
-        updatedAt
-        owner
-      }
-      comments {
         items {
           id
-          postID
-          content
+          blogID
+          tagID
           createdAt
           updatedAt
         }
@@ -115,32 +105,19 @@ export const createPost = /* GraphQL */ `
     }
   }
 `;
-export const updatePost = /* GraphQL */ `
-  mutation UpdatePost(
-    $input: UpdatePostInput!
-    $condition: ModelPostConditionInput
+export const updateTag = /* GraphQL */ `
+  mutation UpdateTag(
+    $input: UpdateTagInput!
+    $condition: ModelTagConditionInput
   ) {
-    updatePost(input: $input, condition: $condition) {
+    updateTag(input: $input, condition: $condition) {
       id
-      title
-      blogID
+      name
       blog {
-        id
-        name
-        text
-        image
-        posts {
-          nextToken
-        }
-        createdAt
-        updatedAt
-        owner
-      }
-      comments {
         items {
           id
-          postID
-          content
+          blogID
+          tagID
           createdAt
           updatedAt
         }
@@ -151,32 +128,19 @@ export const updatePost = /* GraphQL */ `
     }
   }
 `;
-export const deletePost = /* GraphQL */ `
-  mutation DeletePost(
-    $input: DeletePostInput!
-    $condition: ModelPostConditionInput
+export const deleteTag = /* GraphQL */ `
+  mutation DeleteTag(
+    $input: DeleteTagInput!
+    $condition: ModelTagConditionInput
   ) {
-    deletePost(input: $input, condition: $condition) {
+    deleteTag(input: $input, condition: $condition) {
       id
-      title
-      blogID
+      name
       blog {
-        id
-        name
-        text
-        image
-        posts {
-          nextToken
-        }
-        createdAt
-        updatedAt
-        owner
-      }
-      comments {
         items {
           id
-          postID
-          content
+          blogID
+          tagID
           createdAt
           updatedAt
         }
@@ -187,100 +151,109 @@ export const deletePost = /* GraphQL */ `
     }
   }
 `;
-export const createComment = /* GraphQL */ `
-  mutation CreateComment(
-    $input: CreateCommentInput!
-    $condition: ModelCommentConditionInput
+export const createTagBlogJoin = /* GraphQL */ `
+  mutation CreateTagBlogJoin(
+    $input: CreateTagBlogJoinInput!
+    $condition: ModelTagBlogJoinConditionInput
   ) {
-    createComment(input: $input, condition: $condition) {
+    createTagBlogJoin(input: $input, condition: $condition) {
       id
-      postID
-      post {
+      blogID
+      tagID
+      blog {
         id
         title
-        blogID
-        blog {
-          id
-          name
-          text
-          image
-          createdAt
-          updatedAt
-          owner
+        text
+        date
+        image
+        tag {
+          nextToken
         }
-        comments {
+        createdAt
+        updatedAt
+        owner
+      }
+      tag {
+        id
+        name
+        blog {
           nextToken
         }
         createdAt
         updatedAt
       }
-      content
       createdAt
       updatedAt
     }
   }
 `;
-export const updateComment = /* GraphQL */ `
-  mutation UpdateComment(
-    $input: UpdateCommentInput!
-    $condition: ModelCommentConditionInput
+export const updateTagBlogJoin = /* GraphQL */ `
+  mutation UpdateTagBlogJoin(
+    $input: UpdateTagBlogJoinInput!
+    $condition: ModelTagBlogJoinConditionInput
   ) {
-    updateComment(input: $input, condition: $condition) {
+    updateTagBlogJoin(input: $input, condition: $condition) {
       id
-      postID
-      post {
+      blogID
+      tagID
+      blog {
         id
         title
-        blogID
-        blog {
-          id
-          name
-          text
-          image
-          createdAt
-          updatedAt
-          owner
+        text
+        date
+        image
+        tag {
+          nextToken
         }
-        comments {
+        createdAt
+        updatedAt
+        owner
+      }
+      tag {
+        id
+        name
+        blog {
           nextToken
         }
         createdAt
         updatedAt
       }
-      content
       createdAt
       updatedAt
     }
   }
 `;
-export const deleteComment = /* GraphQL */ `
-  mutation DeleteComment(
-    $input: DeleteCommentInput!
-    $condition: ModelCommentConditionInput
+export const deleteTagBlogJoin = /* GraphQL */ `
+  mutation DeleteTagBlogJoin(
+    $input: DeleteTagBlogJoinInput!
+    $condition: ModelTagBlogJoinConditionInput
   ) {
-    deleteComment(input: $input, condition: $condition) {
+    deleteTagBlogJoin(input: $input, condition: $condition) {
       id
-      postID
-      post {
+      blogID
+      tagID
+      blog {
         id
         title
-        blogID
-        blog {
-          id
-          name
-          text
-          image
-          createdAt
-          updatedAt
-          owner
+        text
+        date
+        image
+        tag {
+          nextToken
         }
-        comments {
+        createdAt
+        updatedAt
+        owner
+      }
+      tag {
+        id
+        name
+        blog {
           nextToken
         }
         createdAt
         updatedAt
       }
-      content
       createdAt
       updatedAt
     }
