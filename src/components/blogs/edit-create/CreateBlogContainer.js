@@ -50,8 +50,8 @@ const CreateBlogContainer = () => {
   }
 
   return (
-    <>
-      <h1>Create Blog Post</h1>
+    <div className="m-5">
+      <h1 className="mb-4">Create Blog Post</h1>
       <BlogForm
         title={newBlog.title}
         date={newBlog.date}
@@ -62,7 +62,7 @@ const CreateBlogContainer = () => {
         newTag={newTag}
         onAddTag={onAddTag}
       />
-    </>
+    </div>
   );
 };
 
