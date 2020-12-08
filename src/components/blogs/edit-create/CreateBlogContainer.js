@@ -19,8 +19,6 @@ const CreateBlogContainer = () => {
 
   function onChangeBlogInfo(event) {
     const { name, value } = event.target;
-    console.log("name", name);
-    console.log("value", value);
     if (name === "title" || name === "date") {
       setNewBlog((prevDetails) => ({
         ...prevDetails,
@@ -49,6 +47,14 @@ const CreateBlogContainer = () => {
     setNewTag("");
   }
 
+  function onRemoveTag(tagToRemove) {
+    setNewBlog((prevDetails) => ({
+      ...prevDetails,
+      tags: prevDetails.tags.filter((tag) => tag !== tagToRemove),
+    }));
+    setNewTag("");
+  }
+
   return (
     <div className="m-5">
       <h1 className="mb-4">Create Blog Post</h1>
@@ -61,6 +67,7 @@ const CreateBlogContainer = () => {
         onEditorChange={onChangeEditorText}
         newTag={newTag}
         onAddTag={onAddTag}
+        onRemoveTag={onRemoveTag}
       />
     </div>
   );

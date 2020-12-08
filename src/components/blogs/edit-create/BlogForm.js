@@ -13,6 +13,7 @@ const BlogForm = ({
   editorState,
   errors = {},
   onAddTag,
+  onRemoveTag,
 }) => {
   return (
     <div className="d-flex justify-content-center">
@@ -43,7 +44,12 @@ const BlogForm = ({
         </button>
         <br />
         {tags.map((tag) => (
-          <div className={"d-inline p-2 bg-secondary text-white m-2"} key={tag}>
+          <div
+            className={"d-inline p-2 bg-secondary text-white m-2"}
+            key={tag}
+            style={{ cursor: "pointer" }}
+            onClick={() => onRemoveTag(tag)}
+          >
             {tag}
           </div>
         ))}
