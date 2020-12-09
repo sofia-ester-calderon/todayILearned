@@ -5,15 +5,19 @@ import blogHelper from "../../data/blogHelper";
 const TagConfigurerContainer = ({ onClose }) => {
   const [tags, setTags] = useState([]);
   const [tagData, setTagData] = useState({ name: "" });
+  const [loading, setLoading] = useState(false);
+  const [creating, setCreating] = useState(false);
 
   useEffect(() => {
     fetchTags();
   }, []);
 
   async function fetchTags() {
+    setLoading(true);
     const tagsFromApi = await blogHelper.fetchTags();
     setTags(tagsFromApi);
     console.log("TAGS FROM GRAPHQL", tags);
+    setLoading(false);
   }
 
   function onChangeTagName(event) {
@@ -26,9 +30,11 @@ const TagConfigurerContainer = ({ onClose }) => {
     if (tagData.name === "") {
       return;
     }
+    setCreating(true);
     const newTag = await blogHelper.createTag(tagData);
     setTagData({ name: "" });
     setTags((prevData) => [...prevData, newTag]);
+    setCreating(false);
   }
 
   return (
@@ -39,6 +45,8 @@ const TagConfigurerContainer = ({ onClose }) => {
         onChangeTagName={onChangeTagName}
         onCreateTag={onCreateNewTag}
         onClose={onClose}
+        loading={loading}
+        creating={creating}
       />
     </>
   );

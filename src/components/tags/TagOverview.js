@@ -7,27 +7,41 @@ const TagOverview = ({
   onCreateTag,
   onDeleteTag,
   onClose,
+  loading,
+  creating,
 }) => {
   return (
-    <>
-      <h1>Tags</h1>
-      {tags.map((tag) => (
-        <div
-          className={"d-inline p-2 bg-secondary text-white m-2"}
-          key={tag.id}
-          style={{ cursor: "pointer" }}
-        >
-          {tag.name}
-        </div>
-      ))}
-      <br />
-      <div className="form-group row">
+    <div className="test">
+      <h1 className="d-flex justify-content-center mb-5">Tags</h1>
+      <div
+      // style={{
+      //   display: "flex",
+      // }}
+      >
+        {loading ? (
+          <div className="spinner-border " role="status" data-testid="spinner">
+            <span className="sr-only">Loading...</span>
+          </div>
+        ) : (
+          tags.map((tag) => (
+            <div
+              className={"p-2 bg-secondary text-white m-2"}
+              key={tag.id}
+              style={{ cursor: "pointer", display: "inline-block" }}
+            >
+              {tag.name}
+            </div>
+          ))
+        )}
+      </div>
+      <hr />
+      <div className="form-group row mt-5 w-50">
         <label
-          className="font-weight-bold col-4 col-form-label"
+          className="font-weight-bold col-2 col-form-label"
           htmlFor="tagName"
           style={{ textAlign: "left" }}
         >
-          Tag Name
+          Name
         </label>
 
         <div className="col">
@@ -40,21 +54,31 @@ const TagOverview = ({
           />
         </div>
 
-        <div className="col-2">
-          <button className="btn btn-dark mb-4" onClick={onCreateTag}>
+        <div className="col-6">
+          <button className="btn btn-dark mb-4 mr-3" onClick={onCreateTag}>
             Create Tag
           </button>
-        </div>
-        <div className="col-2">
-          <button className="btn btn-dark mb-4" onClick={onDeleteTag}>
+          <button className="btn btn-dark mb-4 mr-3" onClick={onDeleteTag}>
             Delete Tag
           </button>
+          {creating && (
+            <div
+              className="spinner-border"
+              role="status"
+              data-testid="spinner-create"
+            >
+              <span className="sr-only">Loading...</span>
+            </div>
+          )}
         </div>
       </div>
-      <button className="btn btn-dark mb-4" onClick={onClose}>
-        Done
-      </button>
-    </>
+      <hr />
+      <div className="d-flex justify-content-center mb-5">
+        <button className="btn btn-dark mb-4 w-25" onClick={onClose}>
+          Done
+        </button>
+      </div>
+    </div>
   );
 };
 

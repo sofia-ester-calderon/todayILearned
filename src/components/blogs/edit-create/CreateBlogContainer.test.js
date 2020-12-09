@@ -33,19 +33,6 @@ describe("given the form is filled", () => {
     });
     screen.getByDisplayValue("New Blog");
     screen.getByDisplayValue("2020-11-08");
-
-    // //Add Tags
-    // fireEvent.change(screen.getByLabelText("New Tag"), {
-    //   target: { value: "Tag1" },
-    // });
-    // fireEvent.click(screen.getByText("Add Tag"));
-    // screen.getByText("Tag1");
-    // const tags = screen.getByLabelText("New Tag").value;
-    // expect(tags).toBe("");
-
-    // //Remove Tags
-    // fireEvent.click(screen.getByText("Tag1"));
-    // expect(screen.queryByText("Tag1")).not.toBeInTheDocument();
   });
 });
 describe("given tags are edited", () => {

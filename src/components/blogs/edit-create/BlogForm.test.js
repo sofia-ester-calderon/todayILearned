@@ -36,3 +36,13 @@ it("shoud display a filled out form", () => {
   // screen.getByDisplayValue("2020-12-08");
   screen.getByText("Hello");
 });
+
+it("should not showEditor", () => {
+  renderBlogForm({
+    editorState: EditorState.createWithContent(
+      ContentState.createFromText("Hello")
+    ),
+    hideEditor: true,
+  });
+  expect(screen.queryByText("Hello")).not.toBeInTheDocument();
+});

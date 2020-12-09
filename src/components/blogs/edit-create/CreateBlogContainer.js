@@ -59,6 +59,7 @@ const CreateBlogContainer = () => {
         editorState={editorText}
         onEditorChange={onChangeEditorText}
         onConfigureTags={onConfigureTags}
+        hideEditor={showTagModal}
       />
       <Modal isOpen={showTagModal}>
         <TagConfigurerContainer onClose={onCloseModal} />

@@ -47,7 +47,7 @@ describe("given a tag is created", () => {
       name: "TypeScript",
     });
     await renderTagConfigurerContainer();
-    fireEvent.change(screen.getByLabelText("Tag Name"), {
+    fireEvent.change(screen.getByLabelText("Name"), {
       target: { value: "TypeScript" },
     });
     fireEvent.click(screen.getByText("Create Tag"));

@@ -11,6 +11,7 @@ const BlogForm = ({
   editorState,
   errors = {},
   onConfigureTags,
+  hideEditor,
 }) => {
   return (
     <div className="d-flex justify-content-center">
@@ -35,12 +36,14 @@ const BlogForm = ({
         </button>
         <br />
 
-        <div className="mt-4">
-          <Editor
-            editorState={editorState}
-            onEditorStateChange={onEditorChange}
-          />
-        </div>
+        {!hideEditor && (
+          <div className="mt-4">
+            <Editor
+              editorState={editorState}
+              onEditorStateChange={onEditorChange}
+            />
+          </div>
+        )}
       </form>
     </div>
   );

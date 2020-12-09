@@ -36,3 +36,8 @@ it("should display the new tag value", () => {
   renderTagOverview({ tagName: "new tag" });
   screen.getByDisplayValue("new tag");
 });
+
+it("should render loading spinner", () => {
+  renderTagOverview({ loading: true });
+  screen.getByTestId("spinner");
+});
