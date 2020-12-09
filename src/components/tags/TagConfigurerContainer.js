@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import TagOverview from "./TagOverview";
 import blogHelper from "../../data/blogHelper";
 
-const TagConfigurerContainer = () => {
+const TagConfigurerContainer = ({ onClose }) => {
   const [tags, setTags] = useState([]);
   const [tagData, setTagData] = useState({ name: "" });
 
@@ -38,6 +38,7 @@ const TagConfigurerContainer = () => {
         tagName={tagData.name}
         onChangeTagName={onChangeTagName}
         onCreateTag={onCreateNewTag}
+        onClose={onClose}
       />
     </>
   );

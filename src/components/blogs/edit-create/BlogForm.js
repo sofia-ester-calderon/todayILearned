@@ -6,14 +6,11 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 const BlogForm = ({
   title,
   date,
-  newTag,
-  tags = [],
   onChange,
   onEditorChange,
   editorState,
   errors = {},
-  onAddTag,
-  onRemoveTag,
+  onConfigureTags,
 }) => {
   return (
     <div className="d-flex justify-content-center">
@@ -33,26 +30,10 @@ const BlogForm = ({
           error={errors.date}
           type="date"
         />
-        <TextInput
-          label="New Tag"
-          name="tag"
-          value={newTag}
-          onChange={onChange}
-        />
-        <button onClick={onAddTag} className="btn btn-secondary mb-4">
-          Add Tag
+        <button onClick={onConfigureTags} className="btn btn-secondary mb-4">
+          Configure Tags
         </button>
         <br />
-        {tags.map((tag) => (
-          <div
-            className={"d-inline p-2 bg-secondary text-white m-2"}
-            key={tag}
-            style={{ cursor: "pointer" }}
-            onClick={() => onRemoveTag(tag)}
-          >
-            {tag}
-          </div>
-        ))}
 
         <div className="mt-4">
           <Editor

@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import BlogForm from "./BlogForm";
 import { EditorState, convertToRaw } from "draft-js";
+import TagConfigurerContainer from "../../tags/TagConfigurerContainer";
+import Modal from "react-modal";
+
 var dateFormat = require("dateformat");
 
 const CreateBlogContainer = () => {
@@ -11,23 +14,22 @@ const CreateBlogContainer = () => {
     text: "",
   });
   const [editorText, setEditorText] = useState(EditorState.createEmpty());
-  const [newTag, setNewTag] = useState("");
+  const [showTagModal, setShowTagModal] = useState(false);
 
   useEffect(() => {
     console.log(newBlog);
   }, [newBlog]);
 
+  useEffect(() => {
+    Modal.setAppElement("body");
+  }, []);
+
   function onChangeBlogInfo(event) {
     const { name, value } = event.target;
-    if (name === "title" || name === "date") {
-      setNewBlog((prevDetails) => ({
-        ...prevDetails,
-        [name]: value,
-      }));
-    }
-    if (name === "tag") {
-      setNewTag(value);
-    }
+    setNewBlog((prevDetails) => ({
+      ...prevDetails,
+      [name]: value,
+    }));
   }
 
   function onChangeEditorText(event) {
@@ -38,21 +40,13 @@ const CreateBlogContainer = () => {
     setEditorText(event);
   }
 
-  function onAddTag(event) {
+  function onConfigureTags(event) {
     event.preventDefault();
-    setNewBlog((prevDetails) => ({
-      ...prevDetails,
-      tags: [...prevDetails.tags, newTag],
-    }));
-    setNewTag("");
+    setShowTagModal(true);
   }
 
-  function onRemoveTag(tagToRemove) {
-    setNewBlog((prevDetails) => ({
-      ...prevDetails,
-      tags: prevDetails.tags.filter((tag) => tag !== tagToRemove),
-    }));
-    setNewTag("");
+  function onCloseModal() {
+    setShowTagModal(false);
   }
 
   return (
@@ -61,14 +55,14 @@ const CreateBlogContainer = () => {
       <BlogForm
         title={newBlog.title}
         date={newBlog.date}
-        tags={newBlog.tags}
         onChange={onChangeBlogInfo}
         editorState={editorText}
         onEditorChange={onChangeEditorText}
-        newTag={newTag}
-        onAddTag={onAddTag}
-        onRemoveTag={onRemoveTag}
+        onConfigureTags={onConfigureTags}
       />
+      <Modal isOpen={showTagModal}>
+        <TagConfigurerContainer onClose={onCloseModal} />
+      </Modal>
     </div>
   );
 };

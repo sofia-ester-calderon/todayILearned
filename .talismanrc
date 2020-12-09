@@ -7,6 +7,8 @@ fileignoreconfig:
   checksum: 57e94ab4f0b5cfdca5173dd13f16adfdbd30c8cca663f048a74dc49f0a0ead3b
 - filename: amplify/backend/auth/userPoolGroups/template.json
   checksum: 1d71ef13b25ee37733cf8cf10a20f69a20563b79b08a4236684bc1bb8f019b3d
+- filename: report.20201209.151127.69881.0.001.json
+  checksum: 7c2bba585d8e0cab33405a529fe3098f1caff51cff5c95e7df7a0cc07b44c56f
 - filename: src/App.js
   checksum: 324f58af820ae7034992d9f73fe78eaf1bb567f28e7328a823d41a375eb798cd
 - filename: src/components/blogs/edit-create/BlogForm.js
@@ -22,4 +24,4 @@ fileignoreconfig:
 - filename: src/components/tags/TagOverview.js
   checksum: 3e59eaae1631c29b4a83e2818b2284b16b0eaa9c8461c536c885b9693947dce4
 - filename: yarn.lock
-  checksum: 612d615960804b9731bd3aea2a8100e7263f90e0a4a6e2f8c2c8ae8fb1087f5a
+  checksum: ef5ca5c7838de311952ccaf8bff01fc6c07d8030177f41de47fd674db4320727

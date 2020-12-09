@@ -6,6 +6,7 @@ const TagOverview = ({
   onChangeTagName,
   onCreateTag,
   onDeleteTag,
+  onClose,
 }) => {
   return (
     <>
@@ -50,6 +51,9 @@ const TagOverview = ({
           </button>
         </div>
       </div>
+      <button className="btn btn-dark mb-4" onClick={onClose}>
+        Done
+      </button>
     </>
   );
 };
