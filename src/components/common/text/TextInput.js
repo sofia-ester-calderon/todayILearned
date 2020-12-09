@@ -9,7 +9,6 @@ const TextInput = ({
   error,
   type = "text",
   disabled = false,
-  button,
 }) => {
   return (
     <div className="form-group row">
@@ -37,13 +36,6 @@ const TextInput = ({
           </div>
         )}
       </div>
-      {button && (
-        <div className="col-2">
-          <button className="btn btn-secondary mb-4" onClick={button.onClick}>
-            {button.text}
-          </button>
-        </div>
-      )}
     </div>
   );
 };

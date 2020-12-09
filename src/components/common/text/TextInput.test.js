@@ -68,10 +68,3 @@ describe("given no disabled value is passed", () => {
     expect(screen.getByDisplayValue(value)).not.toBeDisabled();
   });
 });
-
-describe("given a button object is passed", () => {
-  it("should display the button", () => {
-    renderTextInput({ button: { text: "New Button", onClick: jest.fn() } });
-    screen.getByText("New Button");
-  });
-});
