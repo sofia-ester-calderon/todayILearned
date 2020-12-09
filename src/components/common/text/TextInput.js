@@ -9,14 +9,19 @@ const TextInput = ({
   error,
   type = "text",
   disabled = false,
+  button,
 }) => {
   return (
-    <div className="form-group">
-      <label className="font-weight-bold" htmlFor={name}>
+    <div className="form-group row">
+      <label
+        className="font-weight-bold col-4 col-form-label"
+        htmlFor={name}
+        style={{ textAlign: "left" }}
+      >
         {label}
       </label>
 
-      <div className="field">
+      <div className="col">
         <input
           id={name}
           name={name}
@@ -32,6 +37,13 @@ const TextInput = ({
           </div>
         )}
       </div>
+      {button && (
+        <div className="col-2">
+          <button className="btn btn-secondary mb-4" onClick={button.onClick}>
+            {button.text}
+          </button>
+        </div>
+      )}
     </div>
   );
 };
