@@ -12,7 +12,7 @@ fileignoreconfig:
 - filename: src/App.js
   checksum: 768862bc88fbdf4856bf0b81f9dc3c6aa32ecf97cdd03d3108d17b572f9fef87
 - filename: src/components/blogs/edit-create/BlogForm.js
-  checksum: 2379ea26c2c00ded69bc1ee89768f054a3d3c9681a5f4bc537375c5823cb2f44
+  checksum: 4909bb97ed003efffd1a63d2a9f66545cec775069af796e2da531fdf059a3252
 - filename: src/components/blogs/edit-create/EditBlogContainer.js
   checksum: e6dc9ca44803e9af273d422afe859697a964cf1585c3b4c753ba2b545fb5a08d
 - filename: src/components/login/LoginContainer.js

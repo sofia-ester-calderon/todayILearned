@@ -32,32 +32,39 @@ const BlogForm = ({
           error={errors.date}
           type="date"
         />
-        {tags.map((tag) => (
-          <div
-            className={"p-2 bg-secondary text-white m-2"}
-            key={tag.id}
-            style={{ display: "inline-block", cursor: "default" }}
-            data-testid="usedTags"
-          >
-            {tag.name}
+        <div style={{ marginLeft: "9px" }}>
+          <div className="row">
+            {tags.map((tag) => (
+              <div
+                className={"p-2 bg-secondary text-white m-2"}
+                key={tag.id}
+                style={{ display: "inline-block", cursor: "default" }}
+                data-testid="usedTags"
+              >
+                {tag.name}
+              </div>
+            ))}
+            <br />
           </div>
-        ))}
-        <br />
-        <button
-          onClick={onConfigureTags}
-          className="btn btn-outline-secondary mb-4"
-        >
-          Configure Tags
-        </button>
+          <div className="row">
+            <button
+              onClick={onConfigureTags}
+              style={{ marginLeft: "7px" }}
+              className="btn btn-outline-secondary mt-2 mb-2"
+            >
+              Configure Tags
+            </button>
+          </div>
+        </div>
         <br />
 
         {!hideEditor && (
-          <div className="mt-4">
+          <span>
             <Editor
               editorState={editorState}
               onEditorStateChange={onEditorChange}
             />
-          </div>
+          </span>
         )}
       </form>
     </div>

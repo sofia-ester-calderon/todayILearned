@@ -19,7 +19,7 @@ const TagOverview = ({
       <h1 className="d-flex justify-content-center mb-5">Tags</h1>
 
       <h4>Blog Tags</h4>
-      {usedTags.length === 0 && <p>No tags chosen yet</p>}
+      {usedTags.length === 0 && !loading && <p>No tags chosen yet</p>}
       {usedTags.map((tag) => (
         <div
           className={"p-2 bg-secondary text-white m-2"}
