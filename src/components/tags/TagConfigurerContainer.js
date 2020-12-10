@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import TagOverview from "./TagOverview";
 import blogHelper from "../../data/blogHelper";
+import { useBlogTagsContext } from "../../hooks/BlogTags";
 
-const TagConfigurerContainer = ({ onClose }) => {
+const TagConfigurerContainer = ({ onClose, error }) => {
+  const tagContext = useBlogTagsContext();
+
   const [unusedTags, setUnusedTags] = useState([]);
-  const [usedTags, setUsedTags] = useState([]);
+  const [usedTags, setUsedTags] = useState([...tagContext.blogTags]);
   const [tagData, setTagData] = useState({ name: "" });
   const [loading, setLoading] = useState(false);
   const [creating, setCreating] = useState(false);
@@ -13,12 +16,26 @@ const TagConfigurerContainer = ({ onClose }) => {
     fetchTags();
   }, []);
 
+  useEffect(() => {
+    if (usedTags.length > 0) {
+      tagContext.setBlogTags([...usedTags]);
+    }
+  }, [usedTags]);
+
   async function fetchTags() {
     setLoading(true);
     const tagsFromApi = await blogHelper.fetchTags();
-    setUnusedTags(tagsFromApi.sort(compare));
-    console.log("TAGS FROM GRAPHQL", unusedTags);
+    console.log("TAGS FROM GRAPHQL", tagsFromApi);
+    setUsedAndUnusedTags(tagsFromApi);
     setLoading(false);
+  }
+
+  function setUsedAndUnusedTags(allTags) {
+    setUsedTags(tagContext.blogTags.sort(compare));
+    const remainingTags = allTags.filter(
+      (tag) => !tagContext.blogTags.includes(tag)
+    );
+    setUnusedTags(remainingTags.sort(compare));
   }
 
   function onChangeTagName(event) {
@@ -77,6 +94,7 @@ const TagConfigurerContainer = ({ onClose }) => {
         creating={creating}
         onAddTag={onAddTagToBlog}
         onRemoveTag={onRemoveTagFromBlog}
+        error={error}
       />
     </>
   );

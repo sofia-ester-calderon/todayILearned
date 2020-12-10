@@ -52,8 +52,13 @@ it("should render loading spinner", () => {
   screen.getByTestId("spinner");
 });
 
-it("should not display Blog Tags if used tags array is empty", () => {
+it("should not display message if blog tags are empty", () => {
   renderTagOverview({ usedTags: [] });
 
-  expect(screen.queryByText("usedTags")).not.toBeInTheDocument();
+  screen.getByText("No tags chosen yet");
+});
+
+it("should display error message", () => {
+  renderTagOverview({ error: "Error Message" });
+  screen.getByText("Error Message");
 });

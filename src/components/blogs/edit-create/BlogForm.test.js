@@ -9,6 +9,7 @@ function renderBlogForm(args) {
     errors: {},
     onChange: jest.fn(),
     editorState: EditorState.createEmpty(),
+    tags: [],
   };
   const props = { ...defaultProps, ...args };
   render(<BlogForm {...props} />);
@@ -45,4 +46,22 @@ it("should not showEditor", () => {
     hideEditor: true,
   });
   expect(screen.queryByText("Hello")).not.toBeInTheDocument();
+});
+
+it("should show tags", () => {
+  renderBlogForm({
+    tags: [
+      {
+        id: "1",
+        name: "React",
+      },
+      {
+        id: "2",
+        name: "Java",
+      },
+    ],
+  });
+
+  screen.getByText("Java");
+  screen.getByText("React");
 });

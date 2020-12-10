@@ -1,6 +1,7 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import React from "react";
 import blogHelper from "../../data/blogHelper";
+import { BlogTagsContext, BlogTagsProvider } from "../../hooks/BlogTags";
 import TagConfigurerContainer from "./TagConfigurerContainer";
 
 const blogTag = {
@@ -16,15 +17,19 @@ const tags = [
   },
 ];
 
-async function renderTagConfigurerContainer(args) {
-  const defaultProps = {
-    initialTags: [],
+const setBlogTags = jest.fn();
+
+async function renderTagConfigurerContainer(blogTags) {
+  const actualBlogTags = blogTags ? blogTags : [];
+  const props = {
     onClose: jest.fn(),
   };
-  const props = { ...defaultProps, ...args };
   blogHelper.fetchTags = jest.fn().mockResolvedValue(tags);
-
-  render(<TagConfigurerContainer {...props} />);
+  render(
+    <BlogTagsContext.Provider value={{ blogTags: actualBlogTags, setBlogTags }}>
+      <TagConfigurerContainer {...props} />
+    </BlogTagsContext.Provider>
+  );
   await screen.findByText("Java");
 }
 
@@ -38,15 +43,15 @@ describe("given the page is initially rendered", () => {
     expect(tag2.textContent).toBe("React");
   });
 
-  // it("should display all all tags and blog tags", async () => {
-  //   await renderTagConfigurerContainer({ initialTags: [blogTag] });
+  it("should display all all tags and blog tags", async () => {
+    await renderTagConfigurerContainer([blogTag]);
 
-  //   const [tag1] = screen.getAllByTestId("allTags");
-  //   const [tag2] = screen.getAllByTestId("usedTags");
+    const [tag1] = screen.getAllByTestId("unusedTags");
+    const [tag2] = screen.getAllByTestId("usedTags");
 
-  //   expect(tag1.textContent).toBe("Java");
-  //   expect(tag2.textContent).toBe("React");
-  // });
+    expect(tag1.textContent).toBe("Java");
+    expect(tag2.textContent).toBe("React");
+  });
 });
 
 describe("given a tag is created", () => {
@@ -84,7 +89,7 @@ describe("given a tag is created", () => {
 });
 
 describe("given a tag is added to the blog", () => {
-  it("should display that tag as blog tag and remove from all tags", async () => {
+  it("should display that tag as blog tag and remove from unused tags", async () => {
     await renderTagConfigurerContainer();
     fireEvent.click(screen.getByText("React"));
 
@@ -93,8 +98,12 @@ describe("given a tag is added to the blog", () => {
     expect(tag1.textContent).toBe("Java");
     expect(tag2).toBeUndefined();
 
-    const [blogTag] = screen.getAllByTestId("usedTags");
-    expect(blogTag.textContent).toBe("React");
+    const [tag3] = screen.getAllByTestId("usedTags");
+    expect(tag3.textContent).toBe("React");
+    // eslint-disable-next-line testing-library/await-async-utils
+    waitFor(() => {
+      expect(setBlogTags).toHaveBeenCalledWith([blogTag]);
+    });
   });
 });
 

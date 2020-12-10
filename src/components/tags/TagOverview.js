@@ -12,12 +12,14 @@ const TagOverview = ({
   creating,
   onAddTag,
   onRemoveTag,
+  error,
 }) => {
   return (
     <>
       <h1 className="d-flex justify-content-center mb-5">Tags</h1>
 
-      {usedTags.length > 0 && <h4>Blog Tags</h4>}
+      <h4>Blog Tags</h4>
+      {usedTags.length === 0 && <p>No tags chosen yet</p>}
       {usedTags.map((tag) => (
         <div
           className={"p-2 bg-secondary text-white m-2"}
@@ -88,11 +90,19 @@ const TagOverview = ({
         </div>
       </div>
       <hr />
-      <div className="d-flex justify-content-center mb-5">
+      <div className="d-flex justify-content-center mb-2">
         <button className="btn btn-dark mb-4 w-25" onClick={onClose}>
           Done
         </button>
       </div>
+      {error && (
+        <div
+          role="alert"
+          className="text-danger d-flex justify-content-center "
+        >
+          {error}
+        </div>
+      )}
     </>
   );
 };

@@ -4,15 +4,18 @@ import { Router } from "react-router-dom";
 import RoutingComponent from "./RoutingComponent";
 import { createMemoryHistory } from "history";
 import { AdminContext } from "../../hooks/AdminState";
+import { BlogTagsProvider } from "../../hooks/BlogTags";
 
 const history = createMemoryHistory();
 
 function renderRoutingComponent(adminMode) {
   render(
     <AdminContext.Provider value={{ adminMode, setAdminMode: jest.fn() }}>
-      <Router history={history}>
-        <RoutingComponent />
-      </Router>
+      <BlogTagsProvider>
+        <Router history={history}>
+          <RoutingComponent />
+        </Router>
+      </BlogTagsProvider>
     </AdminContext.Provider>
   );
 }

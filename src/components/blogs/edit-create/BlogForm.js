@@ -12,6 +12,7 @@ const BlogForm = ({
   errors = {},
   onConfigureTags,
   hideEditor,
+  tags = [],
 }) => {
   return (
     <div className="d-flex justify-content-center">
@@ -31,7 +32,21 @@ const BlogForm = ({
           error={errors.date}
           type="date"
         />
-        <button onClick={onConfigureTags} className="btn btn-secondary mb-4">
+        {tags.map((tag) => (
+          <div
+            className={"p-2 bg-secondary text-white m-2"}
+            key={tag.id}
+            style={{ display: "inline-block", cursor: "default" }}
+            data-testid="usedTags"
+          >
+            {tag.name}
+          </div>
+        ))}
+        <br />
+        <button
+          onClick={onConfigureTags}
+          className="btn btn-outline-secondary mb-4"
+        >
           Configure Tags
         </button>
         <br />

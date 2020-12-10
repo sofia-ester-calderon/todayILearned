@@ -9,6 +9,7 @@ import {
 import { useEffect, useState } from "react";
 import RoutingComponent from "./components/routing/RoutingComponent";
 import { AdminProvider } from "./hooks/AdminState";
+import { BlogTagsProvider } from "./hooks/BlogTags";
 
 function App() {
   const [formData, setFormData] = useState({ name: "", text: "" });
@@ -67,34 +68,42 @@ function App() {
   return (
     <div className="App">
       <AdminProvider>
-        <RoutingComponent />
-        <header className="App-header">
-          <h1>Today I learned</h1>
-          <p>In this page I will post my daily learnings</p>
-          <input
-            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            placeholder="Blog name"
-            value={formData.name}
-          />
-          <input
-            onChange={(e) => setFormData({ ...formData, text: e.target.value })}
-            placeholder="Blog description"
-            value={formData.text}
-          />
-          <input type="file" onChange={onChange} />
-          <button onClick={createBlog}>Create Blog</button>
-          <div style={{ marginBottom: 30 }}>
-            {blogs.map((blog) => (
-              <div key={blog.id || blog.name}>
-                <h2>{blog.name}</h2>
-                <p>{blog.text}</p>
-                <button onClick={() => deleteBlog(blog)}>Delete blog</button>
-                {blog.image && <img src={blog.image} style={{ width: 400 }} />}
-              </div>
-            ))}
-          </div>
-        </header>
-        <AmplifySignOut />
+        <BlogTagsProvider>
+          <RoutingComponent />
+          <header className="App-header">
+            <h1>Today I learned</h1>
+            <p>In this page I will post my daily learnings</p>
+            <input
+              onChange={(e) =>
+                setFormData({ ...formData, name: e.target.value })
+              }
+              placeholder="Blog name"
+              value={formData.name}
+            />
+            <input
+              onChange={(e) =>
+                setFormData({ ...formData, text: e.target.value })
+              }
+              placeholder="Blog description"
+              value={formData.text}
+            />
+            <input type="file" onChange={onChange} />
+            <button onClick={createBlog}>Create Blog</button>
+            <div style={{ marginBottom: 30 }}>
+              {blogs.map((blog) => (
+                <div key={blog.id || blog.name}>
+                  <h2>{blog.name}</h2>
+                  <p>{blog.text}</p>
+                  <button onClick={() => deleteBlog(blog)}>Delete blog</button>
+                  {blog.image && (
+                    <img src={blog.image} style={{ width: 400 }} />
+                  )}
+                </div>
+              ))}
+            </div>
+          </header>
+          <AmplifySignOut />
+        </BlogTagsProvider>
       </AdminProvider>
     </div>
   );

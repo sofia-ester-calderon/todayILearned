@@ -10,9 +10,9 @@ fileignoreconfig:
 - filename: report.20201209.151127.69881.0.001.json
   checksum: 7c2bba585d8e0cab33405a529fe3098f1caff51cff5c95e7df7a0cc07b44c56f
 - filename: src/App.js
-  checksum: 324f58af820ae7034992d9f73fe78eaf1bb567f28e7328a823d41a375eb798cd
+  checksum: 768862bc88fbdf4856bf0b81f9dc3c6aa32ecf97cdd03d3108d17b572f9fef87
 - filename: src/components/blogs/edit-create/BlogForm.js
-  checksum: 8e63634869697c45e3b97ba428bd6c70575befd594a773eedf15792136f0ef5a
+  checksum: 2379ea26c2c00ded69bc1ee89768f054a3d3c9681a5f4bc537375c5823cb2f44
 - filename: src/components/blogs/edit-create/EditBlogContainer.js
   checksum: e6dc9ca44803e9af273d422afe859697a964cf1585c3b4c753ba2b545fb5a08d
 - filename: src/components/login/LoginContainer.js

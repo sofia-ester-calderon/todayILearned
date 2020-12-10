@@ -3,10 +3,13 @@ import BlogForm from "./BlogForm";
 import { EditorState, convertToRaw } from "draft-js";
 import TagConfigurerContainer from "../../tags/TagConfigurerContainer";
 import Modal from "react-modal";
+import { BlogTagsProvider, useBlogTagsContext } from "../../../hooks/BlogTags";
 
 var dateFormat = require("dateformat");
 
 const CreateBlogContainer = () => {
+  const tagContext = useBlogTagsContext();
+
   const [newBlog, setNewBlog] = useState({
     title: "",
     date: dateFormat(new Date(), "yyyy-mm-dd"),
@@ -15,6 +18,7 @@ const CreateBlogContainer = () => {
   });
   const [editorText, setEditorText] = useState(EditorState.createEmpty());
   const [showTagModal, setShowTagModal] = useState(false);
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     console.log(newBlog);
@@ -46,7 +50,12 @@ const CreateBlogContainer = () => {
   }
 
   function onCloseModal() {
+    if (tagContext.blogTags.length === 0) {
+      setErrors({ tags: "A blog must have at least one tag!" });
+      return;
+    }
     setShowTagModal(false);
+    setErrors({});
   }
 
   return (
@@ -60,9 +69,10 @@ const CreateBlogContainer = () => {
         onEditorChange={onChangeEditorText}
         onConfigureTags={onConfigureTags}
         hideEditor={showTagModal}
+        tags={tagContext.blogTags}
       />
       <Modal isOpen={showTagModal}>
-        <TagConfigurerContainer onClose={onCloseModal} />
+        <TagConfigurerContainer onClose={onCloseModal} error={errors.tags} />
       </Modal>
     </div>
   );
