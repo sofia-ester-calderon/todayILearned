@@ -5,12 +5,12 @@ import TagConfigurerContainer from "./TagConfigurerContainer";
 
 const tags = [
   {
-    id: "3282d533-45f9-4257-b604-6362abfe336c",
-    name: "Java",
-  },
-  {
     id: "7510e46a-5e6d-4cc6-abe0-efbc0b505a17",
     name: "React",
+  },
+  {
+    id: "3282d533-45f9-4257-b604-6362abfe336c",
+    name: "Java",
   },
 ];
 
@@ -22,7 +22,7 @@ async function renderTagConfigurerContainer() {
 }
 
 describe("given the page is initially rendered", () => {
-  it("should display all the tags", async () => {
+  it("should display all the tags alphabetically", async () => {
     await renderTagConfigurerContainer();
 
     const [tag1, tag2] = screen.getAllByTestId("allTags");

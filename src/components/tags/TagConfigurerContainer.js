@@ -16,7 +16,7 @@ const TagConfigurerContainer = ({ onClose }) => {
   async function fetchTags() {
     setLoading(true);
     const tagsFromApi = await blogHelper.fetchTags();
-    setTags(tagsFromApi);
+    setTags(tagsFromApi.sort(compare));
     console.log("TAGS FROM GRAPHQL", tags);
     setLoading(false);
   }
@@ -39,13 +39,27 @@ const TagConfigurerContainer = ({ onClose }) => {
   }
 
   function onAddTagToBlog(blogTag) {
-    setBlogTags((prevData) => [...prevData, blogTag]);
+    setBlogTags((prevData) => {
+      let tags = [...prevData, blogTag];
+      tags = tags.sort(compare);
+      return tags;
+    });
     setTags((prevData) => prevData.filter((tag) => tag.id !== blogTag.id));
   }
 
   function onRemoveTagFromBlog(blogTag) {
     setBlogTags((prevData) => prevData.filter((tag) => tag.id !== blogTag.id));
-    setTags((prevData) => [...prevData, blogTag]);
+    setTags((prevData) => {
+      let tags = [...prevData, blogTag];
+      tags = tags.sort(compare);
+      return tags;
+    });
+  }
+
+  function compare(a, b) {
+    if (a.name.toUpperCase() < b.name.toUpperCase()) return -1;
+    if (b.name.toUpperCase() > a.name.toUpperCase()) return 1;
+    return 0;
   }
 
   return (
