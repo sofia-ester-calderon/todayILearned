@@ -7,7 +7,7 @@ const TagConfigurerContainer = ({ onClose, error }) => {
   const tagContext = useBlogTagsContext();
 
   const [unusedTags, setUnusedTags] = useState([]);
-  const [usedTags, setUsedTags] = useState([...tagContext.blogTags]);
+  const [usedTags, setUsedTags] = useState([]);
   const [tagData, setTagData] = useState({ name: "" });
   const [loading, setLoading] = useState(false);
   const [creating, setCreating] = useState(false);
@@ -32,9 +32,10 @@ const TagConfigurerContainer = ({ onClose, error }) => {
 
   function setUsedAndUnusedTags(allTags) {
     setUsedTags(tagContext.blogTags.sort(compare));
-    const remainingTags = allTags.filter(
-      (tag) => !tagContext.blogTags.includes(tag)
-    );
+
+    const blogTagIds = tagContext.blogTags.map((tag) => tag.id);
+
+    const remainingTags = allTags.filter((tag) => !blogTagIds.includes(tag.id));
     setUnusedTags(remainingTags.sort(compare));
   }
 
