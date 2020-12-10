@@ -13,7 +13,7 @@ const TagOverview = ({
   creating,
   onAddTag,
   onRemoveTag,
-  error,
+  errors = {},
 }) => {
   return (
     <>
@@ -76,18 +76,23 @@ const TagOverview = ({
           )}
         </div>
       </div>
+      {errors.create && (
+        <div role="alert" className="text-danger">
+          {errors.create}
+        </div>
+      )}
       <hr />
       <div className="d-flex justify-content-center mb-2">
         <button className="btn btn-dark mb-4 w-25" onClick={onClose}>
           Done
         </button>
       </div>
-      {error && (
+      {errors.tag && (
         <div
           role="alert"
           className="text-danger d-flex justify-content-center "
         >
-          {error}
+          {errors.tag}
         </div>
       )}
     </>

@@ -1,7 +1,7 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import React from "react";
 import blogHelper from "../../data/blogHelper";
-import { BlogTagsContext, BlogTagsProvider } from "../../hooks/BlogTags";
+import { BlogTagsContext } from "../../hooks/BlogTags";
 import TagConfigurerContainer from "./TagConfigurerContainer";
 
 const blogTag = {
@@ -61,6 +61,20 @@ describe("given a tag is created", () => {
     // eslint-disable-next-line testing-library/await-async-utils
     waitFor(() => {
       fireEvent.click(screen.getByText("Create Tag"));
+      expect(blogHelper.createTag).not.toHaveBeenCalled();
+    });
+  });
+
+  it("should do nothing if tag name already exists", async () => {
+    blogHelper.createTag = jest.fn();
+    await renderTagConfigurerContainer([blogTag]);
+    fireEvent.change(screen.getByLabelText("Name"), {
+      target: { value: "react" },
+    });
+    fireEvent.click(screen.getByText("Create Tag"));
+    screen.getByText("Tag already exists");
+    // eslint-disable-next-line testing-library/await-async-utils
+    waitFor(() => {
       expect(blogHelper.createTag).not.toHaveBeenCalled();
     });
   });

@@ -58,7 +58,10 @@ it("should not display message if blog tags are empty", () => {
   screen.getByText("No tags chosen yet");
 });
 
-it("should display error message", () => {
-  renderTagOverview({ error: "Error Message" });
+it("should display error messages", () => {
+  renderTagOverview({
+    errors: { tag: "Error Message", create: "Other message" },
+  });
   screen.getByText("Error Message");
+  screen.getByText("Other message");
 });

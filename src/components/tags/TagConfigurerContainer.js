@@ -11,6 +11,7 @@ const TagConfigurerContainer = ({ onClose, error }) => {
   const [tagData, setTagData] = useState({ name: "" });
   const [loading, setLoading] = useState(false);
   const [creating, setCreating] = useState(false);
+  const [errors, setErrors] = useState();
 
   useEffect(() => {
     fetchTags();
@@ -21,6 +22,10 @@ const TagConfigurerContainer = ({ onClose, error }) => {
       tagContext.setBlogTags([...usedTags]);
     }
   }, [usedTags]);
+
+  useEffect(() => {
+    setErrors((prevData) => ({ ...prevData, tag: error }));
+  }, [error]);
 
   async function fetchTags() {
     setLoading(true);
@@ -45,8 +50,19 @@ const TagConfigurerContainer = ({ onClose, error }) => {
   }
 
   async function onCreateNewTag(event) {
+    setErrors((prevData) => ({ ...prevData, create: null }));
+
     event.preventDefault();
     if (tagData.name === "") {
+      return;
+    }
+    const allTags = [...unusedTags, ...usedTags];
+    if (
+      allTags.find(
+        (tag) => tag.name.toUpperCase() === tagData.name.toUpperCase()
+      )
+    ) {
+      setErrors((prevData) => ({ ...prevData, create: "Tag already exists" }));
       return;
     }
     setCreating(true);
@@ -95,7 +111,7 @@ const TagConfigurerContainer = ({ onClose, error }) => {
         creating={creating}
         onAddTag={onAddTagToBlog}
         onRemoveTag={onRemoveTagFromBlog}
-        error={error}
+        errors={errors}
       />
     </>
   );
