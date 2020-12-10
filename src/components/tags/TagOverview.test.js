@@ -22,9 +22,24 @@ it("should display all the tags", () => {
   ];
   renderTagOverview({ tags });
 
-  screen.getByText("tag1");
-  screen.getByText("tag2");
-  screen.getByText("tag3");
+  const [tag1, tag2, tag3] = screen.getAllByTestId("allTags");
+
+  expect(tag1.textContent).toBe("tag1");
+  expect(tag2.textContent).toBe("tag2");
+  expect(tag3.textContent).toBe("tag3");
+});
+
+it("should display all blog tags", () => {
+  const tags = [
+    { name: "blogtag1", id: "1" },
+    { name: "blogtag2", id: "2" },
+  ];
+
+  renderTagOverview({ blogTags: tags });
+
+  const [tag1, tag2] = screen.getAllByTestId("blogTags");
+  expect(tag1.textContent).toBe("blogtag1");
+  expect(tag2.textContent).toBe("blogtag2");
 });
 
 it("shoud display the create tag button", () => {
@@ -40,4 +55,10 @@ it("should display the new tag value", () => {
 it("should render loading spinner", () => {
   renderTagOverview({ loading: true });
   screen.getByTestId("spinner");
+});
+
+it("should not display Blog Tags if blogtags array is empty", () => {
+  renderTagOverview({ blogTags: [] });
+
+  expect(screen.queryByText("Blog Tags")).not.toBeInTheDocument();
 });

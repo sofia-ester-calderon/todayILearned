@@ -2,6 +2,7 @@ import React from "react";
 
 const TagOverview = ({
   tags = [],
+  blogTags = [],
   tagName,
   onChangeTagName,
   onCreateTag,
@@ -9,15 +10,25 @@ const TagOverview = ({
   onClose,
   loading,
   creating,
+  onAddTag,
 }) => {
   return (
-    <div className="test">
+    <>
       <h1 className="d-flex justify-content-center mb-5">Tags</h1>
-      <div
-      // style={{
-      //   display: "flex",
-      // }}
-      >
+
+      {blogTags.length > 0 && <h4>Blog Tags</h4>}
+      {blogTags.map((tag) => (
+        <div
+          className={"p-2 bg-secondary text-white m-2"}
+          key={tag.id}
+          style={{ cursor: "pointer", display: "inline-block" }}
+          data-testid="blogTags"
+        >
+          {tag.name}
+        </div>
+      ))}
+      <hr />
+      <div>
         {loading ? (
           <div className="spinner-border " role="status" data-testid="spinner">
             <span className="sr-only">Loading...</span>
@@ -28,6 +39,8 @@ const TagOverview = ({
               className={"p-2 bg-secondary text-white m-2"}
               key={tag.id}
               style={{ cursor: "pointer", display: "inline-block" }}
+              onClick={() => onAddTag(tag)}
+              data-testid="allTags"
             >
               {tag.name}
             </div>
@@ -78,7 +91,7 @@ const TagOverview = ({
           Done
         </button>
       </div>
-    </div>
+    </>
   );
 };
 

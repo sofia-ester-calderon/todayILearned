@@ -25,8 +25,10 @@ describe("given the page is initially rendered", () => {
   it("should display all the tags", async () => {
     await renderTagConfigurerContainer();
 
-    screen.getByText("Java");
-    screen.getByText("React");
+    const [tag1, tag2] = screen.getAllByTestId("allTags");
+
+    expect(tag1.textContent).toBe("Java");
+    expect(tag2.textContent).toBe("React");
   });
 });
 
@@ -52,6 +54,29 @@ describe("given a tag is created", () => {
     });
     fireEvent.click(screen.getByText("Create Tag"));
     expect(blogHelper.createTag).toHaveBeenCalledWith({ name: "TypeScript" });
-    await screen.findByText("TypeScript");
+
+    // eslint-disable-next-line testing-library/await-async-utils
+    waitFor(() => {
+      const [tag1, tag2, tag3] = screen.getAllByTestId("allTags");
+
+      expect(tag1.textContent).toBe("Java");
+      expect(tag2.textContent).toBe("React");
+      expect(tag3.textContent).toBe("TypeScript");
+    });
+  });
+});
+
+describe("given a tag is added to the blog", () => {
+  it("should display that tag as blog tag and remove from all tags", async () => {
+    await renderTagConfigurerContainer();
+    fireEvent.click(screen.getByText("React"));
+
+    const [tag1, tag2] = screen.getAllByTestId("allTags");
+
+    expect(tag1.textContent).toBe("Java");
+    expect(tag2).toBeUndefined();
+
+    const [blogTag] = screen.getAllByTestId("blogTags");
+    expect(blogTag.textContent).toBe("React");
   });
 });

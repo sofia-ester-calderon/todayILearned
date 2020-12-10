@@ -7,6 +7,7 @@ const TagConfigurerContainer = ({ onClose }) => {
   const [tagData, setTagData] = useState({ name: "" });
   const [loading, setLoading] = useState(false);
   const [creating, setCreating] = useState(false);
+  const [blogTags, setBlogTags] = useState([]);
 
   useEffect(() => {
     fetchTags();
@@ -37,16 +38,23 @@ const TagConfigurerContainer = ({ onClose }) => {
     setCreating(false);
   }
 
+  function onAddTagToBlog(blogTag) {
+    setBlogTags((prevData) => [...prevData, blogTag]);
+    setTags((prevData) => prevData.filter((tag) => tag.id !== blogTag.id));
+  }
+
   return (
     <>
       <TagOverview
         tags={tags}
+        blogTags={blogTags}
         tagName={tagData.name}
         onChangeTagName={onChangeTagName}
         onCreateTag={onCreateNewTag}
         onClose={onClose}
         loading={loading}
         creating={creating}
+        onAddTag={onAddTagToBlog}
       />
     </>
   );
