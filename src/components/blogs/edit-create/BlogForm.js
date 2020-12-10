@@ -2,6 +2,7 @@ import React from "react";
 import TextInput from "../../common/text/TextInput";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import TagList from "../../tags/TagList";
 
 const BlogForm = ({
   title,
@@ -34,16 +35,7 @@ const BlogForm = ({
         />
         <div style={{ marginLeft: "9px" }}>
           <div className="row">
-            {tags.map((tag) => (
-              <div
-                className={"p-2 bg-secondary text-white m-2"}
-                key={tag.id}
-                style={{ display: "inline-block", cursor: "default" }}
-                data-testid="usedTags"
-              >
-                {tag.name}
-              </div>
-            ))}
+            <TagList tags={tags} />
             <br />
           </div>
           <div className="row">

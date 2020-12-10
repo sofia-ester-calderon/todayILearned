@@ -1,4 +1,5 @@
 import React from "react";
+import TagList from "./TagList";
 
 const TagOverview = ({
   unusedTags = [],
@@ -20,17 +21,8 @@ const TagOverview = ({
 
       <h4>Blog Tags</h4>
       {usedTags.length === 0 && !loading && <p>No tags chosen yet</p>}
-      {usedTags.map((tag) => (
-        <div
-          className={"p-2 bg-secondary text-white m-2"}
-          key={tag.id}
-          style={{ cursor: "pointer", display: "inline-block" }}
-          onClick={() => onRemoveTag(tag)}
-          data-testid="usedTags"
-        >
-          {tag.name}
-        </div>
-      ))}
+      <TagList tags={usedTags} onClick={onRemoveTag} testId={"usedTags"} />
+
       <hr />
       <div>
         {loading ? (
@@ -38,17 +30,12 @@ const TagOverview = ({
             <span className="sr-only">Loading...</span>
           </div>
         ) : (
-          unusedTags.map((tag) => (
-            <div
-              className={"p-2 bg-light m-2"}
-              key={tag.id}
-              style={{ cursor: "pointer", display: "inline-block" }}
-              onClick={() => onAddTag(tag)}
-              data-testid="unusedTags"
-            >
-              {tag.name}
-            </div>
-          ))
+          <TagList
+            tags={unusedTags}
+            onClick={onAddTag}
+            testId={"unusedTags"}
+            mode={"light"}
+          />
         )}
       </div>
       <hr />

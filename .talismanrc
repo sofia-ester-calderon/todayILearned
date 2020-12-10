@@ -21,6 +21,8 @@ fileignoreconfig:
   checksum: 5d1ad9489e79ce0fbfffdf6250461cc7930bf8b4c10dcf186a0117893dda12ac
 - filename: src/components/login/LoginForm.test.js
   checksum: 16b83c267affc308eaa6b4915d8d95df0277d238e1b18cc940934cd971d29a05
+- filename: src/components/tags/TagList.js
+  checksum: 2f7f82889d9e2a95d94beea98869513405d98332332d727cd668fe0333eb6197
 - filename: src/components/tags/TagOverview.js
   checksum: 36428357ab1cdc531aa4f80ef058ed20cd90278982138a97157282b1988b9406
 - filename: yarn.lock
