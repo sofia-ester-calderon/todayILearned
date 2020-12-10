@@ -3,11 +3,11 @@ import TagOverview from "./TagOverview";
 import blogHelper from "../../data/blogHelper";
 
 const TagConfigurerContainer = ({ onClose }) => {
-  const [tags, setTags] = useState([]);
+  const [unusedTags, setUnusedTags] = useState([]);
+  const [usedTags, setUsedTags] = useState([]);
   const [tagData, setTagData] = useState({ name: "" });
   const [loading, setLoading] = useState(false);
   const [creating, setCreating] = useState(false);
-  const [blogTags, setBlogTags] = useState([]);
 
   useEffect(() => {
     fetchTags();
@@ -16,8 +16,8 @@ const TagConfigurerContainer = ({ onClose }) => {
   async function fetchTags() {
     setLoading(true);
     const tagsFromApi = await blogHelper.fetchTags();
-    setTags(tagsFromApi.sort(compare));
-    console.log("TAGS FROM GRAPHQL", tags);
+    setUnusedTags(tagsFromApi.sort(compare));
+    console.log("TAGS FROM GRAPHQL", unusedTags);
     setLoading(false);
   }
 
@@ -34,22 +34,24 @@ const TagConfigurerContainer = ({ onClose }) => {
     setCreating(true);
     const newTag = await blogHelper.createTag(tagData);
     setTagData({ name: "" });
-    setTags((prevData) => [...prevData, newTag]);
+    setUnusedTags((prevData) => [...prevData, newTag]);
     setCreating(false);
   }
 
   function onAddTagToBlog(blogTag) {
-    setBlogTags((prevData) => {
+    setUsedTags((prevData) => {
       let tags = [...prevData, blogTag];
       tags = tags.sort(compare);
       return tags;
     });
-    setTags((prevData) => prevData.filter((tag) => tag.id !== blogTag.id));
+    setUnusedTags((prevData) =>
+      prevData.filter((tag) => tag.id !== blogTag.id)
+    );
   }
 
   function onRemoveTagFromBlog(blogTag) {
-    setBlogTags((prevData) => prevData.filter((tag) => tag.id !== blogTag.id));
-    setTags((prevData) => {
+    setUsedTags((prevData) => prevData.filter((tag) => tag.id !== blogTag.id));
+    setUnusedTags((prevData) => {
       let tags = [...prevData, blogTag];
       tags = tags.sort(compare);
       return tags;
@@ -65,8 +67,8 @@ const TagConfigurerContainer = ({ onClose }) => {
   return (
     <>
       <TagOverview
-        tags={tags}
-        blogTags={blogTags}
+        unusedTags={unusedTags}
+        usedTags={usedTags}
         tagName={tagData.name}
         onChangeTagName={onChangeTagName}
         onCreateTag={onCreateNewTag}

@@ -1,8 +1,8 @@
 import React from "react";
 
 const TagOverview = ({
-  tags = [],
-  blogTags = [],
+  unusedTags = [],
+  usedTags = [],
   tagName,
   onChangeTagName,
   onCreateTag,
@@ -17,14 +17,14 @@ const TagOverview = ({
     <>
       <h1 className="d-flex justify-content-center mb-5">Tags</h1>
 
-      {blogTags.length > 0 && <h4>Blog Tags</h4>}
-      {blogTags.map((tag) => (
+      {usedTags.length > 0 && <h4>Blog Tags</h4>}
+      {usedTags.map((tag) => (
         <div
           className={"p-2 bg-secondary text-white m-2"}
           key={tag.id}
           style={{ cursor: "pointer", display: "inline-block" }}
           onClick={() => onRemoveTag(tag)}
-          data-testid="blogTags"
+          data-testid="usedTags"
         >
           {tag.name}
         </div>
@@ -36,13 +36,13 @@ const TagOverview = ({
             <span className="sr-only">Loading...</span>
           </div>
         ) : (
-          tags.map((tag) => (
+          unusedTags.map((tag) => (
             <div
               className={"p-2 bg-light m-2"}
               key={tag.id}
               style={{ cursor: "pointer", display: "inline-block" }}
               onClick={() => onAddTag(tag)}
-              data-testid="allTags"
+              data-testid="unusedTags"
             >
               {tag.name}
             </div>

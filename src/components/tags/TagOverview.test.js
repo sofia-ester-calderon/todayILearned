@@ -4,7 +4,7 @@ import TagOverview from "./TagOverview";
 
 function renderTagOverview(args) {
   const defaultProps = {
-    tags: [],
+    unusedTags: [],
     tagName: "",
     onChangeTagName: jest.fn(),
     onCreateTag: jest.fn(),
@@ -14,37 +14,32 @@ function renderTagOverview(args) {
   render(<TagOverview {...props} />);
 }
 
-it("should display all the tags", () => {
-  const tags = [
+it("should display all the unused tags", () => {
+  const unusedTags = [
     { name: "tag1", id: "1" },
     { name: "tag2", id: "2" },
     { name: "tag3", id: "3" },
   ];
-  renderTagOverview({ tags });
+  renderTagOverview({ unusedTags });
 
-  const [tag1, tag2, tag3] = screen.getAllByTestId("allTags");
+  const [tag1, tag2, tag3] = screen.getAllByTestId("unusedTags");
 
   expect(tag1.textContent).toBe("tag1");
   expect(tag2.textContent).toBe("tag2");
   expect(tag3.textContent).toBe("tag3");
 });
 
-it("should display all blog tags", () => {
-  const tags = [
+it("should display all used tags", () => {
+  const usedTags = [
     { name: "blogtag1", id: "1" },
     { name: "blogtag2", id: "2" },
   ];
 
-  renderTagOverview({ blogTags: tags });
+  renderTagOverview({ usedTags });
 
-  const [tag1, tag2] = screen.getAllByTestId("blogTags");
+  const [tag1, tag2] = screen.getAllByTestId("usedTags");
   expect(tag1.textContent).toBe("blogtag1");
   expect(tag2.textContent).toBe("blogtag2");
-});
-
-it("shoud display the create tag button", () => {
-  renderTagOverview();
-  screen.getByText("Create Tag");
 });
 
 it("should display the new tag value", () => {
@@ -57,8 +52,8 @@ it("should render loading spinner", () => {
   screen.getByTestId("spinner");
 });
 
-it("should not display Blog Tags if blogtags array is empty", () => {
-  renderTagOverview({ blogTags: [] });
+it("should not display Blog Tags if used tags array is empty", () => {
+  renderTagOverview({ usedTags: [] });
 
-  expect(screen.queryByText("Blog Tags")).not.toBeInTheDocument();
+  expect(screen.queryByText("usedTags")).not.toBeInTheDocument();
 });

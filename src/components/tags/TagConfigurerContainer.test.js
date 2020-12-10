@@ -3,21 +3,28 @@ import React from "react";
 import blogHelper from "../../data/blogHelper";
 import TagConfigurerContainer from "./TagConfigurerContainer";
 
+const blogTag = {
+  id: "7510e46a-5e6d-4cc6-abe0-efbc0b505a17",
+  name: "React",
+};
+
 const tags = [
-  {
-    id: "7510e46a-5e6d-4cc6-abe0-efbc0b505a17",
-    name: "React",
-  },
+  blogTag,
   {
     id: "3282d533-45f9-4257-b604-6362abfe336c",
     name: "Java",
   },
 ];
 
-async function renderTagConfigurerContainer() {
+async function renderTagConfigurerContainer(args) {
+  const defaultProps = {
+    initialTags: [],
+    onClose: jest.fn(),
+  };
+  const props = { ...defaultProps, ...args };
   blogHelper.fetchTags = jest.fn().mockResolvedValue(tags);
 
-  render(<TagConfigurerContainer />);
+  render(<TagConfigurerContainer {...props} />);
   await screen.findByText("Java");
 }
 
@@ -25,11 +32,21 @@ describe("given the page is initially rendered", () => {
   it("should display all the tags alphabetically", async () => {
     await renderTagConfigurerContainer();
 
-    const [tag1, tag2] = screen.getAllByTestId("allTags");
+    const [tag1, tag2] = screen.getAllByTestId("unusedTags");
 
     expect(tag1.textContent).toBe("Java");
     expect(tag2.textContent).toBe("React");
   });
+
+  // it("should display all all tags and blog tags", async () => {
+  //   await renderTagConfigurerContainer({ initialTags: [blogTag] });
+
+  //   const [tag1] = screen.getAllByTestId("allTags");
+  //   const [tag2] = screen.getAllByTestId("usedTags");
+
+  //   expect(tag1.textContent).toBe("Java");
+  //   expect(tag2.textContent).toBe("React");
+  // });
 });
 
 describe("given a tag is created", () => {
@@ -57,7 +74,7 @@ describe("given a tag is created", () => {
 
     // eslint-disable-next-line testing-library/await-async-utils
     waitFor(() => {
-      const [tag1, tag2, tag3] = screen.getAllByTestId("allTags");
+      const [tag1, tag2, tag3] = screen.getAllByTestId("unusedTags");
 
       expect(tag1.textContent).toBe("Java");
       expect(tag2.textContent).toBe("React");
@@ -71,26 +88,26 @@ describe("given a tag is added to the blog", () => {
     await renderTagConfigurerContainer();
     fireEvent.click(screen.getByText("React"));
 
-    const [tag1, tag2] = screen.getAllByTestId("allTags");
+    const [tag1, tag2] = screen.getAllByTestId("unusedTags");
 
     expect(tag1.textContent).toBe("Java");
     expect(tag2).toBeUndefined();
 
-    const [blogTag] = screen.getAllByTestId("blogTags");
+    const [blogTag] = screen.getAllByTestId("usedTags");
     expect(blogTag.textContent).toBe("React");
   });
 });
 
 describe("given a tag is removed from the blog", () => {
-  it("should display not display the tag as blogTags and again in all tags", async () => {
+  it("should display not display the tag as usedTags and again in unused tags", async () => {
     await renderTagConfigurerContainer();
     fireEvent.click(screen.getByText("React"));
     fireEvent.click(screen.getByText("React"));
 
-    const [tag1, tag2] = screen.getAllByTestId("allTags");
+    const [tag1, tag2] = screen.getAllByTestId("unusedTags");
 
     expect(tag1.textContent).toBe("Java");
     expect(tag2.textContent).toBe("React");
-    expect(screen.queryByTestId("allBlog")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("usedTags")).not.toBeInTheDocument();
   });
 });
