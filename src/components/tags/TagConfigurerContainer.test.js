@@ -80,3 +80,17 @@ describe("given a tag is added to the blog", () => {
     expect(blogTag.textContent).toBe("React");
   });
 });
+
+describe("given a tag is removed from the blog", () => {
+  it("should display not display the tag as blogTags and again in all tags", async () => {
+    await renderTagConfigurerContainer();
+    fireEvent.click(screen.getByText("React"));
+    fireEvent.click(screen.getByText("React"));
+
+    const [tag1, tag2] = screen.getAllByTestId("allTags");
+
+    expect(tag1.textContent).toBe("Java");
+    expect(tag2.textContent).toBe("React");
+    expect(screen.queryByTestId("allBlog")).not.toBeInTheDocument();
+  });
+});

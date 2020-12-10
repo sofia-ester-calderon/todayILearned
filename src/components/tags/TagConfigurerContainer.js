@@ -43,6 +43,11 @@ const TagConfigurerContainer = ({ onClose }) => {
     setTags((prevData) => prevData.filter((tag) => tag.id !== blogTag.id));
   }
 
+  function onRemoveTagFromBlog(blogTag) {
+    setBlogTags((prevData) => prevData.filter((tag) => tag.id !== blogTag.id));
+    setTags((prevData) => [...prevData, blogTag]);
+  }
+
   return (
     <>
       <TagOverview
@@ -55,6 +60,7 @@ const TagConfigurerContainer = ({ onClose }) => {
         loading={loading}
         creating={creating}
         onAddTag={onAddTagToBlog}
+        onRemoveTag={onRemoveTagFromBlog}
       />
     </>
   );

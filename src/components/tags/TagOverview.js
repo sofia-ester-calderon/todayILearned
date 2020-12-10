@@ -11,6 +11,7 @@ const TagOverview = ({
   loading,
   creating,
   onAddTag,
+  onRemoveTag,
 }) => {
   return (
     <>
@@ -22,6 +23,7 @@ const TagOverview = ({
           className={"p-2 bg-secondary text-white m-2"}
           key={tag.id}
           style={{ cursor: "pointer", display: "inline-block" }}
+          onClick={() => onRemoveTag(tag)}
           data-testid="blogTags"
         >
           {tag.name}
@@ -36,7 +38,7 @@ const TagOverview = ({
         ) : (
           tags.map((tag) => (
             <div
-              className={"p-2 bg-secondary text-white m-2"}
+              className={"p-2 bg-light m-2"}
               key={tag.id}
               style={{ cursor: "pointer", display: "inline-block" }}
               onClick={() => onAddTag(tag)}
