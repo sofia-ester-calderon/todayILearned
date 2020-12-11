@@ -13,7 +13,8 @@
     },
     "categories": {
       "auth": {
-        "todayilearned1524cfb0": {}
+        "todayilearned1524cfb0": {},
+        "userPoolGroups": {}
       }
     }
   }

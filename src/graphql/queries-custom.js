@@ -1,41 +1,5 @@
 /* eslint-disable */
-// this is an auto generated file. This will be overwritten
 
-export const syncBlogs = /* GraphQL */ `
-  query SyncBlogs(
-    $filter: ModelBlogFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncBlogs(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        title
-        text
-        date
-        image
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-        owner
-        tags {
-          nextToken
-          startedAt
-        }
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
 export const getBlog = /* GraphQL */ `
   query GetBlog($id: ID!) {
     getBlog(id: $id) {
@@ -53,8 +17,8 @@ export const getBlog = /* GraphQL */ `
       tags {
         items {
           id
-          tagID
           tag {
+            id
             name
           }
         }
@@ -86,14 +50,10 @@ export const listBlogs = /* GraphQL */ `
         tags {
           items {
             id
-            blogID
-            tagID
-            _version
-            _deleted
-            _lastChangedAt
-            createdAt
-            updatedAt
-            owner
+            tag {
+              name
+              id
+            }
           }
           nextToken
           startedAt
@@ -120,8 +80,13 @@ export const listTags = /* GraphQL */ `
         createdAt
         updatedAt
         blogs {
-          nextToken
-          startedAt
+          items {
+            id
+            blog {
+              id
+              title
+            }
+          }
         }
       }
       nextToken
@@ -142,14 +107,10 @@ export const getTag = /* GraphQL */ `
       blogs {
         items {
           id
-          blogID
-          tagID
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-          owner
+          blog {
+            id
+            title
+          }
         }
         nextToken
         startedAt

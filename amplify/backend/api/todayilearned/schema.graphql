@@ -1,44 +1,22 @@
-type Blog @model
-@auth(rules: [{ allow: owner, operations: [create, delete, update] }]) {
+type Blog @model @auth(rules: [{allow: owner, operations: [create, delete, update]}]) {
   id: ID!
   title: String!
   text: String!
-  date: Int!
+  date: AWSDate!
   image: String
-  tag:[TagBlogJoin]!@connection(keyName: "byBlog", fields: ["id"])
- }
-
-type Tag @model{
-  id: ID!
-  name: String!
-  blog: [TagBlogJoin]!@connection(keyName: "byTag", fields: ["id"])
+  tags: [BlogTag!] @connection(keyName: "byBlog", fields: ["id"])
 }
 
-type TagBlogJoin @model
-@key(name: "byBlog", fields: ["blogID", "tagID"])
-@key(name: "byTag", fields: ["tagID", "blogID"]){
+type Tag @model @auth(rules: [{allow: private}]) {
+  id: ID!
+  name: String!
+  blogs: [BlogTag] @connection(keyName: "byTag", fields: ["id"])
+}
+
+type BlogTag @model @key(name: "byBlog", fields: ["blogID", "tagID"]) @key(name: "byTag", fields: ["tagID", "blogID"]) @auth(rules: [{allow: owner, operations: [create, delete, update]}, {allow: private}]) {
   id: ID!
   blogID: ID!
   tagID: ID!
-  blog: Blog!   @connection(fields: ["blogID"])      
-  tag: Tag!  @connection(fields: ["tagID"])
+  blog: Blog! @connection(fields: ["blogID"])
+  tag: Tag! @connection(fields: ["tagID"])
 }
-
-
-
-
-#type Post @model @key(name: "byBlog", fields: ["blogID"]) {
-#  id: ID!
-#  title: String!
- # blogID: ID!
- # blog: Blog @connection(fields: ["blogID"])
- # comments: [Comment] @connection(keyName: "byPost", fields: ["id"])
-#}
-
-#type Comment @model @key(name: "byPost", fields: ["postID", "content"]) {
-#  id: ID!
-#  postID: ID!
-#  post: Post @connection(fields: ["postID"])
-#  content: String!
-#}
-

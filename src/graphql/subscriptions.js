@@ -9,19 +9,27 @@ export const onCreateBlog = /* GraphQL */ `
       text
       date
       image
-      tag {
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      owner
+      tags {
         items {
           id
           blogID
           tagID
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
+          owner
         }
         nextToken
+        startedAt
       }
-      createdAt
-      updatedAt
-      owner
     }
   }
 `;
@@ -33,19 +41,27 @@ export const onUpdateBlog = /* GraphQL */ `
       text
       date
       image
-      tag {
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      owner
+      tags {
         items {
           id
           blogID
           tagID
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
+          owner
         }
         nextToken
+        startedAt
       }
-      createdAt
-      updatedAt
-      owner
     }
   }
 `;
@@ -57,19 +73,27 @@ export const onDeleteBlog = /* GraphQL */ `
       text
       date
       image
-      tag {
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      owner
+      tags {
         items {
           id
           blogID
           tagID
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
+          owner
         }
         nextToken
+        startedAt
       }
-      createdAt
-      updatedAt
-      owner
     }
   }
 `;
@@ -78,18 +102,26 @@ export const onCreateTag = /* GraphQL */ `
     onCreateTag {
       id
       name
-      blog {
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      blogs {
         items {
           id
           blogID
           tagID
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
+          owner
         }
         nextToken
+        startedAt
       }
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -98,18 +130,26 @@ export const onUpdateTag = /* GraphQL */ `
     onUpdateTag {
       id
       name
-      blog {
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      blogs {
         items {
           id
           blogID
           tagID
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
+          owner
         }
         nextToken
+        startedAt
       }
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -118,24 +158,32 @@ export const onDeleteTag = /* GraphQL */ `
     onDeleteTag {
       id
       name
-      blog {
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      blogs {
         items {
           id
           blogID
           tagID
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
+          owner
         }
         nextToken
+        startedAt
       }
-      createdAt
-      updatedAt
     }
   }
 `;
-export const onCreateTagBlogJoin = /* GraphQL */ `
-  subscription OnCreateTagBlogJoin {
-    onCreateTagBlogJoin {
+export const onCreateBlogTag = /* GraphQL */ `
+  subscription OnCreateBlogTag {
+    onCreateBlogTag {
       id
       blogID
       tagID
@@ -145,30 +193,42 @@ export const onCreateTagBlogJoin = /* GraphQL */ `
         text
         date
         image
-        tag {
-          nextToken
-        }
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
         owner
+        tags {
+          nextToken
+          startedAt
+        }
       }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
       tag {
         id
         name
-        blog {
-          nextToken
-        }
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
+        blogs {
+          nextToken
+          startedAt
+        }
       }
-      createdAt
-      updatedAt
+      owner
     }
   }
 `;
-export const onUpdateTagBlogJoin = /* GraphQL */ `
-  subscription OnUpdateTagBlogJoin {
-    onUpdateTagBlogJoin {
+export const onUpdateBlogTag = /* GraphQL */ `
+  subscription OnUpdateBlogTag {
+    onUpdateBlogTag {
       id
       blogID
       tagID
@@ -178,30 +238,42 @@ export const onUpdateTagBlogJoin = /* GraphQL */ `
         text
         date
         image
-        tag {
-          nextToken
-        }
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
         owner
+        tags {
+          nextToken
+          startedAt
+        }
       }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
       tag {
         id
         name
-        blog {
-          nextToken
-        }
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
+        blogs {
+          nextToken
+          startedAt
+        }
       }
-      createdAt
-      updatedAt
+      owner
     }
   }
 `;
-export const onDeleteTagBlogJoin = /* GraphQL */ `
-  subscription OnDeleteTagBlogJoin {
-    onDeleteTagBlogJoin {
+export const onDeleteBlogTag = /* GraphQL */ `
+  subscription OnDeleteBlogTag {
+    onDeleteBlogTag {
       id
       blogID
       tagID
@@ -211,24 +283,36 @@ export const onDeleteTagBlogJoin = /* GraphQL */ `
         text
         date
         image
-        tag {
-          nextToken
-        }
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
         owner
+        tags {
+          nextToken
+          startedAt
+        }
       }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
       tag {
         id
         name
-        blog {
-          nextToken
-        }
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
+        blogs {
+          nextToken
+          startedAt
+        }
       }
-      createdAt
-      updatedAt
+      owner
     }
   }
 `;

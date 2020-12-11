@@ -12,19 +12,27 @@ export const createBlog = /* GraphQL */ `
       text
       date
       image
-      tag {
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      owner
+      tags {
         items {
           id
           blogID
           tagID
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
+          owner
         }
         nextToken
+        startedAt
       }
-      createdAt
-      updatedAt
-      owner
     }
   }
 `;
@@ -39,19 +47,27 @@ export const updateBlog = /* GraphQL */ `
       text
       date
       image
-      tag {
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      owner
+      tags {
         items {
           id
           blogID
           tagID
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
+          owner
         }
         nextToken
+        startedAt
       }
-      createdAt
-      updatedAt
-      owner
     }
   }
 `;
@@ -66,19 +82,27 @@ export const deleteBlog = /* GraphQL */ `
       text
       date
       image
-      tag {
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      owner
+      tags {
         items {
           id
           blogID
           tagID
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
+          owner
         }
         nextToken
+        startedAt
       }
-      createdAt
-      updatedAt
-      owner
     }
   }
 `;
@@ -90,18 +114,26 @@ export const createTag = /* GraphQL */ `
     createTag(input: $input, condition: $condition) {
       id
       name
-      blog {
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      blogs {
         items {
           id
           blogID
           tagID
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
+          owner
         }
         nextToken
+        startedAt
       }
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -113,18 +145,26 @@ export const updateTag = /* GraphQL */ `
     updateTag(input: $input, condition: $condition) {
       id
       name
-      blog {
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      blogs {
         items {
           id
           blogID
           tagID
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
+          owner
         }
         nextToken
+        startedAt
       }
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -136,27 +176,35 @@ export const deleteTag = /* GraphQL */ `
     deleteTag(input: $input, condition: $condition) {
       id
       name
-      blog {
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      blogs {
         items {
           id
           blogID
           tagID
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
+          owner
         }
         nextToken
+        startedAt
       }
-      createdAt
-      updatedAt
     }
   }
 `;
-export const createTagBlogJoin = /* GraphQL */ `
-  mutation CreateTagBlogJoin(
-    $input: CreateTagBlogJoinInput!
-    $condition: ModelTagBlogJoinConditionInput
+export const createBlogTag = /* GraphQL */ `
+  mutation CreateBlogTag(
+    $input: CreateBlogTagInput!
+    $condition: ModelBlogTagConditionInput
   ) {
-    createTagBlogJoin(input: $input, condition: $condition) {
+    createBlogTag(input: $input, condition: $condition) {
       id
       blogID
       tagID
@@ -166,33 +214,45 @@ export const createTagBlogJoin = /* GraphQL */ `
         text
         date
         image
-        tag {
-          nextToken
-        }
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
         owner
+        tags {
+          nextToken
+          startedAt
+        }
       }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
       tag {
         id
         name
-        blog {
-          nextToken
-        }
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
+        blogs {
+          nextToken
+          startedAt
+        }
       }
-      createdAt
-      updatedAt
+      owner
     }
   }
 `;
-export const updateTagBlogJoin = /* GraphQL */ `
-  mutation UpdateTagBlogJoin(
-    $input: UpdateTagBlogJoinInput!
-    $condition: ModelTagBlogJoinConditionInput
+export const updateBlogTag = /* GraphQL */ `
+  mutation UpdateBlogTag(
+    $input: UpdateBlogTagInput!
+    $condition: ModelBlogTagConditionInput
   ) {
-    updateTagBlogJoin(input: $input, condition: $condition) {
+    updateBlogTag(input: $input, condition: $condition) {
       id
       blogID
       tagID
@@ -202,33 +262,45 @@ export const updateTagBlogJoin = /* GraphQL */ `
         text
         date
         image
-        tag {
-          nextToken
-        }
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
         owner
+        tags {
+          nextToken
+          startedAt
+        }
       }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
       tag {
         id
         name
-        blog {
-          nextToken
-        }
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
+        blogs {
+          nextToken
+          startedAt
+        }
       }
-      createdAt
-      updatedAt
+      owner
     }
   }
 `;
-export const deleteTagBlogJoin = /* GraphQL */ `
-  mutation DeleteTagBlogJoin(
-    $input: DeleteTagBlogJoinInput!
-    $condition: ModelTagBlogJoinConditionInput
+export const deleteBlogTag = /* GraphQL */ `
+  mutation DeleteBlogTag(
+    $input: DeleteBlogTagInput!
+    $condition: ModelBlogTagConditionInput
   ) {
-    deleteTagBlogJoin(input: $input, condition: $condition) {
+    deleteBlogTag(input: $input, condition: $condition) {
       id
       blogID
       tagID
@@ -238,24 +310,36 @@ export const deleteTagBlogJoin = /* GraphQL */ `
         text
         date
         image
-        tag {
-          nextToken
-        }
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
         owner
+        tags {
+          nextToken
+          startedAt
+        }
       }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
       tag {
         id
         name
-        blog {
-          nextToken
-        }
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
+        blogs {
+          nextToken
+          startedAt
+        }
       }
-      createdAt
-      updatedAt
+      owner
     }
   }
 `;
