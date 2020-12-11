@@ -61,8 +61,8 @@ it("should render the create blog page if url is /new", () => {
   screen.getByText("Create Blog Post");
 });
 
-// it("should render blog list if url is /new but user is not authenitcated", () => {
-//   renderRoutingComponent();
-//   history.push("new");
-//   screen.getByText("All Blogs");
-// });
+it("should render blog list if url is /new but user is not authenitcated", () => {
+  renderRoutingComponent();
+  history.push("new");
+  screen.getByText("All Blogs");
+});

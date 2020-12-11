@@ -21,12 +21,11 @@ const RoutingComponent = () => {
         component={EditBlogContainer}
         auth={adminContext.adminMode}
       />
-      <Route path="/new" component={CreateBlogContainer} />
-      {/* <GuardedRoute
+      <GuardedRoute
         path="/new"
         component={CreateBlogContainer}
         auth={adminContext.adminMode}
-      /> */}
+      />
       <Route component={AllBlogsContainer} />
     </Switch>
   );
