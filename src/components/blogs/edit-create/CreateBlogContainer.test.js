@@ -1,9 +1,11 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import React from "react";
+import blogHelper from "../../../data/blogHelper";
 import { BlogTagsContext } from "../../../hooks/BlogTags";
 import CreateBlogContainer from "../edit-create/CreateBlogContainer";
 
 var dateFormat = require("dateformat");
+const today = dateFormat(new Date(), "yyyy-mm-dd");
 
 const tags = [
   {
@@ -12,20 +14,20 @@ const tags = [
   },
 ];
 
-function renderCreateBlogContainer(blogTags) {
+function renderCreateBlogContainer(blogTags, history, setBlogTags) {
   const actualBlogTags = blogTags ? blogTags : [];
+  const actualSetter = setBlogTags ? setBlogTags : jest.fn();
   render(
     <BlogTagsContext.Provider
-      value={{ blogTags: actualBlogTags, setBlogTags: jest.fn() }}
+      value={{ blogTags: actualBlogTags, setBlogTags: actualSetter }}
     >
-      <CreateBlogContainer />
+      <CreateBlogContainer history={history} />
     </BlogTagsContext.Provider>
   );
 }
 
 describe("given the page is rendered", () => {
   it("should display the empty form", () => {
-    const today = dateFormat(new Date(), "yyyy-mm-dd");
     renderCreateBlogContainer();
 
     const title = screen.getByLabelText("Title").value;
@@ -67,7 +69,7 @@ describe("given tags are edited", () => {
     renderCreateBlogContainer();
     fireEvent.click(screen.getByText("Configure Tags"));
     fireEvent.click(screen.getByText("Done"));
-    screen.getByText("A blog must have at least one tag!");
+    screen.getAllByText("A blog must have at least one tag");
     screen.getByText("Tags");
   });
 
@@ -76,5 +78,42 @@ describe("given tags are edited", () => {
     fireEvent.click(screen.getByText("Configure Tags"));
     fireEvent.click(screen.getByText("Done"));
     expect(screen.queryByText("Tags")).not.toBeInTheDocument();
+  });
+});
+
+describe("given a blog is created", () => {
+  it("should show error and do nothing if fields are empty", () => {
+    blogHelper.createBlog = jest.fn();
+    renderCreateBlogContainer();
+    fireEvent.change(screen.getByLabelText("Date"), {
+      target: { value: "" },
+    });
+    fireEvent.click(screen.getByText("Create Blog"));
+    screen.getByText("Please enter a title");
+    screen.getByText("Please enter a valid date");
+    screen.getByText("A blog must have at least one tag");
+    expect(blogHelper.createBlog).not.toHaveBeenCalled();
+  });
+
+  it("should call createBlog", async () => {
+    blogHelper.createBlog = jest.fn().mockResolvedValue();
+    const history = { push: jest.fn() };
+    const setBlogTags = jest.fn();
+
+    renderCreateBlogContainer(tags, history, setBlogTags);
+    fireEvent.change(screen.getByLabelText("Title"), {
+      target: { value: "New Title" },
+    });
+    fireEvent.click(screen.getByText("Create Blog"));
+
+    expect(blogHelper.createBlog).toHaveBeenCalledWith(
+      { title: "New Title", date: today, text: "" },
+      tags
+    );
+    // eslint-disable-next-line testing-library/await-async-utils
+    waitFor(() => {
+      expect(history.push).toHaveBeenCalledWith("/");
+      expect(setBlogTags).toHaveBeenCalledWith([]);
+    });
   });
 });

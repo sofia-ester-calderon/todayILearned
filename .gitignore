@@ -40,3 +40,4 @@ amplifytools.xcconfig
 
 /.vscode
 .eslintcache
+.eslintignore

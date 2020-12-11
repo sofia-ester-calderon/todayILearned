@@ -14,6 +14,7 @@ const BlogForm = ({
   onConfigureTags,
   hideEditor,
   tags = [],
+  onCreateBlog,
 }) => {
   return (
     <div className="d-flex justify-content-center">
@@ -38,6 +39,11 @@ const BlogForm = ({
             <TagList tags={tags} />
             <br />
           </div>
+          {errors.tags && (
+            <div role="alert" className="text-danger">
+              {errors.tags}
+            </div>
+          )}
           <div className="row">
             <button
               onClick={onConfigureTags}
@@ -58,6 +64,9 @@ const BlogForm = ({
             />
           </span>
         )}
+        <button className="btn btn-dark" onClick={onCreateBlog}>
+          Create Blog
+        </button>
       </form>
     </div>
   );

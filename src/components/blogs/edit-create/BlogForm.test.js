@@ -65,3 +65,17 @@ it("should show tags", () => {
   screen.getByText("Java");
   screen.getByText("React");
 });
+
+it("should display error messages", () => {
+  renderBlogForm({
+    errors: {
+      title: "title error message",
+      date: "date error message",
+      tags: "tag error message",
+    },
+  });
+
+  screen.getByText("title error message");
+  screen.getByText("date error message");
+  screen.getByText("tag error message");
+});
