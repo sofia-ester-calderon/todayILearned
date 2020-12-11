@@ -15,6 +15,7 @@ const BlogForm = ({
   hideEditor,
   tags = [],
   onCreateBlog,
+  onCancel,
 }) => {
   return (
     <div className="d-flex justify-content-center">
@@ -66,6 +67,9 @@ const BlogForm = ({
         )}
         <button className="btn btn-dark" onClick={onCreateBlog}>
           Create Blog
+        </button>
+        <button className="btn btn-secondary ml-4" onClick={onCancel}>
+          Cancel
         </button>
       </form>
     </div>

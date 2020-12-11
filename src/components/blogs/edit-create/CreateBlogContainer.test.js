@@ -117,3 +117,13 @@ describe("given a blog is created", () => {
     });
   });
 });
+
+it("should return directly to main page", () => {
+  const history = { push: jest.fn() };
+  const setBlogTags = jest.fn();
+  renderCreateBlogContainer(tags, history, setBlogTags);
+
+  fireEvent.click(screen.getByText("Cancel"));
+  expect(history.push).toHaveBeenCalledWith("/");
+  expect(setBlogTags).toHaveBeenCalledWith([]);
+});

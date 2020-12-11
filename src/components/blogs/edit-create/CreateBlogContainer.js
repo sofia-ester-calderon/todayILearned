@@ -81,6 +81,12 @@ const CreateBlogContainer = (props) => {
     return Object.keys(blogErrors).length === 0;
   }
 
+  function onCancel(event) {
+    event.preventDefault();
+    tagContext.setBlogTags([]);
+    props.history.push("/");
+  }
+
   return (
     <div className="m-5">
       <h1 className="mb-4">Create Blog Post</h1>
@@ -95,6 +101,7 @@ const CreateBlogContainer = (props) => {
         tags={tagContext.blogTags}
         onCreateBlog={onCreateBlog}
         errors={errors}
+        onCancel={onCancel}
       />
       <Modal isOpen={showTagModal}>
         <TagConfigurerContainer onClose={onCloseModal} error={errors.tags} />
