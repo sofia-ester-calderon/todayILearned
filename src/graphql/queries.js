@@ -53,10 +53,14 @@ export const getBlog = /* GraphQL */ `
       tags {
         items {
           id
+          blogID
           tagID
-          tag {
-            name
-          }
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+          owner
         }
         nextToken
         startedAt
@@ -84,23 +88,49 @@ export const listBlogs = /* GraphQL */ `
         updatedAt
         owner
         tags {
-          items {
-            id
-            blogID
-            tagID
-            _version
-            _deleted
-            _lastChangedAt
-            createdAt
-            updatedAt
-            owner
-          }
           nextToken
           startedAt
         }
       }
       nextToken
       startedAt
+    }
+  }
+`;
+export const searchBlogs = /* GraphQL */ `
+  query SearchBlogs(
+    $filter: SearchableBlogFilterInput
+    $sort: SearchableBlogSortInput
+    $limit: Int
+    $nextToken: String
+    $from: Int
+  ) {
+    searchBlogs(
+      filter: $filter
+      sort: $sort
+      limit: $limit
+      nextToken: $nextToken
+      from: $from
+    ) {
+      items {
+        id
+        title
+        text
+        date
+        image
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        owner
+        tags {
+          nextToken
+          startedAt
+        }
+      }
+      nextToken
+      total
     }
   }
 `;
@@ -154,6 +184,39 @@ export const getTag = /* GraphQL */ `
         nextToken
         startedAt
       }
+    }
+  }
+`;
+export const searchTags = /* GraphQL */ `
+  query SearchTags(
+    $filter: SearchableTagFilterInput
+    $sort: SearchableTagSortInput
+    $limit: Int
+    $nextToken: String
+    $from: Int
+  ) {
+    searchTags(
+      filter: $filter
+      sort: $sort
+      limit: $limit
+      nextToken: $nextToken
+      from: $from
+    ) {
+      items {
+        id
+        name
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        blogs {
+          nextToken
+          startedAt
+        }
+      }
+      nextToken
+      total
     }
   }
 `;

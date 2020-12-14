@@ -64,6 +64,42 @@ export const listBlogs = /* GraphQL */ `
     }
   }
 `;
+export const searchBlogs = /* GraphQL */ `
+  query SearchBlogs(
+    $filter: SearchableBlogFilterInput
+    $sort: SearchableBlogSortInput
+    $limit: Int
+    $nextToken: String
+    $from: Int
+  ) {
+    searchBlogs(
+      filter: $filter
+      sort: $sort
+      limit: $limit
+      nextToken: $nextToken
+      from: $from
+    ) {
+      items {
+        id
+        title
+        text
+        date
+        image
+        _version
+        _deleted
+        createdAt
+        updatedAt
+        owner
+        tags {
+          nextToken
+          startedAt
+        }
+      }
+      nextToken
+      total
+    }
+  }
+`;
 export const listTags = /* GraphQL */ `
   query ListTags(
     $filter: ModelTagFilterInput

@@ -1,4 +1,4 @@
-type Blog @model @auth(rules: [{allow: owner, operations: [create, delete, update]}]) {
+type Blog @model @auth(rules: [{allow: owner, operations: [create, delete, update]}]) @searchable {
   id: ID!
   title: String!
   text: String!
@@ -7,7 +7,7 @@ type Blog @model @auth(rules: [{allow: owner, operations: [create, delete, updat
   tags: [BlogTag!] @connection(keyName: "byBlog", fields: ["id"])
 }
 
-type Tag @model @auth(rules: [{allow: private}]) {
+type Tag @model @auth(rules: [{allow: private}]) @searchable {
   id: ID!
   name: String!
   blogs: [BlogTag] @connection(keyName: "byTag", fields: ["id"])
