@@ -83,11 +83,15 @@ export const schema = {
                                 ]
                             },
                             {
-                                "allow": "public",
+                                "groupClaim": "cognito:groups",
+                                "provider": "userPools",
+                                "allow": "groups",
+                                "groups": [
+                                    "public"
+                                ],
                                 "operations": [
                                     "read"
-                                ],
-                                "provider": "apiKey"
+                                ]
                             }
                         ]
                     }
@@ -177,11 +181,15 @@ export const schema = {
                                 ]
                             },
                             {
-                                "allow": "public",
+                                "groupClaim": "cognito:groups",
+                                "provider": "userPools",
+                                "allow": "groups",
+                                "groups": [
+                                    "public"
+                                ],
                                 "operations": [
                                     "read"
-                                ],
-                                "provider": "apiKey"
+                                ]
                             }
                         ]
                     }
@@ -250,11 +258,15 @@ export const schema = {
                                 ]
                             },
                             {
-                                "allow": "public",
+                                "groupClaim": "cognito:groups",
+                                "provider": "userPools",
+                                "allow": "groups",
+                                "groups": [
+                                    "public"
+                                ],
                                 "operations": [
                                     "read"
-                                ],
-                                "provider": "apiKey"
+                                ]
                             }
                         ]
                     }

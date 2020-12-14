@@ -9,11 +9,6 @@ export const onCreateBlog = /* GraphQL */ `
       text
       date
       image
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
       tags {
         items {
           id
@@ -28,6 +23,11 @@ export const onCreateBlog = /* GraphQL */ `
         nextToken
         startedAt
       }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -39,11 +39,6 @@ export const onUpdateBlog = /* GraphQL */ `
       text
       date
       image
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
       tags {
         items {
           id
@@ -58,6 +53,11 @@ export const onUpdateBlog = /* GraphQL */ `
         nextToken
         startedAt
       }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -69,11 +69,6 @@ export const onDeleteBlog = /* GraphQL */ `
       text
       date
       image
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
       tags {
         items {
           id
@@ -88,6 +83,11 @@ export const onDeleteBlog = /* GraphQL */ `
         nextToken
         startedAt
       }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -96,11 +96,6 @@ export const onCreateTag = /* GraphQL */ `
     onCreateTag {
       id
       name
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
       blogs {
         items {
           id
@@ -115,6 +110,11 @@ export const onCreateTag = /* GraphQL */ `
         nextToken
         startedAt
       }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -123,11 +123,6 @@ export const onUpdateTag = /* GraphQL */ `
     onUpdateTag {
       id
       name
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
       blogs {
         items {
           id
@@ -142,6 +137,11 @@ export const onUpdateTag = /* GraphQL */ `
         nextToken
         startedAt
       }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -150,11 +150,6 @@ export const onDeleteTag = /* GraphQL */ `
     onDeleteTag {
       id
       name
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
       blogs {
         items {
           id
@@ -169,6 +164,11 @@ export const onDeleteTag = /* GraphQL */ `
         nextToken
         startedAt
       }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -178,40 +178,40 @@ export const onCreateBlogTag = /* GraphQL */ `
       id
       blogID
       tagID
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
       blog {
         id
         title
         text
         date
         image
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
         tags {
           nextToken
           startedAt
         }
-      }
-      tag {
-        id
-        name
         _version
         _deleted
         _lastChangedAt
         createdAt
         updatedAt
+      }
+      tag {
+        id
+        name
         blogs {
           nextToken
           startedAt
         }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
       }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -221,40 +221,40 @@ export const onUpdateBlogTag = /* GraphQL */ `
       id
       blogID
       tagID
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
       blog {
         id
         title
         text
         date
         image
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
         tags {
           nextToken
           startedAt
         }
-      }
-      tag {
-        id
-        name
         _version
         _deleted
         _lastChangedAt
         createdAt
         updatedAt
+      }
+      tag {
+        id
+        name
         blogs {
           nextToken
           startedAt
         }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
       }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -264,40 +264,40 @@ export const onDeleteBlogTag = /* GraphQL */ `
       id
       blogID
       tagID
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
       blog {
         id
         title
         text
         date
         image
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
         tags {
           nextToken
           startedAt
         }
-      }
-      tag {
-        id
-        name
         _version
         _deleted
         _lastChangedAt
         createdAt
         updatedAt
+      }
+      tag {
+        id
+        name
         blogs {
           nextToken
           startedAt
         }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
       }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
     }
   }
 `;

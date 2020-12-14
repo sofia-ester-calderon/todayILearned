@@ -2,7 +2,7 @@ type Blog
 @model 
 @auth(rules: [
       {allow: groups, groups: ["admin"], operations: [create, update, delete, read]},
-      { allow: public, operations: [read], provider: apiKey }
+      {allow: groups, groups: ["public"], operations: [read]},
     ]) 
 @searchable 
 {
@@ -18,7 +18,7 @@ type Tag
 @model 
 @auth(rules: [
       {allow: groups, groups: ["admin"], operations: [create, update, delete, read]},
-      { allow: public, operations: [read], provider: apiKey }
+      {allow: groups, groups: ["public"], operations: [read]},
     ]) 
 @searchable
 {
@@ -33,7 +33,7 @@ type BlogTag
 @key(name: "byTag", fields: ["tagID", "blogID"]) 
 @auth(rules: [
       {allow: groups, groups: ["admin"], operations: [create, update, delete, read]},
-      { allow: public, operations: [read], provider: apiKey }
+      {allow: groups, groups: ["public"], operations: [read]},
     ]) 
 {
   id: ID!
