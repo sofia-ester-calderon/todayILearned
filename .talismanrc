@@ -2,9 +2,11 @@ fileignoreconfig:
 - filename: .eslintcache
   checksum: 8457eb327098e6ba62130fa70b7a8678597353413304108bbe89309e617edd9c
 - filename: amplify/backend/api/todayilearned/schema.graphql
-  checksum: 8779d651d886c992ca0de5c5ae9ff0e05308c8792a0f1e6742898d8540807f9b
+  checksum: 84ba6847b03fbf10426e17c440f35037bc6d115f020841a214471dda4789e58d
 - filename: amplify/backend/auth/todayilearned1524cfb0/todayilearned1524cfb0-cloudformation-template.yml
   checksum: 57e94ab4f0b5cfdca5173dd13f16adfdbd30c8cca663f048a74dc49f0a0ead3b
+- filename: amplify/backend/auth/todayilearnedbe0d03e8/todayilearnedbe0d03e8-cloudformation-template.yml
+  checksum: 4fe7aacdd5528ddd96a30e6781b8739dbed593886465c80eb3ed5f01d1a20a3d
 - filename: amplify/backend/auth/userPoolGroups/template.json
   checksum: 1d71ef13b25ee37733cf8cf10a20f69a20563b79b08a4236684bc1bb8f019b3d
 - filename: report.20201209.151127.69881.0.001.json
@@ -26,6 +28,6 @@ fileignoreconfig:
 - filename: src/components/tags/TagOverview.js
   checksum: 36428357ab1cdc531aa4f80ef058ed20cd90278982138a97157282b1988b9406
 - filename: src/models/schema.js
-  checksum: 38707a08cf959db4fcbd589a39d8a430ee00544c556fa411a28e2ece64a481fe
+  checksum: 654f1900d1ca72607fe07e1e791b3bb5c09731b609a3213c4ff70e391285104b
 - filename: yarn.lock
   checksum: ef5ca5c7838de311952ccaf8bff01fc6c07d8030177f41de47fd674db4320727
