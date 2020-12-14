@@ -12,6 +12,11 @@ export const createBlog = /* GraphQL */ `
       text
       date
       image
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
       tags {
         items {
           id
@@ -22,16 +27,10 @@ export const createBlog = /* GraphQL */ `
           _lastChangedAt
           createdAt
           updatedAt
-          owner
         }
         nextToken
         startedAt
       }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -46,6 +45,11 @@ export const updateBlog = /* GraphQL */ `
       text
       date
       image
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
       tags {
         items {
           id
@@ -56,16 +60,10 @@ export const updateBlog = /* GraphQL */ `
           _lastChangedAt
           createdAt
           updatedAt
-          owner
         }
         nextToken
         startedAt
       }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -80,6 +78,11 @@ export const deleteBlog = /* GraphQL */ `
       text
       date
       image
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
       tags {
         items {
           id
@@ -90,16 +93,10 @@ export const deleteBlog = /* GraphQL */ `
           _lastChangedAt
           createdAt
           updatedAt
-          owner
         }
         nextToken
         startedAt
       }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -111,6 +108,11 @@ export const createTag = /* GraphQL */ `
     createTag(input: $input, condition: $condition) {
       id
       name
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
       blogs {
         items {
           id
@@ -121,16 +123,10 @@ export const createTag = /* GraphQL */ `
           _lastChangedAt
           createdAt
           updatedAt
-          owner
         }
         nextToken
         startedAt
       }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -142,6 +138,11 @@ export const updateTag = /* GraphQL */ `
     updateTag(input: $input, condition: $condition) {
       id
       name
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
       blogs {
         items {
           id
@@ -152,16 +153,10 @@ export const updateTag = /* GraphQL */ `
           _lastChangedAt
           createdAt
           updatedAt
-          owner
         }
         nextToken
         startedAt
       }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -173,6 +168,11 @@ export const deleteTag = /* GraphQL */ `
     deleteTag(input: $input, condition: $condition) {
       id
       name
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
       blogs {
         items {
           id
@@ -183,16 +183,10 @@ export const deleteTag = /* GraphQL */ `
           _lastChangedAt
           createdAt
           updatedAt
-          owner
         }
         nextToken
         startedAt
       }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -205,41 +199,40 @@ export const createBlogTag = /* GraphQL */ `
       id
       blogID
       tagID
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
       blog {
         id
         title
         text
         date
         image
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
         tags {
           nextToken
           startedAt
         }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
       }
       tag {
         id
         name
-        blogs {
-          nextToken
-          startedAt
-        }
         _version
         _deleted
         _lastChangedAt
         createdAt
         updatedAt
+        blogs {
+          nextToken
+          startedAt
+        }
       }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-      owner
     }
   }
 `;
@@ -252,41 +245,40 @@ export const updateBlogTag = /* GraphQL */ `
       id
       blogID
       tagID
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
       blog {
         id
         title
         text
         date
         image
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
         tags {
           nextToken
           startedAt
         }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
       }
       tag {
         id
         name
-        blogs {
-          nextToken
-          startedAt
-        }
         _version
         _deleted
         _lastChangedAt
         createdAt
         updatedAt
+        blogs {
+          nextToken
+          startedAt
+        }
       }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-      owner
     }
   }
 `;
@@ -299,41 +291,40 @@ export const deleteBlogTag = /* GraphQL */ `
       id
       blogID
       tagID
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
       blog {
         id
         title
         text
         date
         image
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
         tags {
           nextToken
           startedAt
         }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
       }
       tag {
         id
         name
-        blogs {
-          nextToken
-          startedAt
-        }
         _version
         _deleted
         _lastChangedAt
         createdAt
         updatedAt
+        blogs {
+          nextToken
+          startedAt
+        }
       }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-      owner
     }
   }
 `;

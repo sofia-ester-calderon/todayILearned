@@ -1,6 +1,11 @@
 type Blog 
 @model 
-@searchable {
+@auth(rules: [
+      {allow: groups, groups: ["admin"], operations: [create, update, delete, read]},
+      { allow: public, operations: [read], provider: apiKey }
+    ]) 
+@searchable 
+{
   id: ID!
   title: String!
   text: String!
@@ -9,13 +14,28 @@ type Blog
   tags: [BlogTag!] @connection(keyName: "byBlog", fields: ["id"])
 }
 
-type Tag @model @auth(rules: [{allow: private}]) @searchable {
+type Tag 
+@model 
+@auth(rules: [
+      {allow: groups, groups: ["admin"], operations: [create, update, delete, read]},
+      { allow: public, operations: [read], provider: apiKey }
+    ]) 
+@searchable
+{
   id: ID!
   name: String!
   blogs: [BlogTag] @connection(keyName: "byTag", fields: ["id"])
 }
 
-type BlogTag @model @key(name: "byBlog", fields: ["blogID", "tagID"]) @key(name: "byTag", fields: ["tagID", "blogID"]) @auth(rules: [{allow: owner, operations: [create, delete, update]}, {allow: private}]) {
+type BlogTag 
+@model 
+@key(name: "byBlog", fields: ["blogID", "tagID"]) 
+@key(name: "byTag", fields: ["tagID", "blogID"]) 
+@auth(rules: [
+      {allow: groups, groups: ["admin"], operations: [create, update, delete, read]},
+      { allow: public, operations: [read], provider: apiKey }
+    ]) 
+{
   id: ID!
   blogID: ID!
   tagID: ID!

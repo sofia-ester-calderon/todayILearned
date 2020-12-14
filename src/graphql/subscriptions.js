@@ -9,6 +9,11 @@ export const onCreateBlog = /* GraphQL */ `
       text
       date
       image
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
       tags {
         items {
           id
@@ -19,16 +24,10 @@ export const onCreateBlog = /* GraphQL */ `
           _lastChangedAt
           createdAt
           updatedAt
-          owner
         }
         nextToken
         startedAt
       }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -40,6 +39,11 @@ export const onUpdateBlog = /* GraphQL */ `
       text
       date
       image
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
       tags {
         items {
           id
@@ -50,16 +54,10 @@ export const onUpdateBlog = /* GraphQL */ `
           _lastChangedAt
           createdAt
           updatedAt
-          owner
         }
         nextToken
         startedAt
       }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -71,6 +69,11 @@ export const onDeleteBlog = /* GraphQL */ `
       text
       date
       image
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
       tags {
         items {
           id
@@ -81,16 +84,10 @@ export const onDeleteBlog = /* GraphQL */ `
           _lastChangedAt
           createdAt
           updatedAt
-          owner
         }
         nextToken
         startedAt
       }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -99,6 +96,11 @@ export const onCreateTag = /* GraphQL */ `
     onCreateTag {
       id
       name
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
       blogs {
         items {
           id
@@ -109,16 +111,10 @@ export const onCreateTag = /* GraphQL */ `
           _lastChangedAt
           createdAt
           updatedAt
-          owner
         }
         nextToken
         startedAt
       }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -127,6 +123,11 @@ export const onUpdateTag = /* GraphQL */ `
     onUpdateTag {
       id
       name
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
       blogs {
         items {
           id
@@ -137,16 +138,10 @@ export const onUpdateTag = /* GraphQL */ `
           _lastChangedAt
           createdAt
           updatedAt
-          owner
         }
         nextToken
         startedAt
       }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -155,6 +150,11 @@ export const onDeleteTag = /* GraphQL */ `
     onDeleteTag {
       id
       name
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
       blogs {
         items {
           id
@@ -165,16 +165,10 @@ export const onDeleteTag = /* GraphQL */ `
           _lastChangedAt
           createdAt
           updatedAt
-          owner
         }
         nextToken
         startedAt
       }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -184,41 +178,40 @@ export const onCreateBlogTag = /* GraphQL */ `
       id
       blogID
       tagID
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
       blog {
         id
         title
         text
         date
         image
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
         tags {
           nextToken
           startedAt
         }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
       }
       tag {
         id
         name
-        blogs {
-          nextToken
-          startedAt
-        }
         _version
         _deleted
         _lastChangedAt
         createdAt
         updatedAt
+        blogs {
+          nextToken
+          startedAt
+        }
       }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-      owner
     }
   }
 `;
@@ -228,41 +221,40 @@ export const onUpdateBlogTag = /* GraphQL */ `
       id
       blogID
       tagID
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
       blog {
         id
         title
         text
         date
         image
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
         tags {
           nextToken
           startedAt
         }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
       }
       tag {
         id
         name
-        blogs {
-          nextToken
-          startedAt
-        }
         _version
         _deleted
         _lastChangedAt
         createdAt
         updatedAt
+        blogs {
+          nextToken
+          startedAt
+        }
       }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-      owner
     }
   }
 `;
@@ -272,41 +264,40 @@ export const onDeleteBlogTag = /* GraphQL */ `
       id
       blogID
       tagID
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
       blog {
         id
         title
         text
         date
         image
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
         tags {
           nextToken
           startedAt
         }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
       }
       tag {
         id
         name
-        blogs {
-          nextToken
-          startedAt
-        }
         _version
         _deleted
         _lastChangedAt
         createdAt
         updatedAt
+        blogs {
+          nextToken
+          startedAt
+        }
       }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-      owner
     }
   }
 `;

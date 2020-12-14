@@ -19,7 +19,15 @@
               "userPoolId": "authtodayilearnedbe0d03e8"
             }
           },
-          "additionalAuthenticationProviders": []
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "API_KEY",
+              "apiKeyConfig": {
+                "apiKeyExpirationDays": 7,
+                "description": "todayilearned"
+              }
+            }
+          ]
         }
       }
     }
