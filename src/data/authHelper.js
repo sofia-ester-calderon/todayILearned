@@ -4,6 +4,10 @@ const login = async (username, password) => {
   return await Auth.signIn(username, password);
 };
 
-const authHelper = { login };
+const getCurrentUser = async () => {
+  return await Auth.currentAuthenticatedUser();
+};
+
+const authHelper = { login, getCurrentUser };
 
 export default authHelper;

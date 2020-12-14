@@ -5,9 +5,11 @@ import authHelper from "../../data/authHelper";
 import LoginContainer from "./LoginContainer";
 import { AdminContext } from "../../hooks/AdminState";
 
-function renderLoginContainer(history, adminMode, setAdminMode) {
+function renderLoginContainer(history, user, setUser) {
+  const actualUser = user ? user : { session: true, adminMode: false };
+
   render(
-    <AdminContext.Provider value={{ adminMode, setAdminMode }}>
+    <AdminContext.Provider value={{ user: actualUser, setUser }}>
       <LoginContainer history={history} />
     </AdminContext.Provider>
   );
@@ -37,7 +39,7 @@ describe("given the page is rendered", () => {
 
 describe("given the user is already logged in", () => {
   it("should display message and not login form", () => {
-    renderLoginContainer(null, true);
+    renderLoginContainer(null, { session: true, adminMode: true });
 
     screen.getByText("You are already logged in");
     expect(screen.queryByText("Login")).not.toBeInTheDocument();
@@ -87,9 +89,13 @@ describe("given the login button is clicked", () => {
 
   it("should reroute to all blogs if login suucessful", async () => {
     const history = { push: jest.fn() };
-    const setAdminMode = jest.fn();
+    const setUser = jest.fn();
     authHelper.login = jest.fn().mockResolvedValue({});
-    renderLoginContainer(history, false, setAdminMode);
+    renderLoginContainer(
+      history,
+      { session: true, setAdminMode: false },
+      setUser
+    );
 
     enterLoginCredentials();
     fireEvent.click(screen.getByText("Login"));
@@ -98,7 +104,7 @@ describe("given the login button is clicked", () => {
     waitFor(() => {
       expect(authHelper.login).toHaveBeenCalledWith("email@email.com", "1234");
       expect(history.push).toHaveBeenCalledWith("/");
-      expect(setAdminMode).toHaveBeenCalledWith(true);
+      expect(setUser).toHaveBeenCalledWith({ session: true, adminMode: true });
     });
   });
 });

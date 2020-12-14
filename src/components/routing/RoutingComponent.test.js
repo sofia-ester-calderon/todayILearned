@@ -8,9 +8,10 @@ import { BlogTagsProvider } from "../../hooks/BlogTags";
 
 const history = createMemoryHistory();
 
-function renderRoutingComponent(adminMode) {
+function renderRoutingComponent(user) {
+  const actualUser = user ? user : { session: true, adminMode: false };
   render(
-    <AdminContext.Provider value={{ adminMode, setAdminMode: jest.fn() }}>
+    <AdminContext.Provider value={{ user: actualUser, setUser: jest.fn() }}>
       <BlogTagsProvider>
         <Router history={history}>
           <RoutingComponent />
@@ -44,7 +45,7 @@ it("should render the blog list if wrong url is passed", () => {
 });
 
 it("should render the edit blog page if url is /edit/{id}", () => {
-  renderRoutingComponent(true);
+  renderRoutingComponent({ session: true, adminMode: true });
   history.push("edit/12345");
   screen.getByText("Edit Blog");
 });
@@ -56,7 +57,7 @@ it("should render blog list if url is /edit/{id} but user is not authenitcated",
 });
 
 it("should render the create blog page if url is /new", () => {
-  renderRoutingComponent(true);
+  renderRoutingComponent({ session: true, adminMode: true });
   history.push("new");
   screen.getByText("Create Blog Post");
 });

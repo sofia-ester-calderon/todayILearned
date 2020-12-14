@@ -26,6 +26,8 @@ yarn-error.log*
 .eslintcache
 .eslintignore
 
+publicuser.json
+
 #amplify
 amplify/\#current-cloud-backend
 amplify/.config/local-*

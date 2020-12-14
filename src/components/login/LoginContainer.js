@@ -29,7 +29,7 @@ const LoginContainer = (props) => {
         .login(loginCredentials.username, loginCredentials.password)
         .then((user) => {
           console.log("logged in", user);
-          adminState.setAdminMode(true);
+          adminState.setUser({ session: true, adminMode: true });
           props.history.push("/");
         })
         .catch((err) => {
@@ -55,7 +55,7 @@ const LoginContainer = (props) => {
   return (
     <div className="m-5">
       <h1 className="mb-4">Admin Login</h1>
-      {adminState.adminMode ? (
+      {adminState.user.adminMode ? (
         <p>You are already logged in</p>
       ) : (
         <LoginForm
