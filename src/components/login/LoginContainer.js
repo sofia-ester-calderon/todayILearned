@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import authHelper from "../../data/authHelper";
-import { useAdminContext } from "../../hooks/AdminState";
+import { useUserContext } from "../../hooks/UserState";
 import LoginForm from "./LoginForm";
 
 const LoginContainer = (props) => {
-  const adminState = useAdminContext();
+  const adminState = useUserContext();
 
   const [loginCredentials, setLoginCredentials] = useState({
     username: "",

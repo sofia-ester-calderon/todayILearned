@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
-import { useAdminContext } from "../../hooks/AdminState";
+import { useUserContext } from "../../hooks/UserState";
 import AboutMeContainer from "../aboutme/AboutMeContainer";
 import AllBlogsContainer from "../blogs/blogList/AllBlogsContainer";
 import EditBlogContainer from "../blogs/edit-create/EditBlogContainer";
@@ -9,7 +9,7 @@ import GuardedRoute from "./GuardedRoute";
 import CreateBlogContainer from "../blogs/edit-create/CreateBlogContainer";
 
 const RoutingComponent = () => {
-  const adminContext = useAdminContext();
+  const adminContext = useUserContext();
 
   return (
     <Switch>

@@ -3,7 +3,7 @@ import { render, screen } from "@testing-library/react";
 import { Router } from "react-router-dom";
 import RoutingComponent from "./RoutingComponent";
 import { createMemoryHistory } from "history";
-import { AdminContext } from "../../hooks/AdminState";
+import { UserContext } from "../../hooks/UserState";
 import { BlogTagsProvider } from "../../hooks/BlogTags";
 
 const history = createMemoryHistory();
@@ -11,13 +11,13 @@ const history = createMemoryHistory();
 function renderRoutingComponent(user) {
   const actualUser = user ? user : { session: true, adminMode: false };
   render(
-    <AdminContext.Provider value={{ user: actualUser, setUser: jest.fn() }}>
+    <UserContext.Provider value={{ user: actualUser, setUser: jest.fn() }}>
       <BlogTagsProvider>
         <Router history={history}>
           <RoutingComponent />
         </Router>
       </BlogTagsProvider>
-    </AdminContext.Provider>
+    </UserContext.Provider>
   );
 }
 

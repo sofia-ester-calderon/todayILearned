@@ -2,9 +2,9 @@ import React, { useContext, useEffect, useState } from "react";
 import authHelper from "../data/authHelper";
 import publicUser from "./publicuser.json";
 
-export const AdminContext = React.createContext();
+export const UserContext = React.createContext();
 
-const AdminProvider = ({ children }) => {
+const UserProvider = ({ children }) => {
   const [user, setUser] = useState({ session: false, adminMode: false });
 
   useEffect(() => {
@@ -43,18 +43,18 @@ const AdminProvider = ({ children }) => {
   }
 
   return (
-    <AdminContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider value={{ user, setUser }}>
       {children}
-    </AdminContext.Provider>
+    </UserContext.Provider>
   );
 };
 
-const useAdminContext = () => {
-  const context = useContext(AdminContext);
+const useUserContext = () => {
+  const context = useContext(UserContext);
   if (context === undefined) {
-    throw new Error("admin context can only be used inside AdminProvider");
+    throw new Error("admin context can only be used inside UserProvider");
   }
   return context;
 };
 
-export { AdminProvider, useAdminContext };
+export { UserProvider, useUserContext };

@@ -1,15 +1,15 @@
 import RoutingComponent from "./components/routing/RoutingComponent";
-import { AdminProvider } from "./hooks/AdminState";
+import { UserProvider } from "./hooks/UserState";
 import { BlogTagsProvider } from "./hooks/BlogTags";
 
 function App() {
   return (
     <div style={{ textAlign: "center" }}>
-      <AdminProvider>
+      <UserProvider>
         <BlogTagsProvider>
           <RoutingComponent />
         </BlogTagsProvider>
-      </AdminProvider>
+      </UserProvider>
     </div>
   );
 }

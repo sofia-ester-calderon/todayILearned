@@ -3,15 +3,15 @@ import React from "react";
 
 import authHelper from "../../data/authHelper";
 import LoginContainer from "./LoginContainer";
-import { AdminContext } from "../../hooks/AdminState";
+import { UserContext } from "../../hooks/UserState";
 
 function renderLoginContainer(history, user, setUser) {
   const actualUser = user ? user : { session: true, adminMode: false };
 
   render(
-    <AdminContext.Provider value={{ user: actualUser, setUser }}>
+    <UserContext.Provider value={{ user: actualUser, setUser }}>
       <LoginContainer history={history} />
-    </AdminContext.Provider>
+    </UserContext.Provider>
   );
 }
 
