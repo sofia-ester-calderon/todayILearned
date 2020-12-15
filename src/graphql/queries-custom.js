@@ -88,6 +88,14 @@ export const searchBlogs = /* GraphQL */ `
         createdAt
         updatedAt
         tags {
+          items {
+            id
+            tagID
+            tag {
+              name
+              id
+            }
+          }
           nextToken
           startedAt
         }

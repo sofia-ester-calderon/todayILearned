@@ -1,5 +1,6 @@
-import { API } from "aws-amplify";
+import { API, graphqlOperation } from "aws-amplify";
 import { listTags } from "../graphql/queries";
+import { searchBlogs, listBlogTags } from "../graphql/queries-custom";
 import {
   createTag as createTagApi,
   createBlog as createBlogApi,
@@ -44,20 +45,60 @@ const createBlog = async (blogData, tags) => {
   });
 };
 
-const blogHelper = { fetchTags, createTag, createBlog };
+const fetchBlogs = async (filter, nextToken) => {
+  const blogs = await API.graphql(
+    graphqlOperation(searchBlogs, {
+      limit: 5,
+      nextToken,
+      filter,
+      sort: {
+        direction: "desc",
+        field: "date",
+      },
+    })
+  );
+  return blogs.data.searchBlogs;
+};
+
+const fetchBlogsFotTags = async () => {
+  // let filterBlogTags = {
+  //   tagID: { eq: "b9d9e410-3b2c-4fe5-ad8d-b097ce818b52" },
+  // };
+
+  let filterBlogTags = {
+    and: [
+      {
+        tagID: { eq: "b9d9e410-3b2c-4fe5-ad8d-b097ce818b52" },
+      },
+      {
+        tagID: { eq: "0a64177b-1444-407e-917d-8dd6de982b1a" },
+      },
+    ],
+  };
+
+  // find blogs for tagID
+  const blogTagsFromApi = await API.graphql(
+    graphqlOperation(listBlogTags, { limit: 10, filter: filterBlogTags })
+  );
+
+  console.log("blogTag Java: ", blogTagsFromApi);
+};
+
+const blogHelper = { fetchTags, createTag, createBlog, fetchBlogs };
 
 export default blogHelper;
 
-// console.log("created join tabe: ", tableJoin);
-//     const blogsFromApi = await API.graphql({ query: listBlogs });
-//     console.log("fetched blogs: ", blogsFromApi);
-//     const tagsFromApi = await API.graphql({ query: listTags });
-//     console.log("fetched tags: ", tagsFromApi);
-//     const joinTableFromApi = await API.graphql({ query: listBlogTags });
-//     console.log("fetched table join: ", joinTableFromApi);
-//     console.log("blog tags?", blogsFromApi.data.listBlogs.items[0].tags);
 //     const getBlog1 = await API.graphql({
 //       query: getBlog,
 //       variables: { id: "7e0c3d80-da0e-452b-878e-a8c59b873f5a" },
 //     });
 //     console.log("blog", getBlog1);
+
+// async function deleteBlog({ id }) {
+//   const newNotesArray = blogs.filter((note) => note.id !== id);
+//   setBlogs(newNotesArray);
+//   await API.graphql({
+//     query: deleteBlogGraphQL,
+//     variables: { input: { id } },
+//   });
+// }
