@@ -17,6 +17,34 @@ const BlogForm = ({
   onCreateBlog,
   onCancel,
 }) => {
+  const toolbar = {
+    options: [
+      "inline",
+      "blockType",
+      "fontSize",
+      "fontFamily",
+      "list",
+      "textAlign",
+      "colorPicker",
+      "link",
+      "embedded",
+      "image",
+    ],
+    blockType: {
+      inDropdown: true,
+      options: ["Normal", "H3", "H4", "H5", "H6", "Blockquote", "Code"],
+    },
+    fontSize: {
+      options: [10, 11, 12, 14, 16, 18, 24],
+    },
+    fontFamily: {
+      options: ["Arial", "Courier New"],
+    },
+    textAlign: {
+      options: ["left", "center", "right"],
+    },
+  };
+
   return (
     <div className="d-flex justify-content-center">
       <form className="w-50">
@@ -62,6 +90,7 @@ const BlogForm = ({
             <Editor
               editorState={editorState}
               onEditorStateChange={onEditorChange}
+              toolbar={toolbar}
             />
           </span>
         )}

@@ -48,7 +48,7 @@ const createBlog = async (blogData, tags) => {
 const fetchBlogs = async (filter, nextToken) => {
   const blogs = await API.graphql(
     graphqlOperation(searchBlogs, {
-      limit: 5,
+      limit: 8,
       nextToken,
       filter,
       sort: {
@@ -61,10 +61,6 @@ const fetchBlogs = async (filter, nextToken) => {
 };
 
 const fetchBlogsFotTags = async () => {
-  // let filterBlogTags = {
-  //   tagID: { eq: "b9d9e410-3b2c-4fe5-ad8d-b097ce818b52" },
-  // };
-
   let filterBlogTags = {
     and: [
       {
@@ -82,6 +78,27 @@ const fetchBlogsFotTags = async () => {
   );
 
   console.log("blogTag Java: ", blogTagsFromApi);
+};
+
+const filterBlogs = async () => {
+  let filter = { date: { gt: "2020-12-07" } };
+  const blogsFromAuthHelperNT = await blogHelper.fetchBlogs(
+    null,
+    "1607040000000"
+  );
+  console.log("from auth helper with next token: ", blogsFromAuthHelperNT);
+
+  const blogsFromAuthHelperFilter = await blogHelper.fetchBlogs(filter);
+  console.log("from auth helper with filter: ", blogsFromAuthHelperFilter);
+
+  const blogsFromAuthHelperFilterNT = await blogHelper.fetchBlogs(
+    filter,
+    "1607644800000"
+  );
+  console.log(
+    "from auth helper with filter and next token: ",
+    blogsFromAuthHelperFilterNT
+  );
 };
 
 const blogHelper = { fetchTags, createTag, createBlog, fetchBlogs };

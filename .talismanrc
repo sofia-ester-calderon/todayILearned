@@ -13,6 +13,10 @@ fileignoreconfig:
   checksum: 7c2bba585d8e0cab33405a529fe3098f1caff51cff5c95e7df7a0cc07b44c56f
 - filename: src/App.js
   checksum: 768862bc88fbdf4856bf0b81f9dc3c6aa32ecf97cdd03d3108d17b572f9fef87
+- filename: src/components/blogs/blogList/BlogList.js
+  checksum: 91363451eb8321d8ddaef1d31b0566491d430b1beadc8ca1f173f55027046355
+- filename: src/components/blogs/blogList/BlogView.js
+  checksum: f0e3e7a8827c794d2dfe87152d54fb940bf21556c12039c0b36726f91bf15795
 - filename: src/components/blogs/edit-create/BlogForm.js
   checksum: 4909bb97ed003efffd1a63d2a9f66545cec775069af796e2da531fdf059a3252
 - filename: src/components/blogs/edit-create/EditBlogContainer.js
@@ -30,4 +34,4 @@ fileignoreconfig:
 - filename: src/models/schema.js
   checksum: 654f1900d1ca72607fe07e1e791b3bb5c09731b609a3213c4ff70e391285104b
 - filename: yarn.lock
-  checksum: c1e750b9fc7071c62ac1a5caa77ff86314a813ed8dd9d8dbb01022efd2f9b2c8
+  checksum: fdbc06e02269064cce7ba3f60f0947cfb5a86c2f89da51b74e0ca58e04f2e74d
