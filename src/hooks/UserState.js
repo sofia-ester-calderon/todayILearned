@@ -17,7 +17,6 @@ const UserProvider = ({ children }) => {
   async function establishSession() {
     try {
       const currentUser = await authHelper.getCurrentUser();
-      console.log("logged in with current session", currentUser);
       setUser({ session: true, adminMode: false });
       if (
         currentUser.signInUserSession.accessToken.payload[
@@ -32,12 +31,11 @@ const UserProvider = ({ children }) => {
     } catch (e) {
       //login with def user
       console.log("no current session, logging in with public user");
-      const user = await authHelper.login(
+      await authHelper.login(
         process.env.REACT_APP_PUBLIC_USER_USERNAME,
         process.env.REACT_APP_PUBLIC_USER_PASSWORD
       );
       setUser({ session: true, adminMode: false });
-      console.log("logged in", user);
     }
   }
 
