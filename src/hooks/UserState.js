@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import authHelper from "../data/authHelper";
-import publicUser from "./publicuser.json";
 
 export const UserContext = React.createContext();
 
@@ -34,8 +33,8 @@ const UserProvider = ({ children }) => {
       //login with def user
       console.log("no current session, logging in with public user");
       const user = await authHelper.login(
-        publicUser.username,
-        publicUser.password
+        process.env.REACT_APP_PUBLIC_USER_USERNAME,
+        process.env.REACT_APP_PUBLIC_USER_PASSWORD
       );
       setUser({ session: true, adminMode: false });
       console.log("logged in", user);
