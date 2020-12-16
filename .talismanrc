@@ -13,6 +13,8 @@ fileignoreconfig:
   checksum: 7c2bba585d8e0cab33405a529fe3098f1caff51cff5c95e7df7a0cc07b44c56f
 - filename: src/App.js
   checksum: 768862bc88fbdf4856bf0b81f9dc3c6aa32ecf97cdd03d3108d17b572f9fef87
+- filename: src/components/blogs/blogList/AllBlogsContainer.test.js
+  checksum: 901d6b1b7f550a2f24ca795b6888c4bb130f5fc66752b93f4c5c499b1edbba1d
 - filename: src/components/blogs/blogList/BlogList.js
   checksum: 91363451eb8321d8ddaef1d31b0566491d430b1beadc8ca1f173f55027046355
 - filename: src/components/blogs/blogList/BlogView.js

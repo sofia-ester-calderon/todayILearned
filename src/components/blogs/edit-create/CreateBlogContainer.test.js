@@ -3,6 +3,8 @@ import React from "react";
 import blogHelper from "../../../data/blogHelper";
 import { BlogTagsContext } from "../../../hooks/BlogTags";
 import CreateBlogContainer from "../edit-create/CreateBlogContainer";
+import { createMemoryHistory } from "history";
+import { Router } from "react-router-dom";
 
 var dateFormat = require("dateformat");
 const today = dateFormat(new Date(), "yyyy-mm-dd");
@@ -13,15 +15,18 @@ const tags = [
     name: "React",
   },
 ];
+const memoryHistory = createMemoryHistory();
 
-function renderCreateBlogContainer(blogTags, history, setBlogTags) {
+function renderCreateBlogContainer(blogTags, setBlogTags) {
   const actualBlogTags = blogTags ? blogTags : [];
   const actualSetter = setBlogTags ? setBlogTags : jest.fn();
   render(
     <BlogTagsContext.Provider
       value={{ blogTags: actualBlogTags, setBlogTags: actualSetter }}
     >
-      <CreateBlogContainer history={history} />
+      <Router history={memoryHistory}>
+        <CreateBlogContainer history={memoryHistory} />
+      </Router>
     </BlogTagsContext.Provider>
   );
 }
@@ -97,10 +102,9 @@ describe("given a blog is created", () => {
 
   it("should call createBlog", async () => {
     blogHelper.createBlog = jest.fn().mockResolvedValue();
-    const history = { push: jest.fn() };
     const setBlogTags = jest.fn();
 
-    renderCreateBlogContainer(tags, history, setBlogTags);
+    renderCreateBlogContainer(tags, setBlogTags);
     fireEvent.change(screen.getByLabelText("Title"), {
       target: { value: "New Title" },
     });
@@ -110,20 +114,16 @@ describe("given a blog is created", () => {
       { title: "New Title", date: today, text: "" },
       tags
     );
-    // eslint-disable-next-line testing-library/await-async-utils
-    waitFor(() => {
-      expect(history.push).toHaveBeenCalledWith("/");
-      expect(setBlogTags).toHaveBeenCalledWith([]);
-    });
+
+    expect(memoryHistory.location.pathname).toBe("/");
   });
 });
 
 it("should return directly to main page", () => {
-  const history = { push: jest.fn() };
   const setBlogTags = jest.fn();
-  renderCreateBlogContainer(tags, history, setBlogTags);
+  renderCreateBlogContainer(tags, setBlogTags);
 
   fireEvent.click(screen.getByText("Cancel"));
-  expect(history.push).toHaveBeenCalledWith("/");
+  expect(memoryHistory.location.pathname).toBe("/");
   expect(setBlogTags).toHaveBeenCalledWith([]);
 });

@@ -28,7 +28,6 @@ const LoginContainer = (props) => {
       authHelper
         .login(loginCredentials.username, loginCredentials.password)
         .then((user) => {
-          console.log("logged in", user);
           adminState.setUser({ session: true, adminMode: true });
           props.history.push("/");
         })

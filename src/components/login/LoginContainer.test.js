@@ -4,13 +4,21 @@ import React from "react";
 import authHelper from "../../data/authHelper";
 import LoginContainer from "./LoginContainer";
 import { UserContext } from "../../hooks/UserState";
+import { Router } from "react-router-dom";
+import { createMemoryHistory } from "history";
 
-function renderLoginContainer(history, user, setUser) {
+authHelper.getCurrentUser = jest.fn().mockRejectedValue();
+const memoryHistory = createMemoryHistory();
+const setUser = jest.fn();
+
+function renderLoginContainer(user) {
   const actualUser = user ? user : { session: true, adminMode: false };
 
   render(
-    <UserContext.Provider value={{ user: actualUser, setUser }}>
-      <LoginContainer history={history} />
+    <UserContext.Provider value={{ user: actualUser, setUser: setUser }}>
+      <Router history={memoryHistory}>
+        <LoginContainer history={memoryHistory} />
+      </Router>
     </UserContext.Provider>
   );
 }
@@ -39,7 +47,7 @@ describe("given the page is rendered", () => {
 
 describe("given the user is already logged in", () => {
   it("should display message and not login form", () => {
-    renderLoginContainer(null, { session: true, adminMode: true });
+    renderLoginContainer({ session: true, adminMode: true });
 
     screen.getByText("You are already logged in");
     expect(screen.queryByText("Login")).not.toBeInTheDocument();
@@ -88,23 +96,14 @@ describe("given the login button is clicked", () => {
   });
 
   it("should reroute to all blogs if login suucessful", async () => {
-    const history = { push: jest.fn() };
-    const setUser = jest.fn();
     authHelper.login = jest.fn().mockResolvedValue({});
-    renderLoginContainer(
-      history,
-      { session: true, setAdminMode: false },
-      setUser
-    );
+    renderLoginContainer({ session: true, setAdminMode: false });
 
     enterLoginCredentials();
     fireEvent.click(screen.getByText("Login"));
     screen.getByTestId("spinner");
-    // eslint-disable-next-line testing-library/await-async-utils
-    waitFor(() => {
-      expect(authHelper.login).toHaveBeenCalledWith("email@email.com", "1234");
-      expect(history.push).toHaveBeenCalledWith("/");
-      expect(setUser).toHaveBeenCalledWith({ session: true, adminMode: true });
-    });
+
+    expect(authHelper.login).toHaveBeenCalledWith("email@email.com", "1234");
+    expect(memoryHistory.location.pathname).toBe("/");
   });
 });

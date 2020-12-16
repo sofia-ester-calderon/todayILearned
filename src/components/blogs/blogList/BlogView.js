@@ -6,7 +6,6 @@ import styles from "./BlogList.module.css";
 var dateFormat = require("dateformat");
 
 const BlogView = ({ blog }) => {
-  //   console.log(new Date(blog.date));
   return (
     <li key={blog.id}>
       <div className={styles.date}>
