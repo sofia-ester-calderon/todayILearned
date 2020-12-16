@@ -46,7 +46,7 @@ const BlogForm = ({
   };
 
   return (
-    <div className="d-flex justify-content-center">
+    <div className="d-flex justify-content-center pt-5">
       <form className="w-50">
         <TextInput
           label="Title"
@@ -86,13 +86,13 @@ const BlogForm = ({
         <br />
 
         {!hideEditor && (
-          <span>
+          <div className="border mb-4 p-2">
             <Editor
               editorState={editorState}
               onEditorStateChange={onEditorChange}
               toolbar={toolbar}
             />
-          </span>
+          </div>
         )}
         <button className="btn btn-dark" onClick={onCreateBlog}>
           Create Blog

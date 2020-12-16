@@ -88,8 +88,7 @@ const CreateBlogContainer = (props) => {
   }
 
   return (
-    <div className="m-5">
-      <h1 className="mb-4">Create Blog Post</h1>
+    <>
       <BlogForm
         title={newBlog.title}
         date={newBlog.date}
@@ -106,7 +105,7 @@ const CreateBlogContainer = (props) => {
       <Modal isOpen={showTagModal}>
         <TagConfigurerContainer onClose={onCloseModal} error={errors.tags} />
       </Modal>
-    </div>
+    </>
   );
 };
 
