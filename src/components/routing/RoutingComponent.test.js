@@ -23,7 +23,7 @@ function renderRoutingComponent(user) {
 
 it("should render the blog list if rendered for the first time", () => {
   renderRoutingComponent();
-  screen.getByText("All Blogs");
+  screen.getByText("Today I Learned");
 });
 
 it("should render login page if url is /admin", () => {
@@ -41,7 +41,7 @@ it("should render the about me page if url is /aboutme", () => {
 it("should render the blog list if wrong url is passed", () => {
   renderRoutingComponent();
   history.push("/wrong");
-  screen.getByText("All Blogs");
+  screen.getByText("Today I Learned");
 });
 
 it("should render the edit blog page if url is /edit/{id}", () => {
@@ -53,7 +53,7 @@ it("should render the edit blog page if url is /edit/{id}", () => {
 it("should render blog list if url is /edit/{id} but user is not authenitcated", () => {
   renderRoutingComponent();
   history.push("edit/12345");
-  screen.getByText("All Blogs");
+  screen.getByText("Today I Learned");
 });
 
 it("should render the create blog page if url is /new", () => {
@@ -65,5 +65,5 @@ it("should render the create blog page if url is /new", () => {
 it("should render blog list if url is /new but user is not authenitcated", () => {
   renderRoutingComponent();
   history.push("new");
-  screen.getByText("All Blogs");
+  screen.getByText("Today I Learned");
 });

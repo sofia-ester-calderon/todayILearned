@@ -4,7 +4,7 @@ import blogHelper from "../../../data/blogHelper";
 import BlogList from "./BlogList";
 import { convertFromRaw, EditorState } from "draft-js";
 
-const AllBlogsContainer = (props) => {
+const AllBlogsContainer = () => {
   const adminState = useUserContext();
   const [session, setSession] = useState(false);
   const [blogs, setBlogs] = useState([]);
@@ -55,14 +55,9 @@ const AllBlogsContainer = (props) => {
     setNextToken(blogsFromApi.nextToken);
   }
 
-  function goToCreateBlog() {
-    props.history.push("/new");
-  }
-
   return (
     <>
-      <h1>All Blogs</h1>
-      <button onClick={goToCreateBlog}>Create Blog</button>
+      <h1>Today I Learned</h1>
       {blogs.length > 0 && (
         <BlogList blogs={blogs} fetchNext={fetchNext} nextToken={nextToken} />
       )}
