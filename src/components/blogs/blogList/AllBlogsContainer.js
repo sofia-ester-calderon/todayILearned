@@ -4,15 +4,15 @@ import blogHelper from "../../../data/blogHelper";
 import BlogList from "./BlogList";
 import { convertFromRaw, EditorState } from "draft-js";
 
-const AllBlogsContainer = () => {
-  const adminState = useUserContext();
+const AllBlogsContainer = (props) => {
+  const userContext = useUserContext();
   const [session, setSession] = useState(false);
   const [blogs, setBlogs] = useState([]);
   const [nextToken, setNextToken] = useState();
 
   useEffect(() => {
-    setSession(adminState.user.session);
-  }, [session, adminState]);
+    setSession(userContext.user.session);
+  }, [userContext]);
 
   useEffect(() => {
     if (session) {
@@ -55,11 +55,21 @@ const AllBlogsContainer = () => {
     setNextToken(blogsFromApi.nextToken);
   }
 
+  function onEdit(blogId) {
+    props.history.push(`/edit/${blogId}`);
+  }
+
   return (
     <>
       <h1>Today I Learned</h1>
       {blogs.length > 0 && (
-        <BlogList blogs={blogs} fetchNext={fetchNext} nextToken={nextToken} />
+        <BlogList
+          blogs={blogs}
+          fetchNext={fetchNext}
+          nextToken={nextToken}
+          admin={userContext.user.adminMode}
+          onEdit={onEdit}
+        />
       )}
     </>
   );

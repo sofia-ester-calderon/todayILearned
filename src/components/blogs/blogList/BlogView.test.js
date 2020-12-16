@@ -7,6 +7,8 @@ import { ContentState } from "draft-js";
 function renderComponent(args) {
   const defaultProps = {
     blog: {},
+    admin: false,
+    onEdit: jest.fn(),
   };
   const props = { ...defaultProps, ...args };
   render(<BlogView {...props} />);
@@ -29,4 +31,18 @@ it("should display the blog", () => {
   screen.getByText("Hello");
   screen.getByText("tag1");
   screen.getByText("tag2");
+  expect(screen.queryByText("Edit")).not.toBeInTheDocument();
+});
+
+it("should display edit button if admin true", () => {
+  const blog = {
+    id: 1,
+    date: "2020-12-18",
+    editorState: EditorState.createWithContent(
+      ContentState.createFromText("Hello")
+    ),
+    tags: [],
+  };
+  renderComponent({ blog, admin: true });
+  screen.getByText("Edit");
 });

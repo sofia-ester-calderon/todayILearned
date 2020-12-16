@@ -9,6 +9,8 @@ function renderComponent(args) {
     blogs: [],
     fetchNext: jest.fn(),
     nextToken: null,
+    admin: false,
+    onEdit: jest.fn(),
   };
   const props = { ...defaultProps, ...args };
   render(<BlogList {...props} />);
@@ -44,4 +46,19 @@ it("should display the blog list", () => {
 
   screen.getByText("December 17, 2020");
   screen.getByText("Goodbye");
+});
+
+it("should display the edit button", () => {
+  const blogs = [
+    {
+      id: 1,
+      date: "2020-12-18",
+      editorState: EditorState.createWithContent(
+        ContentState.createFromText("Hello")
+      ),
+      tags: [],
+    },
+  ];
+  renderComponent({ blogs, admin: true });
+  screen.getByText("Edit");
 });

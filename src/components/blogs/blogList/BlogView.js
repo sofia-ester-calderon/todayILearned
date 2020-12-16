@@ -5,7 +5,7 @@ import TagList from "../../tags/TagList";
 import styles from "./BlogList.module.css";
 var dateFormat = require("dateformat");
 
-const BlogView = ({ blog }) => {
+const BlogView = ({ blog, admin, onEdit }) => {
   return (
     <li key={blog.id}>
       <div className={styles.date}>
@@ -22,6 +22,14 @@ const BlogView = ({ blog }) => {
           toolbarHidden={true}
           readOnly={true}
         />
+        {admin && (
+          <button
+            className="btn btn-outline-secondary"
+            onClick={() => onEdit(blog.id)}
+          >
+            Edit
+          </button>
+        )}
       </div>
     </li>
   );

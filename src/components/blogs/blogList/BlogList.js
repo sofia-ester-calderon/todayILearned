@@ -4,7 +4,7 @@ import styles from "./BlogList.module.css";
 
 import BlogView from "./BlogView";
 
-const BlogList = ({ blogs, fetchNext, nextToken }) => {
+const BlogList = ({ blogs, fetchNext, nextToken, admin, onEdit }) => {
   return (
     <InfiniteScroll
       dataLength={blogs.length} //This is important field to render the next data
@@ -19,7 +19,7 @@ const BlogList = ({ blogs, fetchNext, nextToken }) => {
     >
       <ul className={styles.timeline}>
         {blogs.map((blog) => (
-          <BlogView blog={blog} key={blog.id} />
+          <BlogView blog={blog} key={blog.id} admin={admin} onEdit={onEdit} />
         ))}
       </ul>
     </InfiniteScroll>
