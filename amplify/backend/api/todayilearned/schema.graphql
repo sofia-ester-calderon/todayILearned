@@ -11,7 +11,7 @@ type Blog
   text: String!
   date: AWSDate!
   image: String
-  tags: [BlogTag!] @connection(keyName: "byBlog", fields: ["id"])
+  tags: [BlogTag] @connection(keyName: "byBlog", fields: ["id"])
 }
 
 type Tag 

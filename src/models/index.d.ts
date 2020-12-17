@@ -10,7 +10,7 @@ export declare class Blog {
   readonly text: string;
   readonly date: string;
   readonly image?: string;
-  readonly tags?: BlogTag[];
+  readonly tags?: (BlogTag | null)[];
   constructor(init: ModelInit<Blog>);
   static copyOf(source: Blog, mutator: (draft: MutableModel<Blog>) => MutableModel<Blog> | void): Blog;
 }

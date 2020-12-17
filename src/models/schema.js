@@ -44,7 +44,7 @@ export const schema = {
                     "type": {
                         "model": "BlogTag"
                     },
-                    "isRequired": true,
+                    "isRequired": false,
                     "attributes": [],
                     "isArrayNullable": true,
                     "association": {
