@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import BlogForm from "./BlogForm";
-import { EditorState, convertToRaw } from "draft-js";
+import { EditorState, convertToRaw, convertFromRaw } from "draft-js";
 import TagConfigurerContainer from "../../tags/TagConfigurerContainer";
 import Modal from "react-modal";
 import { useBlogTagsContext } from "../../../hooks/BlogTags";
@@ -9,20 +9,55 @@ import blogHelper from "../../../data/blogHelper";
 var dateFormat = require("dateformat");
 
 const CreateBlogContainer = (props) => {
-  const tagContext = useBlogTagsContext();
-
-  const [newBlog, setNewBlog] = useState({
+  const emptyBlog = {
     title: "",
     date: dateFormat(new Date(), "yyyy-mm-dd"),
     text: "",
-  });
+  };
+  const tagContext = useBlogTagsContext();
+
+  const [newBlog, setNewBlog] = useState(emptyBlog);
   const [editorText, setEditorText] = useState(EditorState.createEmpty());
   const [showTagModal, setShowTagModal] = useState(false);
   const [errors, setErrors] = useState({});
+  const [originalTags, setOriginalTags] = useState([]);
 
   useEffect(() => {
     Modal.setAppElement("body");
   }, []);
+
+  useEffect(() => {
+    if (props.match.params.id) {
+      getBlog();
+    } else {
+      setNewBlog(emptyBlog);
+      setEditorText(EditorState.createEmpty());
+      tagContext.setBlogTags([]);
+    }
+  }, [props.match.params.id]);
+
+  async function getBlog() {
+    const blog = await blogHelper.getBlog(props.match.params.id);
+    console.log("got blog", blog);
+    const updateBlog = {
+      title: blog.title,
+      date: blog.date,
+      id: blog.id,
+      text: blog.text,
+    };
+    setNewBlog(updateBlog);
+    setEditorText(
+      EditorState.createWithContent(convertFromRaw(JSON.parse(blog.text)))
+    );
+    const tags = blog.tags.items.map((item) => {
+      return {
+        name: item.tag.name,
+        id: item.tag.id,
+      };
+    });
+    tagContext.setBlogTags(tags);
+    setOriginalTags(blog.tags.items.map((item) => item.id));
+  }
 
   function onChangeBlogInfo(event) {
     const { name, value } = event.target;
@@ -60,7 +95,11 @@ const CreateBlogContainer = (props) => {
     console.log("tags: ", tagContext.blogTags);
 
     if (isFormValid()) {
-      await blogHelper.createBlog(newBlog, tagContext.blogTags);
+      if (props.match.params.id) {
+        await blogHelper.updateBlog(newBlog, tagContext.blogTags, originalTags);
+      } else {
+        await blogHelper.createBlog(newBlog, tagContext.blogTags);
+      }
       tagContext.setBlogTags([]);
       props.history.push("/");
     }
@@ -101,8 +140,9 @@ const CreateBlogContainer = (props) => {
         onCreateBlog={onCreateBlog}
         errors={errors}
         onCancel={onCancel}
+        editMode={props.match.params.id}
       />
-      <Modal isOpen={showTagModal}>
+      <Modal isOpen={showTagModal} style={{ content: { top: "130px" } }}>
         <TagConfigurerContainer onClose={onCloseModal} error={errors.tags} />
       </Modal>
     </>

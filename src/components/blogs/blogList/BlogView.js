@@ -23,12 +23,14 @@ const BlogView = ({ blog, admin, onEdit }) => {
           readOnly={true}
         />
         {admin && (
-          <button
-            className="btn btn-outline-secondary"
-            onClick={() => onEdit(blog.id)}
-          >
-            Edit
-          </button>
+          <div className="row" style={{ marginLeft: "1px" }}>
+            <button
+              className="btn btn-outline-secondary"
+              onClick={() => onEdit(blog.id)}
+            >
+              Edit
+            </button>
+          </div>
         )}
       </div>
     </li>

@@ -1,10 +1,16 @@
 import { API, graphqlOperation } from "aws-amplify";
 import { listTags } from "../graphql/queries";
-import { searchBlogs, listBlogTags } from "../graphql/queries-custom";
+import {
+  searchBlogs,
+  listBlogTags,
+  getBlog as getBlogApi,
+} from "../graphql/queries-custom";
 import {
   createTag as createTagApi,
   createBlog as createBlogApi,
   createBlogTag as createBlogTagApi,
+  updateBlog as updateBlogApi,
+  deleteBlogTag,
 } from "../graphql/mutations";
 
 const fetchTags = async () => {
@@ -29,19 +35,41 @@ const createBlog = async (blogData, tags) => {
   console.log("created blog", newBlog);
   console.log("blog id", blogId);
 
-  for (const tag of tags) {
+  tags.forEach((tag) => {
     const blogTagData = {
       blogID: blogId,
       tagID: tag.id,
     };
-    const newBlogTag = await API.graphql({
+    API.graphql({
       query: createBlogTagApi,
       variables: { input: blogTagData },
     });
-    console.log("created blogtag", newBlogTag);
+  });
+};
+
+const updateBlog = async (blogData, newTags, oldTags) => {
+  for (const tagId of oldTags) {
+    console.log("deleting blogtag", tagId);
+    await API.graphql({
+      query: deleteBlogTag,
+      variables: { input: { id: tagId } },
+    });
   }
-  tags.forEach((tag) => {
-    // TODO add it here once you're sure it works
+  const newBlog = await API.graphql({
+    query: updateBlogApi,
+    variables: { input: blogData },
+  });
+  console.log("updated blog", newBlog);
+
+  newTags.forEach((tag) => {
+    const blogTagData = {
+      blogID: blogData.id,
+      tagID: tag.id,
+    };
+    API.graphql({
+      query: createBlogTagApi,
+      variables: { input: blogTagData },
+    });
   });
 };
 
@@ -60,7 +88,15 @@ const fetchBlogs = async (filter, nextToken) => {
   return blogs.data.searchBlogs;
 };
 
-const fetchBlogsFotTags = async () => {
+const getBlog = async (id) => {
+  const blog = await API.graphql({
+    query: getBlogApi,
+    variables: { id },
+  });
+  return blog.data.getBlog;
+};
+
+const fetchBlogsForTags = async () => {
   let filterBlogTags = {
     and: [
       {
@@ -101,15 +137,16 @@ const filterBlogs = async () => {
   );
 };
 
-const blogHelper = { fetchTags, createTag, createBlog, fetchBlogs };
+const blogHelper = {
+  fetchTags,
+  createTag,
+  createBlog,
+  fetchBlogs,
+  getBlog,
+  updateBlog,
+};
 
 export default blogHelper;
-
-//     const getBlog1 = await API.graphql({
-//       query: getBlog,
-//       variables: { id: "7e0c3d80-da0e-452b-878e-a8c59b873f5a" },
-//     });
-//     console.log("blog", getBlog1);
 
 // async function deleteBlog({ id }) {
 //   const newNotesArray = blogs.filter((note) => note.id !== id);

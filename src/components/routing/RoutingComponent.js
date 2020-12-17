@@ -3,7 +3,6 @@ import { Route, Switch } from "react-router-dom";
 import { useUserContext } from "../../hooks/UserState";
 import AboutMeContainer from "../aboutme/AboutMeContainer";
 import AllBlogsContainer from "../blogs/blogList/AllBlogsContainer";
-import EditBlogContainer from "../blogs/edit-create/EditBlogContainer";
 import LoginContainer from "../login/LoginContainer";
 import GuardedRoute from "./GuardedRoute";
 import CreateBlogContainer from "../blogs/edit-create/CreateBlogContainer";
@@ -18,7 +17,7 @@ const RoutingComponent = () => {
       <Route path="/aboutme" component={AboutMeContainer} />
       <GuardedRoute
         path="/edit/:id"
-        component={EditBlogContainer}
+        component={CreateBlogContainer}
         auth={adminContext.user.adminMode}
       />
       <GuardedRoute

@@ -21,6 +21,8 @@ fileignoreconfig:
   checksum: f0e3e7a8827c794d2dfe87152d54fb940bf21556c12039c0b36726f91bf15795
 - filename: src/components/blogs/edit-create/BlogForm.js
   checksum: 4909bb97ed003efffd1a63d2a9f66545cec775069af796e2da531fdf059a3252
+- filename: src/components/blogs/edit-create/CreateBlogContainer.test.js
+  checksum: e14c2b8682933c9e50ac39541bfc801661ab0a93335636a0ef854bddfa669b52
 - filename: src/components/blogs/edit-create/EditBlogContainer.js
   checksum: e6dc9ca44803e9af273d422afe859697a964cf1585c3b4c753ba2b545fb5a08d
 - filename: src/components/login/LoginContainer.js

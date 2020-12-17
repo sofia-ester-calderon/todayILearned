@@ -17,15 +17,16 @@ const tags = [
 ];
 const memoryHistory = createMemoryHistory();
 
-function renderCreateBlogContainer(blogTags, setBlogTags) {
+function renderCreateBlogContainer(blogTags, setBlogTags, blogId) {
   const actualBlogTags = blogTags ? blogTags : [];
   const actualSetter = setBlogTags ? setBlogTags : jest.fn();
+  const match = { params: { id: blogId } };
   render(
     <BlogTagsContext.Provider
       value={{ blogTags: actualBlogTags, setBlogTags: actualSetter }}
     >
       <Router history={memoryHistory}>
-        <CreateBlogContainer history={memoryHistory} />
+        <CreateBlogContainer history={memoryHistory} match={match} />
       </Router>
     </BlogTagsContext.Provider>
   );
@@ -46,6 +47,22 @@ describe("given the page is rendered", () => {
     renderCreateBlogContainer(tags);
 
     screen.getByText("React");
+  });
+
+  it("should display filled out form if edit mode", async () => {
+    blogHelper.getBlog = jest.fn().mockResolvedValue({
+      id: 1,
+      title: "blog title",
+      date: "2020-12-01",
+      tags: { items: [{ tag: { id: 1, name: "tag1" } }] },
+      text:
+        '{"blocks":[{"key":"9c8ie","text":"this is the text","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}',
+    });
+    renderCreateBlogContainer(null, null, "12345");
+
+    await screen.findByDisplayValue("blog title");
+    screen.getByDisplayValue("2020-12-01");
+    screen.getByText("this is the text");
   });
 });
 
@@ -116,6 +133,38 @@ describe("given a blog is created", () => {
     );
 
     expect(memoryHistory.location.pathname).toBe("/");
+  });
+});
+
+describe("given a blog is edited", () => {
+  it("should call editBlog", async () => {
+    const text =
+      '{"blocks":[{"key":"9c8ie","text":"this is the text","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}';
+    blogHelper.updateBlog = jest.fn().mockResolvedValue();
+    const setBlogTags = jest.fn();
+    blogHelper.getBlog = jest.fn().mockResolvedValue({
+      id: 1,
+      title: "blog title",
+      date: "2020-12-01",
+      tags: { items: [{ id: "1", tag: { id: "1", name: "tag1" } }] },
+      text,
+    });
+
+    renderCreateBlogContainer(tags, setBlogTags, "12345");
+    await screen.findByDisplayValue("blog title");
+
+    fireEvent.change(screen.getByLabelText("Title"), {
+      target: { value: "New Title" },
+    });
+    fireEvent.click(screen.getByText("Edit Blog"));
+
+    expect(blogHelper.updateBlog).toHaveBeenCalledWith(
+      { title: "New Title", date: "2020-12-01", text, id: 1 },
+      tags,
+      ["1"]
+    );
+
+    // expect(memoryHistory.location.pathname).toBe("/");
   });
 });
 

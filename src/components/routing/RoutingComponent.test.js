@@ -47,7 +47,7 @@ it("should render the blog list if wrong url is passed", () => {
 it("should render the edit blog page if url is /edit/{id}", () => {
   renderRoutingComponent({ session: true, adminMode: true });
   history.push("edit/12345");
-  screen.getByText("Edit Blog");
+  screen.getByText("Title");
 });
 
 it("should render blog list if url is /edit/{id} but user is not authenitcated", () => {
@@ -59,7 +59,7 @@ it("should render blog list if url is /edit/{id} but user is not authenitcated",
 it("should render the create blog page if url is /new", () => {
   renderRoutingComponent({ session: true, adminMode: true });
   history.push("new");
-  screen.getByText("Create Blog Post");
+  screen.getByText("Title");
 });
 
 it("should render blog list if url is /new but user is not authenitcated", () => {

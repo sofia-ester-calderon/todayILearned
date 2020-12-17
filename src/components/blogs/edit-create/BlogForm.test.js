@@ -10,6 +10,7 @@ function renderBlogForm(args) {
     onChange: jest.fn(),
     editorState: EditorState.createEmpty(),
     tags: [],
+    editMode: false,
   };
   const props = { ...defaultProps, ...args };
   render(<BlogForm {...props} />);
@@ -78,4 +79,20 @@ it("should display error messages", () => {
   screen.getByText("title error message");
   screen.getByText("date error message");
   screen.getByText("tag error message");
+});
+
+it("should display the correct buttons for create mode", () => {
+  renderBlogForm();
+  screen.getByText("Create Blog");
+  screen.getByText("Cancel");
+  expect(screen.queryByText("Edit Blog")).not.toBeInTheDocument();
+  expect(screen.queryByText("Delete Blog")).not.toBeInTheDocument();
+});
+
+it("should display the correct buttons for edit mode", () => {
+  renderBlogForm({ editMode: true });
+  screen.getByText("Edit Blog");
+  screen.getByText("Cancel");
+  screen.getByText("Delete Blog");
+  expect(screen.queryByText("Create Blog")).not.toBeInTheDocument();
 });
