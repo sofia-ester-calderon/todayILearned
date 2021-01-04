@@ -44,6 +44,7 @@ const CreateBlogContainer = (props) => {
       date: blog.date,
       id: blog.id,
       text: blog.text,
+      _version: blog._version,
     };
     setNewBlog(updateBlog);
     setEditorText(
@@ -56,7 +57,7 @@ const CreateBlogContainer = (props) => {
       };
     });
     tagContext.setBlogTags(tags);
-    setOriginalTags(blog.tags.items.map((item) => item.id));
+    setOriginalTags(blog.tags.items.map((item) => item.tag.id));
   }
 
   function onChangeBlogInfo(event) {

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useUserContext } from "../../../hooks/UserState";
 import blogHelper from "../../../data/blogHelper";
 import BlogList from "./BlogList";
-import { convertFromRaw, EditorState } from "draft-js";
+import { convertFromRaw, EditorState, ContentState } from "draft-js";
 
 const AllBlogsContainer = (props) => {
   const userContext = useUserContext();
@@ -23,8 +23,11 @@ const AllBlogsContainer = (props) => {
 
   function convertBlogsFromApi(blogs) {
     blogs.items.forEach((blog) => {
+      // blog.editorState = EditorState.createWithContent(
+      //   convertFromRaw(JSON.parse(blog.text))
+      // );
       blog.editorState = EditorState.createWithContent(
-        convertFromRaw(JSON.parse(blog.text))
+        ContentState.createFromText("Hello")
       );
       const tags = blog.tags.items.map((tag) => {
         return {
@@ -38,6 +41,7 @@ const AllBlogsContainer = (props) => {
 
   async function fetch() {
     const blogsFromApi = await blogHelper.fetchBlogs();
+    console.log("blogs from api", blogsFromApi);
     convertBlogsFromApi(blogsFromApi);
     setBlogs(blogsFromApi.items);
     setNextToken(blogsFromApi.nextToken);
