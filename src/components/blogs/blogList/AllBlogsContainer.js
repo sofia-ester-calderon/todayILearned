@@ -1,25 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { useUserContext } from "../../../hooks/UserState";
 import blogHelper from "../../../data/blogHelper";
 import BlogList from "./BlogList";
 import { convertFromRaw, EditorState, ContentState } from "draft-js";
+import { FirebaseAuthConsumer } from "@react-firebase/auth";
 
 const AllBlogsContainer = (props) => {
-  const userContext = useUserContext();
-  const [session, setSession] = useState(false);
   const [blogs, setBlogs] = useState([]);
   const [nextToken, setNextToken] = useState();
 
   useEffect(() => {
-    setSession(userContext.user.session);
-  }, [userContext]);
-
-  useEffect(() => {
-    if (session) {
-      console.log("start");
-      fetch();
-    }
-  }, [session]);
+    console.log("start");
+    fetch();
+  }, []);
 
   function convertBlogsFromApi(blogs) {
     blogs.items.forEach((blog) => {
@@ -67,13 +59,19 @@ const AllBlogsContainer = (props) => {
     <>
       <h1>Today I Learned</h1>
       {blogs.length > 0 && (
-        <BlogList
-          blogs={blogs}
-          fetchNext={fetchNext}
-          nextToken={nextToken}
-          admin={userContext.user.adminMode}
-          onEdit={onEdit}
-        />
+        <FirebaseAuthConsumer>
+          {({ isSignedIn }) => {
+            return (
+              <BlogList
+                blogs={blogs}
+                fetchNext={fetchNext}
+                nextToken={nextToken}
+                admin={isSignedIn}
+                onEdit={onEdit}
+              />
+            );
+          }}
+        </FirebaseAuthConsumer>
       )}
     </>
   );

@@ -1,13 +1,9 @@
-import { Auth } from "aws-amplify";
+import firebase from "firebase/app";
 
 const login = async (username, password) => {
-  return await Auth.signIn(username, password);
+  return await firebase.auth().signInWithEmailAndPassword(username, password);
 };
 
-const getCurrentUser = async () => {
-  return await Auth.currentAuthenticatedUser();
-};
-
-const authHelper = { login, getCurrentUser };
+const authHelper = { login };
 
 export default authHelper;

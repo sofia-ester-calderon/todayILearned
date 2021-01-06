@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 import authHelper from "../../data/authHelper";
-import { useUserContext } from "../../hooks/UserState";
 import LoginForm from "./LoginForm";
+import { IfFirebaseAuthed, IfFirebaseUnAuthed } from "@react-firebase/auth";
 
 const LoginContainer = (props) => {
-  const adminState = useUserContext();
-
   const [loginCredentials, setLoginCredentials] = useState({
     username: "",
     password: "",
@@ -28,7 +26,6 @@ const LoginContainer = (props) => {
       authHelper
         .login(loginCredentials.username, loginCredentials.password)
         .then((user) => {
-          adminState.setUser({ session: true, adminMode: true });
           props.history.push("/");
         })
         .catch((err) => {
@@ -54,18 +51,25 @@ const LoginContainer = (props) => {
   return (
     <div className="m-5">
       <h1 className="mb-4">Admin Login</h1>
-      {adminState.user.adminMode ? (
-        <p>You are already logged in</p>
-      ) : (
-        <LoginForm
-          username={loginCredentials.username}
-          password={loginCredentials.password}
-          onChange={changeLoginCredentialsHandler}
-          onLogin={loginHandler}
-          errors={errors}
-          loading={loading}
-        />
-      )}
+      <IfFirebaseAuthed>
+        {() => {
+          return <div>You are already logged in!</div>;
+        }}
+      </IfFirebaseAuthed>
+      <IfFirebaseUnAuthed>
+        {() => {
+          return (
+            <LoginForm
+              username={loginCredentials.username}
+              password={loginCredentials.password}
+              onChange={changeLoginCredentialsHandler}
+              onLogin={loginHandler}
+              errors={errors}
+              loading={loading}
+            />
+          );
+        }}
+      </IfFirebaseUnAuthed>
     </div>
   );
 };

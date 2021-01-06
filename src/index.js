@@ -4,16 +4,18 @@ import "./index.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import Amplify from "aws-amplify";
-import config from "./aws-exports";
 import { BrowserRouter } from "react-router-dom";
-
-Amplify.configure(config);
+import config from "./config";
+import firebase from "firebase/app";
+import "firebase/auth";
+import { FirebaseAuthProvider } from "@react-firebase/auth";
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <App />
+      <FirebaseAuthProvider {...config} firebase={firebase}>
+        <App />
+      </FirebaseAuthProvider>
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById("root")
