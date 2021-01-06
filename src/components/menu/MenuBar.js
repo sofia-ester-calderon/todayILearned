@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import thumbnail from "../../assets/thumbnail.png";
-import thumbnail2 from "../../assets/thumbnail2.png";
+import womanIcon from "../../assets/woman.png";
+import homeIcon from "../../assets/head.png";
 import { FirebaseAuthConsumer } from "@react-firebase/auth";
 
 const MenuBar = () => {
@@ -13,10 +13,10 @@ const MenuBar = () => {
             <div className="navbar-brand">
               <NavLink className="nav-link" to={"/"} style={{ color: "black" }}>
                 <img
-                  src={thumbnail2}
+                  src={homeIcon}
                   width="45"
                   height="45"
-                  className="d-inline-block align-top mr-2 rounded-circle"
+                  className="d-inline-block align-top mr-2"
                   alt=""
                 />
                 <div
@@ -57,10 +57,10 @@ const MenuBar = () => {
                   About this page
                 </div>
                 <img
-                  src={thumbnail}
+                  src={womanIcon}
                   width="45"
                   height="45"
-                  className="d-inline-block align-top ml-2 rounded-circle"
+                  className="d-inline-block align-top ml-2"
                   alt=""
                 />
               </NavLink>
