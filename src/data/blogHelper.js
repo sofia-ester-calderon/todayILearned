@@ -33,33 +33,17 @@ const createTag = async (tagData) => {
 };
 
 const createBlog = async (blogData, tags) => {
-  console.log("creating blog");
-  const res = await firestore.collection("blogs").add({
+  await firestore.collection("blogs").add({
     date: blogData.date,
     text: blogData.text,
   });
-
-  console.log("Added document with ID: ", res.id);
-  // const newBlog = await API.graphql({
-  //   query: createBlogApi,
-  //   variables: { input: blogData },
-  // });
-  // const blogId = newBlog.data.createBlog.id;
-  // console.log("created blog", newBlog);
-  // console.log("blog id", blogId);
-  // tags.forEach((tag) => {
-  //   const blogTagData = {
-  //     blogID: blogId,
-  //     tagID: tag.id,
-  //   };
-  //   API.graphql({
-  //     query: createBlogTagApi,
-  //     variables: { input: blogTagData },
-  //   });
-  // });
 };
 
 const updateBlog = async (blogData, newTags, oldTags) => {
+  const id = blogData.id;
+  const blog = { date: blogData.date, text: blogData.text };
+  const res = await firestore.collection("blogs").doc(id).set(blog);
+  console.log("updated blog", res);
   // for (const tagId of oldTags) {
   //   console.log("deleting blogtag", tagId);
   //   await API.graphql({
@@ -97,11 +81,10 @@ const fetchBlogs = async (last) => {
 };
 
 const getBlog = async (id) => {
-  return {
-    id: 1,
-    date: "2020-12-01",
-    text: "hello",
-  };
+  const ref = firestore.collection("blogs");
+  const queryRef = await ref.doc(id).get();
+  return queryRef.data();
+
   // const blog = await API.graphql({
   //   query: getBlogApi,
   //   variables: { id },

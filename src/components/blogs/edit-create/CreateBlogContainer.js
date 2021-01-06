@@ -38,24 +38,19 @@ const CreateBlogContainer = (props) => {
   async function getBlog() {
     const blog = await blogHelper.getBlog(props.match.params.id);
     console.log("got blog", blog);
-    const updateBlog = {
-      date: blog.date,
-      id: blog.id,
-      text: blog.text,
-      _version: blog._version,
-    };
-    setNewBlog(updateBlog);
+
+    setNewBlog(blog);
     setEditorText(
       EditorState.createWithContent(convertFromRaw(JSON.parse(blog.text)))
     );
-    const tags = blog.tags.items.map((item) => {
-      return {
-        name: item.tag.name,
-        id: item.tag.id,
-      };
-    });
-    tagContext.setBlogTags(tags);
-    setOriginalTags(blog.tags.items.map((item) => item.tag.id));
+    // const tags = blog.tags.items.map((item) => {
+    //   return {
+    //     name: item.tag.name,
+    //     id: item.tag.id,
+    //   };
+    // });
+    // tagContext.setBlogTags(tags);
+    // setOriginalTags(blog.tags.items.map((item) => item.tag.id));
   }
 
   function onChangeBlogInfo(event) {
