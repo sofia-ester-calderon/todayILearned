@@ -15,11 +15,7 @@ function renderTagOverview(args) {
 }
 
 it("should display all the unused tags", () => {
-  const unusedTags = [
-    { name: "tag1", id: "1" },
-    { name: "tag2", id: "2" },
-    { name: "tag3", id: "3" },
-  ];
+  const unusedTags = ["tag1", "tag2", "tag3"];
   renderTagOverview({ unusedTags });
 
   const [tag1, tag2, tag3] = screen.getAllByTestId("unusedTags");
@@ -30,10 +26,7 @@ it("should display all the unused tags", () => {
 });
 
 it("should display all used tags", () => {
-  const usedTags = [
-    { name: "blogtag1", id: "1" },
-    { name: "blogtag2", id: "2" },
-  ];
+  const usedTags = ["blogtag1", "blogtag2"];
 
   renderTagOverview({ usedTags });
 

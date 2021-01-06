@@ -19,22 +19,18 @@ function renderBlogForm(args) {
 it("shoud display an empty form", () => {
   renderBlogForm();
 
-  const title = screen.getByLabelText("Title").value;
-  expect(title).toBe("");
   const date = screen.getByLabelText("Date").value;
   expect(date).toBe("");
 });
 
 it("shoud display a filled out form", () => {
   renderBlogForm({
-    title: "New Blog",
     date: "08/12/2020",
     editorState: EditorState.createWithContent(
       ContentState.createFromText("Hello")
     ),
   });
 
-  screen.getByDisplayValue("New Blog");
   // screen.getByDisplayValue("2020-12-08");
   screen.getByText("Hello");
 });
@@ -51,16 +47,7 @@ it("should not showEditor", () => {
 
 it("should show tags", () => {
   renderBlogForm({
-    tags: [
-      {
-        id: "1",
-        name: "React",
-      },
-      {
-        id: "2",
-        name: "Java",
-      },
-    ],
+    tags: ["React", "Java"],
   });
 
   screen.getByText("Java");
@@ -70,13 +57,11 @@ it("should show tags", () => {
 it("should display error messages", () => {
   renderBlogForm({
     errors: {
-      title: "title error message",
       date: "date error message",
       tags: "tag error message",
     },
   });
 
-  screen.getByText("title error message");
   screen.getByText("date error message");
   screen.getByText("tag error message");
 });

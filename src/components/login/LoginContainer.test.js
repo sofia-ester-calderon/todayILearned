@@ -3,23 +3,25 @@ import React from "react";
 
 import authHelper from "../../data/authHelper";
 import LoginContainer from "./LoginContainer";
-import { UserContext } from "../../hooks/UserState";
 import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
 
 authHelper.getCurrentUser = jest.fn().mockRejectedValue();
 const memoryHistory = createMemoryHistory();
-const setUser = jest.fn();
 
-function renderLoginContainer(user) {
-  const actualUser = user ? user : { session: true, adminMode: false };
+const mockContext = jest.fn();
+jest.mock("@react-firebase/auth", () => ({
+  IfFirebaseAuthed: ({ children }) => children(mockContext()),
+  IfFirebaseUnAuthed: ({ children }) => children(mockContext()),
+}));
 
+function renderLoginContainer(isSignedIn) {
+  mockContext.mockReset();
+  mockContext.mockReturnValue({ isSignedIn });
   render(
-    <UserContext.Provider value={{ user: actualUser, setUser: setUser }}>
-      <Router history={memoryHistory}>
-        <LoginContainer history={memoryHistory} />
-      </Router>
-    </UserContext.Provider>
+    <Router history={memoryHistory}>
+      <LoginContainer history={memoryHistory} />
+    </Router>
   );
 }
 
@@ -34,7 +36,7 @@ function enterLoginCredentials() {
 
 describe("given the page is rendered", () => {
   it("should display an empty login form", () => {
-    renderLoginContainer();
+    renderLoginContainer(false);
 
     const username = screen.getByLabelText("Username").value;
     expect(username).toBe("");
@@ -47,16 +49,15 @@ describe("given the page is rendered", () => {
 
 describe("given the user is already logged in", () => {
   it("should display message and not login form", () => {
-    renderLoginContainer({ session: true, adminMode: true });
+    renderLoginContainer(true);
 
-    screen.getByText("You are already logged in");
-    expect(screen.queryByText("Login")).not.toBeInTheDocument();
+    screen.getByText("You are already logged in!");
   });
 });
 
 describe("given crendetials are typed", () => {
   it("should display the typed values in the form", () => {
-    renderLoginContainer();
+    renderLoginContainer(true);
     enterLoginCredentials();
 
     screen.getByDisplayValue("email@email.com");
@@ -67,7 +68,7 @@ describe("given crendetials are typed", () => {
 describe("given the login button is clicked", () => {
   it("should display errors if fields are empty and not login", () => {
     authHelper.login = jest.fn();
-    renderLoginContainer();
+    renderLoginContainer(true);
     fireEvent.click(screen.getByText("Login"));
 
     screen.getByText("Please enter a username");
@@ -81,7 +82,7 @@ describe("given the login button is clicked", () => {
       message: "User does not exist.",
       name: "UserNotFoundException",
     });
-    renderLoginContainer();
+    renderLoginContainer(true);
 
     enterLoginCredentials();
     fireEvent.click(screen.getByText("Login"));
@@ -97,7 +98,7 @@ describe("given the login button is clicked", () => {
 
   it("should reroute to all blogs if login suucessful", async () => {
     authHelper.login = jest.fn().mockResolvedValue({});
-    renderLoginContainer({ session: true, setAdminMode: false });
+    renderLoginContainer(true);
 
     enterLoginCredentials();
     fireEvent.click(screen.getByText("Login"));

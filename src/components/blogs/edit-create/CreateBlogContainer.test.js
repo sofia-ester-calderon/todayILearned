@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import React from "react";
 import blogHelper from "../../../data/blogHelper";
 import { BlogTagsContext } from "../../../hooks/BlogTags";
@@ -9,12 +9,7 @@ import { Router } from "react-router-dom";
 var dateFormat = require("dateformat");
 const today = dateFormat(new Date(), "yyyy-mm-dd");
 
-const tags = [
-  {
-    id: "1",
-    name: "React",
-  },
-];
+const tags = ["React"];
 const memoryHistory = createMemoryHistory();
 
 function renderCreateBlogContainer(blogTags, setBlogTags, blogId) {
@@ -36,8 +31,6 @@ describe("given the page is rendered", () => {
   it("should display the empty form", () => {
     renderCreateBlogContainer();
 
-    const title = screen.getByLabelText("Title").value;
-    expect(title).toBe("");
     const date = screen.getByLabelText("Date").value;
     expect(date).toBe(today);
     expect(screen.queryByText("Tags")).not.toBeInTheDocument();
@@ -52,16 +45,14 @@ describe("given the page is rendered", () => {
   it("should display filled out form if edit mode", async () => {
     blogHelper.getBlog = jest.fn().mockResolvedValue({
       id: 1,
-      title: "blog title",
       date: "2020-12-01",
-      tags: { items: [{ tag: { id: 1, name: "tag1" } }] },
+      tags: ["tag1"],
       text:
         '{"blocks":[{"key":"9c8ie","text":"this is the text","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}',
     });
     renderCreateBlogContainer(null, null, "12345");
 
-    await screen.findByDisplayValue("blog title");
-    screen.getByDisplayValue("2020-12-01");
+    await screen.findByDisplayValue("2020-12-01");
     screen.getByText("this is the text");
   });
 });
@@ -70,13 +61,9 @@ describe("given the form is filled", () => {
   it("should display the new entries", () => {
     renderCreateBlogContainer();
 
-    fireEvent.change(screen.getByLabelText("Title"), {
-      target: { value: "New Blog" },
-    });
     fireEvent.change(screen.getByLabelText("Date"), {
       target: { value: "2020-11-08" },
     });
-    screen.getByDisplayValue("New Blog");
     screen.getByDisplayValue("2020-11-08");
   });
 });
@@ -111,7 +98,6 @@ describe("given a blog is created", () => {
       target: { value: "" },
     });
     fireEvent.click(screen.getByText("Create Blog"));
-    screen.getByText("Please enter a title");
     screen.getByText("Please enter a valid date");
     screen.getByText("A blog must have at least one tag");
     expect(blogHelper.createBlog).not.toHaveBeenCalled();
@@ -122,13 +108,11 @@ describe("given a blog is created", () => {
     const setBlogTags = jest.fn();
 
     renderCreateBlogContainer(tags, setBlogTags);
-    fireEvent.change(screen.getByLabelText("Title"), {
-      target: { value: "New Title" },
-    });
+
     fireEvent.click(screen.getByText("Create Blog"));
 
     expect(blogHelper.createBlog).toHaveBeenCalledWith(
-      { title: "New Title", date: today, text: "" },
+      { date: today, text: "" },
       tags
     );
 
@@ -144,27 +128,22 @@ describe("given a blog is edited", () => {
     const setBlogTags = jest.fn();
     blogHelper.getBlog = jest.fn().mockResolvedValue({
       id: 1,
-      title: "blog title",
       date: "2020-12-01",
-      tags: { items: [{ id: "1", tag: { id: "1", name: "tag1" } }] },
+      tags: ["tag1"],
       text,
     });
 
     renderCreateBlogContainer(tags, setBlogTags, "12345");
-    await screen.findByDisplayValue("blog title");
+    await screen.findByDisplayValue("2020-12-01");
 
-    fireEvent.change(screen.getByLabelText("Title"), {
-      target: { value: "New Title" },
-    });
     fireEvent.click(screen.getByText("Edit Blog"));
 
     expect(blogHelper.updateBlog).toHaveBeenCalledWith(
-      { title: "New Title", date: "2020-12-01", text, id: 1 },
-      tags,
-      ["1"]
+      { date: "2020-12-01", text, id: 1, tags: ["tag1"] },
+      tags
     );
 
-    // expect(memoryHistory.location.pathname).toBe("/");
+    expect(memoryHistory.location.pathname).toBe("/");
   });
 });
 

@@ -3,21 +3,25 @@ import { render, screen } from "@testing-library/react";
 import { Router } from "react-router-dom";
 import RoutingComponent from "./RoutingComponent";
 import { createMemoryHistory } from "history";
-import { UserContext } from "../../hooks/UserState";
 import { BlogTagsProvider } from "../../hooks/BlogTags";
 
 const history = createMemoryHistory();
+const mockContext = jest.fn();
+jest.mock("@react-firebase/auth", () => ({
+  FirebaseAuthConsumer: ({ children }) => children(mockContext()),
+  IfFirebaseAuthed: ({ children }) => children(mockContext()),
+  IfFirebaseUnAuthed: ({ children }) => children(mockContext()),
+}));
 
 function renderRoutingComponent(user) {
-  const actualUser = user ? user : { session: true, adminMode: false };
+  mockContext.mockReset();
+  mockContext.mockReturnValue({ isSignedIn: user });
   render(
-    <UserContext.Provider value={{ user: actualUser, setUser: jest.fn() }}>
-      <BlogTagsProvider>
-        <Router history={history}>
-          <RoutingComponent />
-        </Router>
-      </BlogTagsProvider>
-    </UserContext.Provider>
+    <BlogTagsProvider>
+      <Router history={history}>
+        <RoutingComponent />
+      </Router>
+    </BlogTagsProvider>
   );
 }
 
@@ -45,9 +49,9 @@ it("should render the blog list if wrong url is passed", () => {
 });
 
 it("should render the edit blog page if url is /edit/{id}", () => {
-  renderRoutingComponent({ session: true, adminMode: true });
+  renderRoutingComponent(true);
   history.push("edit/12345");
-  screen.getByText("Title");
+  screen.getByText("Date");
 });
 
 it("should render blog list if url is /edit/{id} but user is not authenitcated", () => {
@@ -57,9 +61,9 @@ it("should render blog list if url is /edit/{id} but user is not authenitcated",
 });
 
 it("should render the create blog page if url is /new", () => {
-  renderRoutingComponent({ session: true, adminMode: true });
+  renderRoutingComponent(true);
   history.push("new");
-  screen.getByText("Title");
+  screen.getByText("Date");
 });
 
 it("should render blog list if url is /new but user is not authenitcated", () => {

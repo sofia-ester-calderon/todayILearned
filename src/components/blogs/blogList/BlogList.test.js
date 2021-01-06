@@ -24,10 +24,7 @@ it("should display the blog list", () => {
       editorState: EditorState.createWithContent(
         ContentState.createFromText("Hello")
       ),
-      tags: [
-        { id: "2", name: "tag1" },
-        { id: "3", name: "tag2" },
-      ],
+      tags: ["tag1", "tag2"],
     },
     {
       id: 2,

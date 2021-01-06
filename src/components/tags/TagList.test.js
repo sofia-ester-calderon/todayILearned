@@ -2,18 +2,9 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import TagList from "./TagList";
 
-function renderTagList(args) {
+function renderTagList() {
   const props = {
-    tags: [
-      {
-        id: "1",
-        name: "Java",
-      },
-      {
-        id: "2",
-        name: "React",
-      },
-    ],
+    tags: ["Java", "React"],
   };
   render(<TagList {...props} />);
 }

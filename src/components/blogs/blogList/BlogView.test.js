@@ -21,10 +21,7 @@ it("should display the blog", () => {
     editorState: EditorState.createWithContent(
       ContentState.createFromText("Hello")
     ),
-    tags: [
-      { id: "2", name: "tag1" },
-      { id: "3", name: "tag2" },
-    ],
+    tags: ["tag1", "tag2"],
   };
   renderComponent({ blog });
   screen.getByText("December 18, 2020");

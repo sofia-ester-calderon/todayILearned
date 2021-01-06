@@ -1,20 +1,22 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import React from "react";
-import { UserContext } from "../../hooks/UserState";
 import MenuBar from "./MenuBar";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
 
 const history = createMemoryHistory();
+const mockContext = jest.fn();
+jest.mock("@react-firebase/auth", () => ({
+  FirebaseAuthConsumer: ({ children }) => children(mockContext()),
+}));
 
 function renderMenuBar(user) {
-  const actualUser = user ? user : { session: true, adminMode: false };
+  mockContext.mockReset();
+  mockContext.mockReturnValue({ isSignedIn: user });
   render(
-    <UserContext.Provider value={{ user: actualUser, setUser: jest.fn() }}>
-      <Router history={history}>
-        <MenuBar />
-      </Router>
-    </UserContext.Provider>
+    <Router history={history}>
+      <MenuBar />
+    </Router>
   );
 }
 
@@ -26,14 +28,14 @@ it("should display menu buttons", () => {
 });
 
 it("should display create blog button if user is admin", () => {
-  renderMenuBar({ session: true, adminMode: true });
+  renderMenuBar(true);
   screen.getByText("Home");
   screen.getByText("About this page");
   screen.getByText("Create Blog");
 });
 
 it("should redirect", () => {
-  renderMenuBar({ session: true, adminMode: true }, history);
+  renderMenuBar(true, history);
   fireEvent.click(screen.getByText("About this page"));
   expect(history.location.pathname).toBe("/aboutme");
 

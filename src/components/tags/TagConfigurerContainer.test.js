@@ -4,18 +4,7 @@ import blogHelper from "../../data/blogHelper";
 import { BlogTagsContext } from "../../hooks/BlogTags";
 import TagConfigurerContainer from "./TagConfigurerContainer";
 
-const blogTag = {
-  id: "7510e46a-5e6d-4cc6-abe0-efbc0b505a17",
-  name: "React",
-};
-
-const tags = [
-  blogTag,
-  {
-    id: "3282d533-45f9-4257-b604-6362abfe336c",
-    name: "Java",
-  },
-];
+const tags = ["React", "Java"];
 
 const setBlogTags = jest.fn();
 
@@ -44,7 +33,7 @@ describe("given the page is initially rendered", () => {
   });
 
   it("should display all all tags and blog tags", async () => {
-    await renderTagConfigurerContainer([blogTag]);
+    await renderTagConfigurerContainer(["React"]);
 
     const [tag1] = screen.getAllByTestId("unusedTags");
     const [tag2] = screen.getAllByTestId("usedTags");
@@ -67,7 +56,7 @@ describe("given a tag is created", () => {
 
   it("should do nothing if tag name already exists", async () => {
     blogHelper.createTag = jest.fn();
-    await renderTagConfigurerContainer([blogTag]);
+    await renderTagConfigurerContainer(["React"]);
     fireEvent.change(screen.getByLabelText("Name"), {
       target: { value: "react" },
     });
@@ -80,16 +69,13 @@ describe("given a tag is created", () => {
   });
 
   it("should create the new tag and display it", async () => {
-    blogHelper.createTag = jest.fn().mockResolvedValue({
-      id: "0baaa6c6-8694-4704-b329-ea357b39bf9c",
-      name: "TypeScript",
-    });
+    blogHelper.createTag = jest.fn().mockResolvedValue();
     await renderTagConfigurerContainer();
     fireEvent.change(screen.getByLabelText("Name"), {
       target: { value: "TypeScript" },
     });
     fireEvent.click(screen.getByText("Create Tag"));
-    expect(blogHelper.createTag).toHaveBeenCalledWith({ name: "TypeScript" });
+    expect(blogHelper.createTag).toHaveBeenCalledWith("TypeScript");
 
     // eslint-disable-next-line testing-library/await-async-utils
     waitFor(() => {
@@ -116,7 +102,7 @@ describe("given a tag is added to the blog", () => {
     expect(tag3.textContent).toBe("React");
     // eslint-disable-next-line testing-library/await-async-utils
     waitFor(() => {
-      expect(setBlogTags).toHaveBeenCalledWith([blogTag]);
+      expect(setBlogTags).toHaveBeenCalledWith(["React"]);
     });
   });
 });
