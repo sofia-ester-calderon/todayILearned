@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import blogHelper from "../../../data/blogHelper";
 import BlogList from "./BlogList";
-import { convertFromRaw, EditorState, ContentState } from "draft-js";
+import { convertFromRaw, EditorState } from "draft-js";
 import { FirebaseAuthConsumer } from "@react-firebase/auth";
 
 const AllBlogsContainer = (props) => {
@@ -9,36 +9,27 @@ const AllBlogsContainer = (props) => {
   const [nextToken, setNextToken] = useState();
 
   useEffect(() => {
-    console.log("start");
     fetch();
   }, []);
 
-  function convertBlogsFromApi(blogs) {
+  function setEditorStateForBlogs(blogs) {
     blogs.forEach((blog) => {
       blog.editorState = EditorState.createWithContent(
         convertFromRaw(JSON.parse(blog.text))
       );
-      // const tags = blog.tags.items.map((tag) => {
-      //   return {
-      //     name: tag.tag.name,
-      //     id: tag.tag.id,
-      //   };
-      // });
-      // blog.tags = tags;
     });
   }
 
   async function fetch() {
     const blogsFromApi = await blogHelper.fetchBlogs(null);
-    console.log("blogs from api", blogsFromApi);
-    convertBlogsFromApi(blogsFromApi);
+    setEditorStateForBlogs(blogsFromApi);
     setBlogs(blogsFromApi);
     setNextToken(blogsFromApi[blogsFromApi.length - 1].date);
   }
 
   async function fetchNext() {
     const blogsFromApi = await blogHelper.fetchBlogs(nextToken);
-    convertBlogsFromApi(blogsFromApi);
+    setEditorStateForBlogs(blogsFromApi);
 
     setBlogs((prevData) => {
       const newBlogs = [...prevData, ...blogsFromApi];

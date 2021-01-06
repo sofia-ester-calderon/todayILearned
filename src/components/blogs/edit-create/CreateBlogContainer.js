@@ -19,7 +19,6 @@ const CreateBlogContainer = (props) => {
   const [editorText, setEditorText] = useState(EditorState.createEmpty());
   const [showTagModal, setShowTagModal] = useState(false);
   const [errors, setErrors] = useState({});
-  const [originalTags, setOriginalTags] = useState([]);
 
   useEffect(() => {
     Modal.setAppElement("body");
@@ -37,20 +36,12 @@ const CreateBlogContainer = (props) => {
 
   async function getBlog() {
     const blog = await blogHelper.getBlog(props.match.params.id);
-    console.log("got blog", blog);
 
     setNewBlog(blog);
     setEditorText(
       EditorState.createWithContent(convertFromRaw(JSON.parse(blog.text)))
     );
-    // const tags = blog.tags.items.map((item) => {
-    //   return {
-    //     name: item.tag.name,
-    //     id: item.tag.id,
-    //   };
-    // });
-    // tagContext.setBlogTags(tags);
-    // setOriginalTags(blog.tags.items.map((item) => item.tag.id));
+    tagContext.setBlogTags(blog.tags);
   }
 
   function onChangeBlogInfo(event) {
@@ -85,12 +76,10 @@ const CreateBlogContainer = (props) => {
 
   async function onCreateBlog(event) {
     event.preventDefault();
-    console.log("blog: ", newBlog);
-    console.log("tags: ", tagContext.blogTags);
 
     if (isFormValid()) {
       if (props.match.params.id) {
-        await blogHelper.updateBlog(newBlog, tagContext.blogTags, originalTags);
+        await blogHelper.updateBlog(newBlog, tagContext.blogTags);
       } else {
         await blogHelper.createBlog(newBlog, tagContext.blogTags);
       }
@@ -104,9 +93,9 @@ const CreateBlogContainer = (props) => {
     if (!newBlog.date || newBlog.date === "") {
       blogErrors.date = "Please enter a valid date";
     }
-    // if (tagContext.blogTags.length === 0) {
-    //   blogErrors.tags = "A blog must have at least one tag";
-    // }
+    if (tagContext.blogTags.length === 0) {
+      blogErrors.tags = "A blog must have at least one tag";
+    }
     setErrors(blogErrors);
     return Object.keys(blogErrors).length === 0;
   }

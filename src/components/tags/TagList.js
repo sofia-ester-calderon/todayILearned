@@ -12,12 +12,12 @@ const TagList = ({ tags = [], onClick, testId, mode = "dark" }) => {
       {tags.map((tag) => (
         <div
           className={className}
-          key={tag.id}
+          key={tag}
           style={{ cursor: cursor, display: "inline-block" }}
           onClick={onClick ? () => onClick(tag) : () => {}}
           data-testid={testId}
         >
-          {tag.name}
+          {tag}
         </div>
       ))}
     </>

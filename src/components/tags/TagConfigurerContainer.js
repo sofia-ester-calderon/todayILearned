@@ -8,7 +8,7 @@ const TagConfigurerContainer = ({ onClose, error }) => {
 
   const [unusedTags, setUnusedTags] = useState([]);
   const [usedTags, setUsedTags] = useState([]);
-  const [tagData, setTagData] = useState({ name: "" });
+  const [newTag, setNewTag] = useState("");
   const [loading, setLoading] = useState(false);
   const [creating, setCreating] = useState(false);
   const [errors, setErrors] = useState();
@@ -30,7 +30,6 @@ const TagConfigurerContainer = ({ onClose, error }) => {
   async function fetchTags() {
     setLoading(true);
     const tagsFromApi = await blogHelper.fetchTags();
-    console.log("TAGS FROM GRAPHQL", tagsFromApi);
     setUsedAndUnusedTags(tagsFromApi);
     setLoading(false);
   }
@@ -38,37 +37,35 @@ const TagConfigurerContainer = ({ onClose, error }) => {
   function setUsedAndUnusedTags(allTags) {
     setUsedTags(tagContext.blogTags.sort(compare));
 
-    const blogTagIds = tagContext.blogTags.map((tag) => tag.id);
-
-    const remainingTags = allTags.filter((tag) => !blogTagIds.includes(tag.id));
+    const remainingTags = allTags.filter(
+      (tag) => !tagContext.blogTags.includes(tag)
+    );
     setUnusedTags(remainingTags.sort(compare));
   }
 
   function onChangeTagName(event) {
-    const { value } = event.target;
-    setTagData({ name: value });
+    setNewTag(event.target.value);
   }
 
   async function onCreateNewTag(event) {
     setErrors((prevData) => ({ ...prevData, create: null }));
 
     event.preventDefault();
-    if (tagData.name === "") {
+    if (newTag === "") {
       return;
     }
     const allTags = [...unusedTags, ...usedTags];
-    if (
-      allTags.find(
-        (tag) => tag.name.toUpperCase() === tagData.name.toUpperCase()
-      )
-    ) {
+    if (allTags.find((tag) => tag.toUpperCase() === newTag.toUpperCase())) {
       setErrors((prevData) => ({ ...prevData, create: "Tag already exists" }));
       return;
     }
     setCreating(true);
-    const newTag = await blogHelper.createTag(tagData);
-    setTagData({ name: "" });
-    setUnusedTags((prevData) => [...prevData, newTag]);
+    await blogHelper.createTag(newTag);
+    setNewTag("");
+    setUnusedTags((prevData) => {
+      const newTags = [...prevData, newTag];
+      return newTags.sort(compare);
+    });
     setCreating(false);
   }
 
@@ -78,13 +75,11 @@ const TagConfigurerContainer = ({ onClose, error }) => {
       tags = tags.sort(compare);
       return tags;
     });
-    setUnusedTags((prevData) =>
-      prevData.filter((tag) => tag.id !== blogTag.id)
-    );
+    setUnusedTags((prevData) => prevData.filter((tag) => tag !== blogTag));
   }
 
   function onRemoveTagFromBlog(blogTag) {
-    setUsedTags((prevData) => prevData.filter((tag) => tag.id !== blogTag.id));
+    setUsedTags((prevData) => prevData.filter((tag) => tag !== blogTag));
     setUnusedTags((prevData) => {
       let tags = [...prevData, blogTag];
       tags = tags.sort(compare);
@@ -93,8 +88,8 @@ const TagConfigurerContainer = ({ onClose, error }) => {
   }
 
   function compare(a, b) {
-    if (a.name.toUpperCase() < b.name.toUpperCase()) return -1;
-    if (b.name.toUpperCase() > a.name.toUpperCase()) return 1;
+    if (a.toUpperCase() < b.toUpperCase()) return -1;
+    if (b.toUpperCase() > a.toUpperCase()) return 1;
     return 0;
   }
 
@@ -103,7 +98,7 @@ const TagConfigurerContainer = ({ onClose, error }) => {
       <TagOverview
         unusedTags={unusedTags}
         usedTags={usedTags}
-        tagName={tagData.name}
+        tagName={newTag}
         onChangeTagName={onChangeTagName}
         onCreateTag={onCreateNewTag}
         onClose={onClose}
