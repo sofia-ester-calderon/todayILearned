@@ -10,8 +10,6 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import { FirebaseAuthProvider } from "@react-firebase/auth";
 
-console.log("config", config);
-
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>

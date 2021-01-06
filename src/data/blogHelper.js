@@ -32,16 +32,20 @@ const updateBlog = async (blogData, tags) => {
 
 const fetchBlogs = async (last) => {
   const blogs = [];
+  const limit = 15;
   // const queryRef = await ref.where("date", "==", "2021-01-01").get();
   let snapshot;
   if (last) {
     snapshot = await collections.blogs
       .orderBy("date", "desc")
-      .limit(10)
+      .limit(limit)
       .startAfter(last)
       .get();
   } else {
-    snapshot = await collections.blogs.orderBy("date", "desc").limit(3).get();
+    snapshot = await collections.blogs
+      .orderBy("date", "desc")
+      .limit(limit)
+      .get();
   }
 
   snapshot.forEach((doc) => {
