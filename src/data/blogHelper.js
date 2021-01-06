@@ -1,61 +1,58 @@
-import firestore from "../config/FirestoreConfig";
+import collections from "../config/FirestoreConfig";
 
 const fetchTags = async () => {
-  const ref = firestore.collection("tags");
   const tags = [];
-  const queryRef = await ref.get();
+  const snapshot = await collections.tags.get();
 
-  queryRef.forEach((doc) => {
+  snapshot.forEach((doc) => {
     tags.push(doc.data().name);
   });
-  console.log("got tags", tags);
   return tags;
 };
 
 const createTag = async (name) => {
-  await firestore.collection("tags").add({
+  await collections.tags.add({
     name,
   });
 };
 
 const createBlog = async (blogData, tags) => {
-  await firestore.collection("blogs").add({
+  await collections.blogs.add({
     date: blogData.date,
     text: blogData.text,
+    tags,
   });
 };
 
 const updateBlog = async (blogData, tags) => {
-  const id = blogData.id;
-  const blog = { date: blogData.date, text: blogData.text, tags: tags };
-  await firestore.collection("blogs").doc(id).set(blog);
+  await collections.blogs
+    .doc(blogData.id)
+    .set({ date: blogData.date, text: blogData.text, tags: tags });
 };
 
 const fetchBlogs = async (last) => {
-  const ref = firestore.collection("blogs");
   const blogs = [];
   // const queryRef = await ref.where("date", "==", "2021-01-01").get();
-  let queryRef;
+  let snapshot;
   if (last) {
-    queryRef = await ref
+    snapshot = await collections.blogs
       .orderBy("date", "desc")
       .limit(10)
       .startAfter(last)
       .get();
   } else {
-    queryRef = await ref.orderBy("date", "desc").limit(3).get();
+    snapshot = await collections.blogs.orderBy("date", "desc").limit(3).get();
   }
 
-  queryRef.forEach((doc) => {
+  snapshot.forEach((doc) => {
     blogs.push({ ...doc.data(), ...{ id: doc.id } });
   });
   return blogs;
 };
 
 const getBlog = async (id) => {
-  const ref = firestore.collection("blogs");
-  const queryRef = await ref.doc(id).get();
-  return { ...queryRef.data(), ...{ id: queryRef.id } };
+  const snapshot = await collections.blogs.doc(id).get();
+  return { ...snapshot.data(), ...{ id: snapshot.id } };
 };
 
 const blogHelper = {

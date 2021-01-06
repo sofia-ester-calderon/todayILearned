@@ -6,4 +6,9 @@ firebase.initializeApp(config);
 
 const firestore = firebase.firestore();
 
-export default firestore;
+const collections = {
+  blogs: firestore.collection("blogs"),
+  tags: firestore.collection("tags"),
+};
+
+export default collections;
