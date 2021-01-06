@@ -14,41 +14,39 @@ const AllBlogsContainer = (props) => {
   }, []);
 
   function convertBlogsFromApi(blogs) {
-    blogs.items.forEach((blog) => {
-      // blog.editorState = EditorState.createWithContent(
-      //   convertFromRaw(JSON.parse(blog.text))
-      // );
+    blogs.forEach((blog) => {
       blog.editorState = EditorState.createWithContent(
-        ContentState.createFromText("Hello")
+        convertFromRaw(JSON.parse(blog.text))
       );
-      const tags = blog.tags.items.map((tag) => {
-        return {
-          name: tag.tag.name,
-          id: tag.tag.id,
-        };
-      });
-      blog.tags = tags;
+      // const tags = blog.tags.items.map((tag) => {
+      //   return {
+      //     name: tag.tag.name,
+      //     id: tag.tag.id,
+      //   };
+      // });
+      // blog.tags = tags;
     });
   }
 
   async function fetch() {
-    const blogsFromApi = await blogHelper.fetchBlogs();
+    const blogsFromApi = await blogHelper.fetchBlogs(null);
     console.log("blogs from api", blogsFromApi);
     convertBlogsFromApi(blogsFromApi);
-    setBlogs(blogsFromApi.items);
-    setNextToken(blogsFromApi.nextToken);
+    setBlogs(blogsFromApi);
+    setNextToken(blogsFromApi[blogsFromApi.length - 1].date);
   }
 
   async function fetchNext() {
-    const blogsFromApi = await blogHelper.fetchBlogs(null, nextToken);
-
+    const blogsFromApi = await blogHelper.fetchBlogs(nextToken);
     convertBlogsFromApi(blogsFromApi);
 
     setBlogs((prevData) => {
-      const newBlogs = [...prevData, ...blogsFromApi.items];
+      const newBlogs = [...prevData, ...blogsFromApi];
       return newBlogs;
     });
-    setNextToken(blogsFromApi.nextToken);
+    blogsFromApi.length === 0
+      ? setNextToken(null)
+      : setNextToken(blogsFromApi[blogsFromApi.length - 1].date);
   }
 
   function onEdit(blogId) {

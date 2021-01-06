@@ -5,7 +5,6 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import TagList from "../../tags/TagList";
 
 const BlogForm = ({
-  title,
   date,
   onChange,
   onEditorChange,
@@ -49,13 +48,6 @@ const BlogForm = ({
   return (
     <div className="d-flex justify-content-center pt-5">
       <form className="w-50">
-        <TextInput
-          label="Title"
-          name="title"
-          value={title}
-          onChange={onChange}
-          error={errors.title}
-        />
         <TextInput
           label="Date"
           name="date"

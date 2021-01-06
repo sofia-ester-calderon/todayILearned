@@ -10,7 +10,6 @@ var dateFormat = require("dateformat");
 
 const CreateBlogContainer = (props) => {
   const emptyBlog = {
-    title: "",
     date: dateFormat(new Date(), "yyyy-mm-dd"),
     text: "",
   };
@@ -40,7 +39,6 @@ const CreateBlogContainer = (props) => {
     const blog = await blogHelper.getBlog(props.match.params.id);
     console.log("got blog", blog);
     const updateBlog = {
-      title: blog.title,
       date: blog.date,
       id: blog.id,
       text: blog.text,
@@ -108,15 +106,12 @@ const CreateBlogContainer = (props) => {
 
   function isFormValid() {
     const blogErrors = {};
-    if (!newBlog.title || newBlog.title === "") {
-      blogErrors.title = "Please enter a title";
-    }
     if (!newBlog.date || newBlog.date === "") {
       blogErrors.date = "Please enter a valid date";
     }
-    if (tagContext.blogTags.length === 0) {
-      blogErrors.tags = "A blog must have at least one tag";
-    }
+    // if (tagContext.blogTags.length === 0) {
+    //   blogErrors.tags = "A blog must have at least one tag";
+    // }
     setErrors(blogErrors);
     return Object.keys(blogErrors).length === 0;
   }
@@ -130,7 +125,6 @@ const CreateBlogContainer = (props) => {
   return (
     <>
       <BlogForm
-        title={newBlog.title}
         date={newBlog.date}
         onChange={onChangeBlogInfo}
         editorState={editorText}

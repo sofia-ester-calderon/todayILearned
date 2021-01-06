@@ -5,7 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
-import config from "./config";
+import config from "./config/config";
 import firebase from "firebase/app";
 import "firebase/auth";
 import { FirebaseAuthProvider } from "@react-firebase/auth";
