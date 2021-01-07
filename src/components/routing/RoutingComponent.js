@@ -4,7 +4,7 @@ import AboutMeContainer from "../aboutme/AboutMeContainer";
 import AllBlogsContainer from "../blogs/blogList/AllBlogsContainer";
 import LoginContainer from "../login/LoginContainer";
 import GuardedRoute from "./GuardedRoute";
-import CreateBlogContainer from "../blogs/edit-create/CreateBlogContainer";
+import CrupdateBlogContainer from "../blogs/edit-create/CrupdateBlogContainer";
 import { FirebaseAuthConsumer } from "@react-firebase/auth";
 
 const RoutingComponent = () => {
@@ -18,12 +18,12 @@ const RoutingComponent = () => {
             <Route path="/aboutme" component={AboutMeContainer} />
             <GuardedRoute
               path="/edit/:id"
-              component={CreateBlogContainer}
+              component={CrupdateBlogContainer}
               auth={isSignedIn}
             />
             <GuardedRoute
               path="/new"
-              component={CreateBlogContainer}
+              component={CrupdateBlogContainer}
               auth={isSignedIn}
             />
             <Route component={AllBlogsContainer} />

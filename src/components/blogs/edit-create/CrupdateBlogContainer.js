@@ -8,7 +8,7 @@ import blogHelper from "../../../data/blogHelper";
 
 var dateFormat = require("dateformat");
 
-const CreateBlogContainer = (props) => {
+const CrupdateBlogContainer = (props) => {
   const emptyBlog = {
     date: dateFormat(new Date(), "yyyy-mm-dd"),
     text: "",
@@ -128,4 +128,4 @@ const CreateBlogContainer = (props) => {
   );
 };
 
-export default CreateBlogContainer;
+export default CrupdateBlogContainer;

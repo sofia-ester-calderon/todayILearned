@@ -70,13 +70,13 @@ it("should display the correct buttons for create mode", () => {
   renderBlogForm();
   screen.getByText("Create Blog");
   screen.getByText("Cancel");
-  expect(screen.queryByText("Edit Blog")).not.toBeInTheDocument();
+  expect(screen.queryByText("Update Blog")).not.toBeInTheDocument();
   expect(screen.queryByText("Delete Blog")).not.toBeInTheDocument();
 });
 
 it("should display the correct buttons for edit mode", () => {
   renderBlogForm({ editMode: true });
-  screen.getByText("Edit Blog");
+  screen.getByText("Update Blog");
   screen.getByText("Cancel");
   screen.getByText("Delete Blog");
   expect(screen.queryByText("Create Blog")).not.toBeInTheDocument();

@@ -88,7 +88,7 @@ const BlogForm = ({
           </div>
         )}
         <button className="btn btn-dark" onClick={onCreateBlog}>
-          {editMode ? "Edit Blog" : "Create Blog"}
+          {editMode ? "Update Blog" : "Create Blog"}
         </button>
         {editMode && (
           <button className="btn btn-dark ml-4" onClick={onCreateBlog}>

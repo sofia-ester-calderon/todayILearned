@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import React from "react";
 import blogHelper from "../../../data/blogHelper";
 import { BlogTagsContext } from "../../../hooks/BlogTags";
-import CreateBlogContainer from "../edit-create/CreateBlogContainer";
+import CrupdateBlogContainer from "../edit-create/CrupdateBlogContainer";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
 
@@ -12,7 +12,7 @@ const today = dateFormat(new Date(), "yyyy-mm-dd");
 const tags = ["React"];
 const memoryHistory = createMemoryHistory();
 
-function renderCreateBlogContainer(blogTags, setBlogTags, blogId) {
+function renderCrupdateBlogContainer(blogTags, setBlogTags, blogId) {
   const actualBlogTags = blogTags ? blogTags : [];
   const actualSetter = setBlogTags ? setBlogTags : jest.fn();
   const match = { params: { id: blogId } };
@@ -21,7 +21,7 @@ function renderCreateBlogContainer(blogTags, setBlogTags, blogId) {
       value={{ blogTags: actualBlogTags, setBlogTags: actualSetter }}
     >
       <Router history={memoryHistory}>
-        <CreateBlogContainer history={memoryHistory} match={match} />
+        <CrupdateBlogContainer history={memoryHistory} match={match} />
       </Router>
     </BlogTagsContext.Provider>
   );
@@ -29,7 +29,7 @@ function renderCreateBlogContainer(blogTags, setBlogTags, blogId) {
 
 describe("given the page is rendered", () => {
   it("should display the empty form", () => {
-    renderCreateBlogContainer();
+    renderCrupdateBlogContainer();
 
     const date = screen.getByLabelText("Date").value;
     expect(date).toBe(today);
@@ -37,7 +37,7 @@ describe("given the page is rendered", () => {
   });
 
   it("should display the tags from the context", () => {
-    renderCreateBlogContainer(tags);
+    renderCrupdateBlogContainer(tags);
 
     screen.getByText("React");
   });
@@ -50,7 +50,7 @@ describe("given the page is rendered", () => {
       text:
         '{"blocks":[{"key":"9c8ie","text":"this is the text","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}',
     });
-    renderCreateBlogContainer(null, null, "12345");
+    renderCrupdateBlogContainer(null, null, "12345");
 
     await screen.findByDisplayValue("2020-12-01");
     screen.getByText("this is the text");
@@ -59,7 +59,7 @@ describe("given the page is rendered", () => {
 
 describe("given the form is filled", () => {
   it("should display the new entries", () => {
-    renderCreateBlogContainer();
+    renderCrupdateBlogContainer();
 
     fireEvent.change(screen.getByLabelText("Date"), {
       target: { value: "2020-11-08" },
@@ -69,13 +69,13 @@ describe("given the form is filled", () => {
 });
 describe("given tags are edited", () => {
   it("should show all available tags in modal", () => {
-    renderCreateBlogContainer();
+    renderCrupdateBlogContainer();
     fireEvent.click(screen.getByText("Configure Tags"));
     screen.getByText("Tags");
   });
 
   it("should not close the modal if no blog tags are chosen", () => {
-    renderCreateBlogContainer();
+    renderCrupdateBlogContainer();
     fireEvent.click(screen.getByText("Configure Tags"));
     fireEvent.click(screen.getByText("Done"));
     screen.getAllByText("A blog must have at least one tag");
@@ -83,7 +83,7 @@ describe("given tags are edited", () => {
   });
 
   it("should close the modal", () => {
-    renderCreateBlogContainer(tags);
+    renderCrupdateBlogContainer(tags);
     fireEvent.click(screen.getByText("Configure Tags"));
     fireEvent.click(screen.getByText("Done"));
     expect(screen.queryByText("Tags")).not.toBeInTheDocument();
@@ -93,7 +93,7 @@ describe("given tags are edited", () => {
 describe("given a blog is created", () => {
   it("should show error and do nothing if fields are empty", () => {
     blogHelper.createBlog = jest.fn();
-    renderCreateBlogContainer();
+    renderCrupdateBlogContainer();
     fireEvent.change(screen.getByLabelText("Date"), {
       target: { value: "" },
     });
@@ -107,7 +107,7 @@ describe("given a blog is created", () => {
     blogHelper.createBlog = jest.fn().mockResolvedValue();
     const setBlogTags = jest.fn();
 
-    renderCreateBlogContainer(tags, setBlogTags);
+    renderCrupdateBlogContainer(tags, setBlogTags);
 
     fireEvent.click(screen.getByText("Create Blog"));
 
@@ -133,10 +133,10 @@ describe("given a blog is edited", () => {
       text,
     });
 
-    renderCreateBlogContainer(tags, setBlogTags, "12345");
+    renderCrupdateBlogContainer(tags, setBlogTags, "12345");
     await screen.findByDisplayValue("2020-12-01");
 
-    fireEvent.click(screen.getByText("Edit Blog"));
+    fireEvent.click(screen.getByText("Update Blog"));
 
     expect(blogHelper.updateBlog).toHaveBeenCalledWith(
       { date: "2020-12-01", text, id: 1, tags: ["tag1"] },
@@ -149,7 +149,7 @@ describe("given a blog is edited", () => {
 
 it("should return directly to main page", () => {
   const setBlogTags = jest.fn();
-  renderCreateBlogContainer(tags, setBlogTags);
+  renderCrupdateBlogContainer(tags, setBlogTags);
 
   fireEvent.click(screen.getByText("Cancel"));
   expect(memoryHistory.location.pathname).toBe("/");
