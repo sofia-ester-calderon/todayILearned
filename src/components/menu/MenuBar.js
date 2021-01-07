@@ -54,7 +54,7 @@ const MenuBar = () => {
                     fontSize: "medium",
                   }}
                 >
-                  About this page
+                  About
                 </div>
                 <img
                   src={womanIcon}

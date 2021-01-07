@@ -39,7 +39,7 @@ it("should render login page if url is /admin", () => {
 it("should render the about me page if url is /aboutme", () => {
   renderRoutingComponent();
   history.push("/aboutme");
-  screen.getByText("About Me");
+  screen.getByText("Hope you enjoy it!");
 });
 
 it("should render the blog list if wrong url is passed", () => {

@@ -23,20 +23,20 @@ function renderMenuBar(user) {
 it("should display menu buttons", () => {
   renderMenuBar();
   screen.getByText("Home");
-  screen.getByText("About this page");
+  screen.getByText("About");
   expect(screen.queryByText("Create Blog")).not.toBeInTheDocument();
 });
 
 it("should display create blog button if user is admin", () => {
   renderMenuBar(true);
   screen.getByText("Home");
-  screen.getByText("About this page");
+  screen.getByText("About");
   screen.getByText("Create Blog");
 });
 
 it("should redirect", () => {
   renderMenuBar(true, history);
-  fireEvent.click(screen.getByText("About this page"));
+  fireEvent.click(screen.getByText("About"));
   expect(history.location.pathname).toBe("/aboutme");
 
   fireEvent.click(screen.getByText("Create Blog"));
