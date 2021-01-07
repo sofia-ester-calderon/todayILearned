@@ -8,7 +8,8 @@ import { Router } from "react-router-dom";
 
 var dateFormat = require("dateformat");
 const today = dateFormat(new Date(), "yyyy-mm-dd");
-
+const text =
+  '{"blocks":[{"key":"9c8ie","text":"this is the text","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}';
 const tags = ["React"];
 const memoryHistory = createMemoryHistory();
 
@@ -47,8 +48,7 @@ describe("given the page is rendered", () => {
       id: 1,
       date: "2020-12-01",
       tags: ["tag1"],
-      text:
-        '{"blocks":[{"key":"9c8ie","text":"this is the text","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}',
+      text,
     });
     renderCrupdateBlogContainer(null, null, "12345");
 
@@ -122,8 +122,6 @@ describe("given a blog is created", () => {
 
 describe("given a blog is edited", () => {
   it("should call editBlog", async () => {
-    const text =
-      '{"blocks":[{"key":"9c8ie","text":"this is the text","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}';
     blogHelper.updateBlog = jest.fn().mockResolvedValue();
     const setBlogTags = jest.fn();
     blogHelper.getBlog = jest.fn().mockResolvedValue({
@@ -143,6 +141,62 @@ describe("given a blog is edited", () => {
       tags
     );
 
+    expect(memoryHistory.location.pathname).toBe("/");
+  });
+});
+
+describe("given a blog is deleted", () => {
+  it("should open the are you sure modal", async () => {
+    blogHelper.getBlog = jest.fn().mockResolvedValue({
+      id: 1,
+      date: "2020-12-01",
+      tags: ["tag1"],
+      text,
+    });
+
+    renderCrupdateBlogContainer(tags, jest.fn(), "12345");
+    await screen.findByText("Delete Blog");
+
+    fireEvent.click(screen.getByText("Delete Blog"));
+
+    screen.getByText("Are you sure?");
+  });
+
+  it("should do nothing if No is clicked", async () => {
+    blogHelper.deleteBlog = jest.fn();
+    blogHelper.getBlog = jest.fn().mockResolvedValue({
+      id: 1,
+      date: "2020-12-01",
+      tags: ["tag1"],
+      text,
+    });
+
+    renderCrupdateBlogContainer(tags, jest.fn(), "12345");
+    await screen.findByText("Delete Blog");
+
+    fireEvent.click(screen.getByText("Delete Blog"));
+
+    fireEvent.click(screen.getByText("No"));
+    expect(screen.queryByText("Are you sure?")).not.toBeInTheDocument();
+    expect(blogHelper.deleteBlog).not.toHaveBeenCalled();
+  });
+
+  it("should do delete if Yes is clicked", async () => {
+    blogHelper.deleteBlog = jest.fn();
+    blogHelper.getBlog = jest.fn().mockResolvedValue({
+      id: 1,
+      date: "2020-12-01",
+      tags: ["tag1"],
+      text,
+    });
+
+    renderCrupdateBlogContainer(tags, jest.fn(), "12345");
+    await screen.findByText("Delete Blog");
+
+    fireEvent.click(screen.getByText("Delete Blog"));
+
+    fireEvent.click(screen.getByText("Yes"));
+    expect(blogHelper.deleteBlog).toHaveBeenCalledWith(1);
     expect(memoryHistory.location.pathname).toBe("/");
   });
 });

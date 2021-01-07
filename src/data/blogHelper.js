@@ -85,6 +85,10 @@ const getBlog = async (id) => {
   return { ...snapshot.data(), ...{ id: snapshot.id } };
 };
 
+const deleteBlog = async (id) => {
+  await collections.blogs.doc(id).delete();
+};
+
 const blogHelper = {
   fetchTags,
   createTag,
@@ -94,6 +98,7 @@ const blogHelper = {
   updateBlog,
   getBlogsForTag,
   deleteTag,
+  deleteBlog,
 };
 
 export default blogHelper;

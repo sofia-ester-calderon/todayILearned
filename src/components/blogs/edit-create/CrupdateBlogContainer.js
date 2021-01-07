@@ -5,6 +5,7 @@ import TagConfigurerContainer from "../../tags/TagConfigurerContainer";
 import Modal from "react-modal";
 import { useBlogTagsContext } from "../../../hooks/BlogTags";
 import blogHelper from "../../../data/blogHelper";
+import AreYouSure from "../../common/modal/AreYouSure";
 
 var dateFormat = require("dateformat");
 
@@ -13,22 +14,33 @@ const CrupdateBlogContainer = (props) => {
     date: dateFormat(new Date(), "yyyy-mm-dd"),
     text: "",
   };
+
   const tagContext = useBlogTagsContext();
 
-  const [newBlog, setNewBlog] = useState(emptyBlog);
+  const [blogData, setBlogData] = useState(emptyBlog);
   const [editorText, setEditorText] = useState(EditorState.createEmpty());
   const [showTagModal, setShowTagModal] = useState(false);
   const [errors, setErrors] = useState({});
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [hideEditor, setHideEditor] = useState(false);
 
   useEffect(() => {
     Modal.setAppElement("body");
   }, []);
 
   useEffect(() => {
+    if (showConfirmModal || showTagModal) {
+      setHideEditor(true);
+    } else {
+      setHideEditor(false);
+    }
+  }, [showConfirmModal, showTagModal]);
+
+  useEffect(() => {
     if (props.match.params.id) {
       getBlog();
     } else {
-      setNewBlog(emptyBlog);
+      setBlogData(emptyBlog);
       setEditorText(EditorState.createEmpty());
       tagContext.setBlogTags([]);
     }
@@ -37,7 +49,7 @@ const CrupdateBlogContainer = (props) => {
   async function getBlog() {
     const blog = await blogHelper.getBlog(props.match.params.id);
 
-    setNewBlog(blog);
+    setBlogData(blog);
     setEditorText(
       EditorState.createWithContent(convertFromRaw(JSON.parse(blog.text)))
     );
@@ -46,14 +58,14 @@ const CrupdateBlogContainer = (props) => {
 
   function onChangeBlogInfo(event) {
     const { name, value } = event.target;
-    setNewBlog((prevDetails) => ({
+    setBlogData((prevDetails) => ({
       ...prevDetails,
       [name]: value,
     }));
   }
 
   function onChangeEditorText(event) {
-    setNewBlog((prevDetails) => ({
+    setBlogData((prevDetails) => ({
       ...prevDetails,
       text: JSON.stringify(convertToRaw(event.getCurrentContent())),
     }));
@@ -79,9 +91,9 @@ const CrupdateBlogContainer = (props) => {
 
     if (isFormValid()) {
       if (props.match.params.id) {
-        await blogHelper.updateBlog(newBlog, tagContext.blogTags);
+        await blogHelper.updateBlog(blogData, tagContext.blogTags);
       } else {
-        await blogHelper.createBlog(newBlog, tagContext.blogTags);
+        await blogHelper.createBlog(blogData, tagContext.blogTags);
       }
       tagContext.setBlogTags([]);
       props.history.push("/");
@@ -90,7 +102,7 @@ const CrupdateBlogContainer = (props) => {
 
   function isFormValid() {
     const blogErrors = {};
-    if (!newBlog.date || newBlog.date === "") {
+    if (!blogData.date || blogData.date === "") {
       blogErrors.date = "Please enter a valid date";
     }
     if (tagContext.blogTags.length === 0) {
@@ -106,24 +118,45 @@ const CrupdateBlogContainer = (props) => {
     props.history.push("/");
   }
 
+  function onDeleteBlog(event) {
+    event.preventDefault();
+    setShowConfirmModal(true);
+  }
+
+  function onDenyDeletion() {
+    setShowConfirmModal(false);
+  }
+
+  async function onConfirmDeletion() {
+    await blogHelper.deleteBlog(blogData.id);
+    tagContext.setBlogTags([]);
+    props.history.push("/");
+  }
+
   return (
     <>
       <BlogForm
-        date={newBlog.date}
+        date={blogData.date}
         onChange={onChangeBlogInfo}
         editorState={editorText}
         onEditorChange={onChangeEditorText}
         onConfigureTags={onConfigureTags}
-        hideEditor={showTagModal}
+        hideEditor={hideEditor}
         tags={tagContext.blogTags}
         onCreateBlog={onCreateBlog}
         errors={errors}
         onCancel={onCancel}
         editMode={props.match.params.id}
+        onDeleteBlog={onDeleteBlog}
       />
       <Modal isOpen={showTagModal} style={{ content: { top: "130px" } }}>
         <TagConfigurerContainer onClose={onCloseModal} error={errors.tags} />
       </Modal>
+      <AreYouSure
+        open={showConfirmModal}
+        onNo={onDenyDeletion}
+        onYes={onConfirmDeletion}
+      />
     </>
   );
 };

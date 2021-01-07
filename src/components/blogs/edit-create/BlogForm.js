@@ -16,6 +16,7 @@ const BlogForm = ({
   onCreateBlog,
   onCancel,
   editMode,
+  onDeleteBlog,
 }) => {
   const toolbar = {
     options: [
@@ -91,7 +92,7 @@ const BlogForm = ({
           {editMode ? "Update Blog" : "Create Blog"}
         </button>
         {editMode && (
-          <button className="btn btn-dark ml-4" onClick={onCreateBlog}>
+          <button className="btn btn-dark ml-4" onClick={onDeleteBlog}>
             Delete Blog
           </button>
         )}
