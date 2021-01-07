@@ -47,11 +47,9 @@ describe("given a tag is created", () => {
   it("should do nothing if field is empty", async () => {
     blogHelper.createTag = jest.fn();
     await renderTagConfigurerContainer();
-    // eslint-disable-next-line testing-library/await-async-utils
-    waitFor(() => {
-      fireEvent.click(screen.getByText("Create Tag"));
-      expect(blogHelper.createTag).not.toHaveBeenCalled();
-    });
+
+    fireEvent.click(screen.getByText("Create Tag"));
+    expect(blogHelper.createTag).not.toHaveBeenCalled();
   });
 
   it("should do nothing if tag name already exists", async () => {
@@ -62,10 +60,7 @@ describe("given a tag is created", () => {
     });
     fireEvent.click(screen.getByText("Create Tag"));
     screen.getByText("Tag already exists");
-    // eslint-disable-next-line testing-library/await-async-utils
-    waitFor(() => {
-      expect(blogHelper.createTag).not.toHaveBeenCalled();
-    });
+    expect(blogHelper.createTag).not.toHaveBeenCalled();
   });
 
   it("should create the new tag and display it", async () => {
@@ -77,14 +72,52 @@ describe("given a tag is created", () => {
     fireEvent.click(screen.getByText("Create Tag"));
     expect(blogHelper.createTag).toHaveBeenCalledWith("TypeScript");
 
-    // eslint-disable-next-line testing-library/await-async-utils
-    waitFor(() => {
+    await waitFor(() => {
       const [tag1, tag2, tag3] = screen.getAllByTestId("unusedTags");
 
       expect(tag1.textContent).toBe("Java");
       expect(tag2.textContent).toBe("React");
       expect(tag3.textContent).toBe("TypeScript");
     });
+  });
+});
+
+describe("given a tag is deleted", () => {
+  it("should not delete tag if it is used", async () => {
+    blogHelper.getBlogsForTag = jest.fn().mockResolvedValue(["blog1"]);
+    blogHelper.deleteTag = jest.fn();
+
+    await renderTagConfigurerContainer();
+    fireEvent.change(screen.getByLabelText("Name"), {
+      target: { value: "React" },
+    });
+    fireEvent.click(screen.getByText("Delete Tag"));
+    expect(blogHelper.getBlogsForTag).toHaveBeenCalledWith("React");
+    expect(blogHelper.deleteTag).not.toHaveBeenCalled();
+    await screen.findByText(
+      "Tag cannot be deleted, because its being used by other blogs."
+    );
+  });
+
+  it("should delete tag and not display it as unused tag", async () => {
+    blogHelper.getBlogsForTag = jest.fn().mockResolvedValue([]);
+    blogHelper.deleteTag = jest.fn().mockResolvedValue();
+
+    await renderTagConfigurerContainer();
+    screen.getByText("React");
+    fireEvent.change(screen.getByLabelText("Name"), {
+      target: { value: "React" },
+    });
+
+    fireEvent.click(screen.getByText("Delete Tag"));
+
+    expect(blogHelper.getBlogsForTag).toHaveBeenCalledWith("React");
+
+    await waitFor(() => {
+      expect(blogHelper.deleteTag).toHaveBeenCalledWith("React");
+    });
+
+    expect(screen.queryByText("React")).not.toBeInTheDocument();
   });
 });
 
@@ -100,10 +133,7 @@ describe("given a tag is added to the blog", () => {
 
     const [tag3] = screen.getAllByTestId("usedTags");
     expect(tag3.textContent).toBe("React");
-    // eslint-disable-next-line testing-library/await-async-utils
-    waitFor(() => {
-      expect(setBlogTags).toHaveBeenCalledWith(["React"]);
-    });
+    expect(setBlogTags).toHaveBeenCalledWith(["React"]);
   });
 });
 

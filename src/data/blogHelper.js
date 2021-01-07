@@ -16,6 +16,32 @@ const createTag = async (name) => {
   });
 };
 
+const deleteTag = async (name) => {
+  const tagIds = [];
+  const snapshot = await collections.tags.where("name", "==", name).get();
+
+  snapshot.forEach((doc) => {
+    tagIds.push(doc.id);
+  });
+
+  for (const id of tagIds) {
+    await collections.tags.doc(id).delete();
+  }
+};
+
+const getBlogsForTag = async (tag) => {
+  const blogs = [];
+  const snapshot = await collections.blogs
+    .where("tags", "array-contains", tag)
+    .get();
+  console.log("blogs with tag", snapshot.size);
+
+  snapshot.forEach((doc) => {
+    blogs.push({ ...doc.data(), ...{ id: doc.id } });
+  });
+  return blogs;
+};
+
 const createBlog = async (blogData, tags) => {
   await collections.blogs.add({
     date: blogData.date,
@@ -66,6 +92,8 @@ const blogHelper = {
   fetchBlogs,
   getBlog,
   updateBlog,
+  getBlogsForTag,
+  deleteTag,
 };
 
 export default blogHelper;

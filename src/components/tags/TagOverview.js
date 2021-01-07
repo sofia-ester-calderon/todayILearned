@@ -10,7 +10,7 @@ const TagOverview = ({
   onDeleteTag,
   onClose,
   loading,
-  creating,
+  mutating,
   onAddTag,
   onRemoveTag,
   errors = {},
@@ -65,7 +65,7 @@ const TagOverview = ({
           <button className="btn btn-dark mb-4 mr-3" onClick={onDeleteTag}>
             Delete Tag
           </button>
-          {creating && (
+          {mutating && (
             <div
               className="spinner-border"
               role="status"

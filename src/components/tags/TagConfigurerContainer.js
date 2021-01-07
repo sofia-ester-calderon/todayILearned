@@ -8,9 +8,9 @@ const TagConfigurerContainer = ({ onClose, error }) => {
 
   const [unusedTags, setUnusedTags] = useState([]);
   const [usedTags, setUsedTags] = useState([]);
-  const [newTag, setNewTag] = useState("");
+  const [tagName, setTagName] = useState("");
   const [loading, setLoading] = useState(false);
-  const [creating, setCreating] = useState(false);
+  const [mutating, setMutating] = useState(false);
   const [errors, setErrors] = useState();
 
   useEffect(() => {
@@ -44,29 +44,52 @@ const TagConfigurerContainer = ({ onClose, error }) => {
   }
 
   function onChangeTagName(event) {
-    setNewTag(event.target.value);
+    setTagName(event.target.value);
   }
 
   async function onCreateNewTag(event) {
     setErrors((prevData) => ({ ...prevData, create: null }));
 
     event.preventDefault();
-    if (newTag === "") {
+    if (tagName === "") {
       return;
     }
     const allTags = [...unusedTags, ...usedTags];
-    if (allTags.find((tag) => tag.toUpperCase() === newTag.toUpperCase())) {
+    if (allTags.find((tag) => tag.toUpperCase() === tagName.toUpperCase())) {
       setErrors((prevData) => ({ ...prevData, create: "Tag already exists" }));
       return;
     }
-    setCreating(true);
-    await blogHelper.createTag(newTag);
-    setNewTag("");
+    setMutating(true);
+    await blogHelper.createTag(tagName);
+    setTagName("");
     setUnusedTags((prevData) => {
-      const newTags = [...prevData, newTag];
+      const newTags = [...prevData, tagName];
       return newTags.sort(compare);
     });
-    setCreating(false);
+    setMutating(false);
+  }
+
+  async function onDeleteTag(event) {
+    setErrors((prevData) => ({ ...prevData, create: null }));
+    event.preventDefault();
+    if (tagName === "") {
+      return;
+    }
+    setMutating(true);
+
+    const blogsWithTag = await blogHelper.getBlogsForTag(tagName);
+    if (blogsWithTag.length > 0) {
+      setMutating(false);
+      setErrors((prevData) => ({
+        ...prevData,
+        create: "Tag cannot be deleted, because its being used by other blogs.",
+      }));
+      return;
+    }
+    await blogHelper.deleteTag(tagName);
+    setUnusedTags((prevData) => prevData.filter((tag) => tag !== tagName));
+    setUsedTags((prevData) => prevData.filter((tag) => tag !== tagName));
+    setMutating(false);
   }
 
   function onAddTagToBlog(blogTag) {
@@ -98,15 +121,16 @@ const TagConfigurerContainer = ({ onClose, error }) => {
       <TagOverview
         unusedTags={unusedTags}
         usedTags={usedTags}
-        tagName={newTag}
+        tagName={tagName}
         onChangeTagName={onChangeTagName}
         onCreateTag={onCreateNewTag}
         onClose={onClose}
         loading={loading}
-        creating={creating}
+        mutating={mutating}
         onAddTag={onAddTagToBlog}
         onRemoveTag={onRemoveTagFromBlog}
         errors={errors}
+        onDeleteTag={onDeleteTag}
       />
     </>
   );
