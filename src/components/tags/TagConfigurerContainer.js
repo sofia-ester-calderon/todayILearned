@@ -8,31 +8,12 @@ const TagConfigurerContainer = ({ onClose, error }) => {
   const tagContext = useBlogTagsContext();
 
   const [tagName, setTagName] = useState("");
-  const [loading, setLoading] = useState(false);
   const [mutating, setMutating] = useState(false);
   const [errors, setErrors] = useState();
 
   useEffect(() => {
-    fetchTags();
-  }, []);
-
-  useEffect(() => {
     setErrors((prevData) => ({ ...prevData, tag: error }));
   }, [error]);
-
-  async function fetchTags() {
-    setLoading(true);
-    const tagsFromApi = await blogHelper.fetchTags();
-    setUsedAndUnusedTags(tagsFromApi);
-    setLoading(false);
-  }
-
-  function setUsedAndUnusedTags(allTags) {
-    const remainingTags = allTags.filter(
-      (tag) => !tagContext.usedTags.includes(tag)
-    );
-    tagContext.onAlterTags(tagOptions.ON_INIT_UNUSED, remainingTags);
-  }
 
   function onChangeTagName(event) {
     setTagName(event.target.value);
@@ -81,27 +62,14 @@ const TagConfigurerContainer = ({ onClose, error }) => {
     setMutating(false);
   }
 
-  function onAddTagToBlog(blogTag) {
-    tagContext.onAlterTags(tagOptions.ADD, blogTag);
-  }
-
-  function onRemoveTagFromBlog(blogTag) {
-    tagContext.onAlterTags(tagOptions.REMOVE, blogTag);
-  }
-
   return (
     <>
       <TagOverview
-        unusedTags={tagContext.unusedTags}
-        usedTags={tagContext.usedTags}
         tagName={tagName}
         onChangeTagName={onChangeTagName}
         onCreateTag={onCreateNewTag}
         onClose={onClose}
-        loading={loading}
         mutating={mutating}
-        onAddTag={onAddTagToBlog}
-        onRemoveTag={onRemoveTagFromBlog}
         errors={errors}
         onDeleteTag={onDeleteTag}
       />

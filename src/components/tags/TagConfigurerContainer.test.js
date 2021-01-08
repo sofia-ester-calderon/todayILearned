@@ -1,5 +1,5 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import React, { useState } from "react";
+import React from "react";
 import blogHelper from "../../data/blogHelper";
 import { BlogTagsContext } from "../../hooks/BlogTags";
 import tagOptions from "../../hooks/TagOptions";
@@ -8,8 +8,6 @@ import TagConfigurerContainer from "./TagConfigurerContainer";
 const tags = ["React", "Java"];
 
 const onAlterTags = jest.fn();
-const setUsedTags = jest.fn();
-const setUnusedTags = jest.fn();
 
 async function renderTagConfigurerContainer(usedTags, unusedTags) {
   const actualUsedTags = usedTags ? usedTags : [];
@@ -31,32 +29,6 @@ async function renderTagConfigurerContainer(usedTags, unusedTags) {
   );
   await screen.findByText("Java");
 }
-
-describe("given the page is initially rendered", () => {
-  it("should display all the tags", async () => {
-    await renderTagConfigurerContainer();
-
-    const [tag1, tag2] = screen.getAllByTestId("unusedTags");
-
-    expect(onAlterTags).toHaveBeenCalledWith(tagOptions.ON_INIT_UNUSED, tags);
-    expect(tag1.textContent).toBe("React");
-    expect(tag2.textContent).toBe("Java");
-  });
-
-  it("should display all all tags and blog tags", async () => {
-    await renderTagConfigurerContainer(["React"], ["Java"]);
-
-    const [tag1] = screen.getAllByTestId("unusedTags");
-    const [tag2] = screen.getAllByTestId("usedTags");
-
-    expect(onAlterTags).toHaveBeenCalledWith(tagOptions.ON_INIT_UNUSED, [
-      "Java",
-    ]);
-
-    expect(tag1.textContent).toBe("Java");
-    expect(tag2.textContent).toBe("React");
-  });
-});
 
 describe("given a tag is created", () => {
   it("should do nothing if field is empty", async () => {
@@ -128,23 +100,5 @@ describe("given a tag is deleted", () => {
       expect(blogHelper.deleteTag).toHaveBeenCalledWith("React");
       expect(onAlterTags).toHaveBeenCalledWith(tagOptions.DELETE, "React");
     });
-  });
-});
-
-describe("given a tag is added to the blog", () => {
-  it("should display that tag as blog tag and remove from unused tags", async () => {
-    await renderTagConfigurerContainer();
-    fireEvent.click(screen.getByText("React"));
-
-    expect(onAlterTags).toHaveBeenCalledWith(tagOptions.ADD, "React");
-  });
-});
-
-describe("given a tag is removed from the blog", () => {
-  it("should display not display the tag as usedTags and again in unused tags", async () => {
-    await renderTagConfigurerContainer(["TypeScript"]);
-    fireEvent.click(screen.getByText("TypeScript"));
-
-    expect(onAlterTags).toHaveBeenCalledWith(tagOptions.REMOVE, "TypeScript");
   });
 });

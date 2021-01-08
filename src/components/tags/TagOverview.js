@@ -1,43 +1,20 @@
 import React from "react";
-import TagList from "./TagList";
+import TagChooser from "./TagChooser";
 
 const TagOverview = ({
-  unusedTags = [],
-  usedTags = [],
   tagName,
   onChangeTagName,
   onCreateTag,
   onDeleteTag,
   onClose,
-  loading,
   mutating,
-  onAddTag,
-  onRemoveTag,
   errors = {},
 }) => {
   return (
     <>
       <h1 className="d-flex justify-content-center mb-5">Tags</h1>
 
-      <h4>Blog Tags</h4>
-      {usedTags.length === 0 && !loading && <p>No tags chosen yet</p>}
-      <TagList tags={usedTags} onClick={onRemoveTag} testId={"usedTags"} />
-
-      <hr />
-      <div>
-        {loading ? (
-          <div className="spinner-border " role="status" data-testid="spinner">
-            <span className="sr-only">Loading...</span>
-          </div>
-        ) : (
-          <TagList
-            tags={unusedTags}
-            onClick={onAddTag}
-            testId={"unusedTags"}
-            mode={"light"}
-          />
-        )}
-      </div>
+      <TagChooser />
       <hr />
       <div className="form-group row mt-5 w-50">
         <label
