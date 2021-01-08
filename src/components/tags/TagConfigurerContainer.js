@@ -2,12 +2,11 @@ import React, { useEffect, useState } from "react";
 import TagOverview from "./TagOverview";
 import blogHelper from "../../data/blogHelper";
 import { useBlogTagsContext } from "../../hooks/BlogTags";
+import tagOptions from "../../hooks/TagOptions";
 
 const TagConfigurerContainer = ({ onClose, error }) => {
   const tagContext = useBlogTagsContext();
 
-  const [unusedTags, setUnusedTags] = useState([]);
-  const [usedTags, setUsedTags] = useState([]);
   const [tagName, setTagName] = useState("");
   const [loading, setLoading] = useState(false);
   const [mutating, setMutating] = useState(false);
@@ -16,12 +15,6 @@ const TagConfigurerContainer = ({ onClose, error }) => {
   useEffect(() => {
     fetchTags();
   }, []);
-
-  useEffect(() => {
-    if (usedTags.length > 0) {
-      tagContext.setBlogTags([...usedTags]);
-    }
-  }, [usedTags]);
 
   useEffect(() => {
     setErrors((prevData) => ({ ...prevData, tag: error }));
@@ -35,12 +28,10 @@ const TagConfigurerContainer = ({ onClose, error }) => {
   }
 
   function setUsedAndUnusedTags(allTags) {
-    setUsedTags(tagContext.blogTags.sort(compare));
-
     const remainingTags = allTags.filter(
-      (tag) => !tagContext.blogTags.includes(tag)
+      (tag) => !tagContext.usedTags.includes(tag)
     );
-    setUnusedTags(remainingTags.sort(compare));
+    tagContext.onAlterTags(tagOptions.ON_INIT_UNUSED, remainingTags);
   }
 
   function onChangeTagName(event) {
@@ -54,7 +45,7 @@ const TagConfigurerContainer = ({ onClose, error }) => {
     if (tagName === "") {
       return;
     }
-    const allTags = [...unusedTags, ...usedTags];
+    const allTags = [...tagContext.unusedTags, ...tagContext.usedTags];
     if (allTags.find((tag) => tag.toUpperCase() === tagName.toUpperCase())) {
       setErrors((prevData) => ({ ...prevData, create: "Tag already exists" }));
       return;
@@ -62,10 +53,9 @@ const TagConfigurerContainer = ({ onClose, error }) => {
     setMutating(true);
     await blogHelper.createTag(tagName);
     setTagName("");
-    setUnusedTags((prevData) => {
-      const newTags = [...prevData, tagName];
-      return newTags.sort(compare);
-    });
+
+    tagContext.onAlterTags(tagOptions.CREATE, tagName);
+
     setMutating(false);
   }
 
@@ -87,40 +77,23 @@ const TagConfigurerContainer = ({ onClose, error }) => {
       return;
     }
     await blogHelper.deleteTag(tagName);
-    setUnusedTags((prevData) => prevData.filter((tag) => tag !== tagName));
-    setUsedTags((prevData) => prevData.filter((tag) => tag !== tagName));
+    tagContext.onAlterTags(tagOptions.DELETE, tagName);
     setMutating(false);
   }
 
   function onAddTagToBlog(blogTag) {
-    setUsedTags((prevData) => {
-      let tags = [...prevData, blogTag];
-      tags = tags.sort(compare);
-      return tags;
-    });
-    setUnusedTags((prevData) => prevData.filter((tag) => tag !== blogTag));
+    tagContext.onAlterTags(tagOptions.ADD, blogTag);
   }
 
   function onRemoveTagFromBlog(blogTag) {
-    setUsedTags((prevData) => prevData.filter((tag) => tag !== blogTag));
-    setUnusedTags((prevData) => {
-      let tags = [...prevData, blogTag];
-      tags = tags.sort(compare);
-      return tags;
-    });
-  }
-
-  function compare(a, b) {
-    if (a.toUpperCase() < b.toUpperCase()) return -1;
-    if (b.toUpperCase() > a.toUpperCase()) return 1;
-    return 0;
+    tagContext.onAlterTags(tagOptions.REMOVE, blogTag);
   }
 
   return (
     <>
       <TagOverview
-        unusedTags={unusedTags}
-        usedTags={usedTags}
+        unusedTags={tagContext.unusedTags}
+        usedTags={tagContext.usedTags}
         tagName={tagName}
         onChangeTagName={onChangeTagName}
         onCreateTag={onCreateNewTag}

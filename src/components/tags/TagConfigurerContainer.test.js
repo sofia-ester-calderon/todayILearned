@@ -1,21 +1,31 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import React from "react";
+import React, { useState } from "react";
 import blogHelper from "../../data/blogHelper";
 import { BlogTagsContext } from "../../hooks/BlogTags";
+import tagOptions from "../../hooks/TagOptions";
 import TagConfigurerContainer from "./TagConfigurerContainer";
 
 const tags = ["React", "Java"];
 
-const setBlogTags = jest.fn();
+const onAlterTags = jest.fn();
+const setUsedTags = jest.fn();
+const setUnusedTags = jest.fn();
 
-async function renderTagConfigurerContainer(blogTags) {
-  const actualBlogTags = blogTags ? blogTags : [];
+async function renderTagConfigurerContainer(usedTags, unusedTags) {
+  const actualUsedTags = usedTags ? usedTags : [];
+  const actualUnusedTags = unusedTags ? unusedTags : tags;
   const props = {
     onClose: jest.fn(),
   };
   blogHelper.fetchTags = jest.fn().mockResolvedValue(tags);
   render(
-    <BlogTagsContext.Provider value={{ blogTags: actualBlogTags, setBlogTags }}>
+    <BlogTagsContext.Provider
+      value={{
+        usedTags: actualUsedTags,
+        unusedTags: actualUnusedTags,
+        onAlterTags,
+      }}
+    >
       <TagConfigurerContainer {...props} />
     </BlogTagsContext.Provider>
   );
@@ -23,20 +33,25 @@ async function renderTagConfigurerContainer(blogTags) {
 }
 
 describe("given the page is initially rendered", () => {
-  it("should display all the tags alphabetically", async () => {
+  it("should display all the tags", async () => {
     await renderTagConfigurerContainer();
 
     const [tag1, tag2] = screen.getAllByTestId("unusedTags");
 
-    expect(tag1.textContent).toBe("Java");
-    expect(tag2.textContent).toBe("React");
+    expect(onAlterTags).toHaveBeenCalledWith(tagOptions.ON_INIT_UNUSED, tags);
+    expect(tag1.textContent).toBe("React");
+    expect(tag2.textContent).toBe("Java");
   });
 
   it("should display all all tags and blog tags", async () => {
-    await renderTagConfigurerContainer(["React"]);
+    await renderTagConfigurerContainer(["React"], ["Java"]);
 
     const [tag1] = screen.getAllByTestId("unusedTags");
     const [tag2] = screen.getAllByTestId("usedTags");
+
+    expect(onAlterTags).toHaveBeenCalledWith(tagOptions.ON_INIT_UNUSED, [
+      "Java",
+    ]);
 
     expect(tag1.textContent).toBe("Java");
     expect(tag2.textContent).toBe("React");
@@ -73,11 +88,7 @@ describe("given a tag is created", () => {
     expect(blogHelper.createTag).toHaveBeenCalledWith("TypeScript");
 
     await waitFor(() => {
-      const [tag1, tag2, tag3] = screen.getAllByTestId("unusedTags");
-
-      expect(tag1.textContent).toBe("Java");
-      expect(tag2.textContent).toBe("React");
-      expect(tag3.textContent).toBe("TypeScript");
+      expect(onAlterTags).toHaveBeenCalledWith(tagOptions.CREATE, "TypeScript");
     });
   });
 });
@@ -115,9 +126,8 @@ describe("given a tag is deleted", () => {
 
     await waitFor(() => {
       expect(blogHelper.deleteTag).toHaveBeenCalledWith("React");
+      expect(onAlterTags).toHaveBeenCalledWith(tagOptions.DELETE, "React");
     });
-
-    expect(screen.queryByText("React")).not.toBeInTheDocument();
   });
 });
 
@@ -126,27 +136,15 @@ describe("given a tag is added to the blog", () => {
     await renderTagConfigurerContainer();
     fireEvent.click(screen.getByText("React"));
 
-    const [tag1, tag2] = screen.getAllByTestId("unusedTags");
-
-    expect(tag1.textContent).toBe("Java");
-    expect(tag2).toBeUndefined();
-
-    const [tag3] = screen.getAllByTestId("usedTags");
-    expect(tag3.textContent).toBe("React");
-    expect(setBlogTags).toHaveBeenCalledWith(["React"]);
+    expect(onAlterTags).toHaveBeenCalledWith(tagOptions.ADD, "React");
   });
 });
 
 describe("given a tag is removed from the blog", () => {
   it("should display not display the tag as usedTags and again in unused tags", async () => {
-    await renderTagConfigurerContainer();
-    fireEvent.click(screen.getByText("React"));
-    fireEvent.click(screen.getByText("React"));
+    await renderTagConfigurerContainer(["TypeScript"]);
+    fireEvent.click(screen.getByText("TypeScript"));
 
-    const [tag1, tag2] = screen.getAllByTestId("unusedTags");
-
-    expect(tag1.textContent).toBe("Java");
-    expect(tag2.textContent).toBe("React");
-    expect(screen.queryByTestId("usedTags")).not.toBeInTheDocument();
+    expect(onAlterTags).toHaveBeenCalledWith(tagOptions.REMOVE, "TypeScript");
   });
 });

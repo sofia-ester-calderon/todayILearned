@@ -6,6 +6,7 @@ import Modal from "react-modal";
 import { useBlogTagsContext } from "../../../hooks/BlogTags";
 import blogHelper from "../../../data/blogHelper";
 import AreYouSure from "../../common/modal/AreYouSure";
+import tagOptions from "../../../hooks/TagOptions";
 
 var dateFormat = require("dateformat");
 
@@ -42,7 +43,7 @@ const CrupdateBlogContainer = (props) => {
     } else {
       setBlogData(emptyBlog);
       setEditorText(EditorState.createEmpty());
-      tagContext.setBlogTags([]);
+      tagContext.onAlterTags(tagOptions.ON_RESET);
     }
   }, [props.match.params.id]);
 
@@ -53,7 +54,7 @@ const CrupdateBlogContainer = (props) => {
     setEditorText(
       EditorState.createWithContent(convertFromRaw(JSON.parse(blog.text)))
     );
-    tagContext.setBlogTags(blog.tags);
+    tagContext.onAlterTags(tagOptions.ON_INIT_USED, blog.tags);
   }
 
   function onChangeBlogInfo(event) {
@@ -78,7 +79,7 @@ const CrupdateBlogContainer = (props) => {
   }
 
   function onCloseModal() {
-    if (tagContext.blogTags.length === 0) {
+    if (tagContext.usedTags.length === 0) {
       setErrors({ tags: "A blog must have at least one tag" });
       return;
     }
@@ -91,11 +92,11 @@ const CrupdateBlogContainer = (props) => {
 
     if (isFormValid()) {
       if (props.match.params.id) {
-        await blogHelper.updateBlog(blogData, tagContext.blogTags);
+        await blogHelper.updateBlog(blogData, tagContext.usedTags);
       } else {
-        await blogHelper.createBlog(blogData, tagContext.blogTags);
+        await blogHelper.createBlog(blogData, tagContext.usedTags);
       }
-      tagContext.setBlogTags([]);
+      tagContext.onAlterTags(tagOptions.ON_RESET);
       props.history.push("/");
     }
   }
@@ -105,7 +106,7 @@ const CrupdateBlogContainer = (props) => {
     if (!blogData.date || blogData.date === "") {
       blogErrors.date = "Please enter a valid date";
     }
-    if (tagContext.blogTags.length === 0) {
+    if (tagContext.usedTags.length === 0) {
       blogErrors.tags = "A blog must have at least one tag";
     }
     setErrors(blogErrors);
@@ -114,7 +115,7 @@ const CrupdateBlogContainer = (props) => {
 
   function onCancel(event) {
     event.preventDefault();
-    tagContext.setBlogTags([]);
+    tagContext.onAlterTags(tagOptions.ON_RESET);
     props.history.push("/");
   }
 
@@ -129,7 +130,7 @@ const CrupdateBlogContainer = (props) => {
 
   async function onConfirmDeletion() {
     await blogHelper.deleteBlog(blogData.id);
-    tagContext.setBlogTags([]);
+    tagContext.onAlterTags(tagOptions.ON_RESET);
     props.history.push("/");
   }
 
@@ -142,7 +143,7 @@ const CrupdateBlogContainer = (props) => {
         onEditorChange={onChangeEditorText}
         onConfigureTags={onConfigureTags}
         hideEditor={hideEditor}
-        tags={tagContext.blogTags}
+        tags={tagContext.usedTags}
         onCreateBlog={onCreateBlog}
         errors={errors}
         onCancel={onCancel}
