@@ -4,6 +4,7 @@ import AllBlogsContainer from "./AllBlogsContainer";
 import blogHelper from "../../../data/blogHelper";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
+import { BlogTagsContext } from "../../../hooks/BlogTags";
 
 const memoryHistory = createMemoryHistory();
 
@@ -17,7 +18,15 @@ function renderComponent() {
   mockContext.mockReturnValue({ isSignedIn: true });
   render(
     <Router history={memoryHistory}>
-      <AllBlogsContainer history={memoryHistory} />
+      <BlogTagsContext.Provider
+        value={{
+          usedTags: [],
+          unusedTags: [],
+          onAlterTags: jest.fn(),
+        }}
+      >
+        <AllBlogsContainer history={memoryHistory} />
+      </BlogTagsContext.Provider>
     </Router>
   );
 }

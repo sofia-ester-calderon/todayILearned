@@ -48,8 +48,8 @@ const CrupdateBlogContainer = (props) => {
   }, [props.match.params.id]);
 
   async function getBlog() {
+    tagContext.onAlterTags(tagOptions.ON_RESET);
     const blog = await blogHelper.getBlog(props.match.params.id);
-
     setBlogData(blog);
     setEditorText(
       EditorState.createWithContent(convertFromRaw(JSON.parse(blog.text)))

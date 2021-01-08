@@ -29,11 +29,31 @@ const deleteTag = async (name) => {
   }
 };
 
-const getBlogsForTag = async (tag) => {
+const getBlogsForTags = async (tags, last) => {
+  const blogs = await getBlogsForTag(tags[0], last);
+  console.log("blogs for 1st tag", blogs);
+  return blogs;
+};
+
+const getBlogsForTag = async (tag, last) => {
   const blogs = [];
-  const snapshot = await collections.blogs
-    .where("tags", "array-contains", tag)
-    .get();
+
+  let snapshot;
+  if (last) {
+    snapshot = await collections.blogs
+      .where("tags", "array-contains", tag)
+      .orderBy("date", "desc")
+      .limit(4)
+      .startAfter(last)
+      .get();
+  } else {
+    snapshot = await collections.blogs
+      .where("tags", "array-contains", tag)
+      .orderBy("date", "desc")
+      .limit(4)
+      .get();
+  }
+
   console.log("blogs with tag", snapshot.size);
 
   snapshot.forEach((doc) => {
@@ -99,6 +119,7 @@ const blogHelper = {
   getBlogsForTag,
   deleteTag,
   deleteBlog,
+  getBlogsForTags,
 };
 
 export default blogHelper;

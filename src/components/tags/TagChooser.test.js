@@ -58,7 +58,7 @@ describe("given the page is initially rendered", () => {
   it("should display message if blog tags are empty", async () => {
     await renderTagChooser();
 
-    screen.getByText("No tags chosen yet");
+    screen.getByText("No tags chosen");
   });
 });
 

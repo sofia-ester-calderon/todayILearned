@@ -13,7 +13,7 @@ const TagOverview = ({
   return (
     <>
       <h1 className="d-flex justify-content-center mb-5">Tags</h1>
-
+      <h4>Blog Tags</h4>
       <TagChooser />
       <hr />
       <div className="form-group row mt-5 w-50">
