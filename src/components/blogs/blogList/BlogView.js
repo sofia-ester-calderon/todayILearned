@@ -2,7 +2,7 @@ import React from "react";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import TagList from "../../tags/TagList";
-import styles from "./BlogList.module.css";
+import styles from "./Blogs.module.css";
 var dateFormat = require("dateformat");
 
 const BlogView = ({ blog, admin, onEdit }) => {

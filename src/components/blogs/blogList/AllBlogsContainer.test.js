@@ -112,3 +112,12 @@ describe("given the user is admin", () => {
     expect(memoryHistory.location.pathname).toBe("/edit/1");
   });
 });
+
+// describe("given filter is applied", () => {
+//   it("should open the filter modal", async () => {
+//     renderComponent();
+//     fireEvent.click(screen.getByText("Filter"));
+
+//     screen.getByText("Filter");
+//   });
+// });

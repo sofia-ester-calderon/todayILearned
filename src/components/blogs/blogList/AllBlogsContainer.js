@@ -3,6 +3,7 @@ import blogHelper from "../../../data/blogHelper";
 import BlogList from "./BlogList";
 import { convertFromRaw, EditorState } from "draft-js";
 import { FirebaseAuthConsumer } from "@react-firebase/auth";
+import styles from "./Blogs.module.css";
 
 const AllBlogsContainer = (props) => {
   const [blogs, setBlogs] = useState([]);
@@ -46,21 +47,30 @@ const AllBlogsContainer = (props) => {
 
   return (
     <>
-      <h1>Today I Learned</h1>
-      {blogs.length > 0 && (
-        <FirebaseAuthConsumer>
-          {({ isSignedIn }) => {
-            return (
-              <BlogList
-                blogs={blogs}
-                fetchNext={fetchNext}
-                nextToken={nextToken}
-                admin={isSignedIn}
-                onEdit={onEdit}
-              />
-            );
-          }}
-        </FirebaseAuthConsumer>
+      <div className={styles.headerBar}>
+        <h1>Today I Learned</h1>
+        <button>Filter</button>
+      </div>
+      {/* <Modal isOpen={true} style={{ content: { top: "240px" } }}>
+        <FilterContainer />
+      </Modal> */}
+
+      {blogs.length > 0 && true && (
+        <div style={{ paddingTop: "1px" }}>
+          <FirebaseAuthConsumer>
+            {({ isSignedIn }) => {
+              return (
+                <BlogList
+                  blogs={blogs}
+                  fetchNext={fetchNext}
+                  nextToken={nextToken}
+                  admin={isSignedIn}
+                  onEdit={onEdit}
+                />
+              );
+            }}
+          </FirebaseAuthConsumer>
+        </div>
       )}
     </>
   );

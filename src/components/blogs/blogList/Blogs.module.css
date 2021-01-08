@@ -34,3 +34,14 @@ ul.timeline > li:before {
     color: #22c0e8;
     font-weight: bold;
 }
+
+.headerBar {
+    background-color: white;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    position: fixed;
+    top: 80px;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+}
