@@ -19,6 +19,7 @@ const AllBlogsContainer = (props) => {
   const [nextToken, setNextToken] = useState();
   const [showFilterModal, setShowFilterModal] = useState(false);
   const [filterDate, setFilterDate] = useState(today);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     Modal.setAppElement("body");
@@ -35,16 +36,18 @@ const AllBlogsContainer = (props) => {
   }
 
   async function fetch() {
+    setLoading(true);
     const blogsFromApi = await blogHelper.fetchBlogs(filterDate, null);
     setEditorStateForBlogs(blogsFromApi);
     setBlogs(blogsFromApi);
     setNextToken(blogsFromApi[blogsFromApi.length - 1].date);
+    setLoading(false);
   }
 
   async function fetchNext() {
     let nextBlogs = [];
+    setLoading(true);
     if (tagContext.usedTags.length > 0) {
-      console.log("searching next with filter");
       nextBlogs = await blogHelper.getBlogsForTags(
         tagContext.usedTags,
         filterDate,
@@ -61,6 +64,7 @@ const AllBlogsContainer = (props) => {
     nextBlogs.length === 0
       ? setNextToken(null)
       : setNextToken(nextBlogs[nextBlogs.length - 1].date);
+    setLoading(false);
   }
 
   function onEdit(blogId) {
@@ -77,7 +81,7 @@ const AllBlogsContainer = (props) => {
       fetch();
       return;
     }
-
+    setLoading(true);
     const filteredBlogs = await blogHelper.getBlogsForTags(
       tagContext.usedTags,
       filterDate
@@ -88,13 +92,16 @@ const AllBlogsContainer = (props) => {
       setEditorStateForBlogs(filteredBlogs);
     }
     setBlogs(filteredBlogs);
+    setLoading(false);
   }
 
   async function onClearAllFilter() {
+    setLoading(true);
     setShowFilterModal(false);
     setFilterDate(today);
     tagContext.onAlterTags(tagOptions.ON_RESET);
     fetch();
+    setLoading(false);
   }
 
   function onOpenFilter() {
@@ -142,6 +149,7 @@ const AllBlogsContainer = (props) => {
                   nextToken={nextToken}
                   admin={isSignedIn}
                   onEdit={onEdit}
+                  loading={loading}
                 />
               );
             }}

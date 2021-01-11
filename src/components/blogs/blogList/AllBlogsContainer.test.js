@@ -79,7 +79,10 @@ describe("given the page is rendered", () => {
     blogHelper.fetchBlogs = jest.fn().mockResolvedValue(blogsNext);
     fireEvent.scroll(window, { target: { scrollY: 100 } });
 
-    expect(blogHelper.fetchBlogs).toHaveBeenCalledWith("2020-12-01");
+    expect(blogHelper.fetchBlogs).toHaveBeenCalledWith(
+      "2021-01-11",
+      "2020-12-01"
+    );
 
     await screen.findByText("December 02, 2020");
   });

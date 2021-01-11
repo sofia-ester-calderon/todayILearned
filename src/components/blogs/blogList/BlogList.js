@@ -4,13 +4,24 @@ import styles from "./Blogs.module.css";
 
 import BlogView from "./BlogView";
 
-const BlogList = ({ blogs, fetchNext, nextToken, admin, onEdit }) => {
+const BlogList = ({ blogs, fetchNext, nextToken, admin, onEdit, loading }) => {
   return (
     <>
       {blogs.length === 0 ? (
-        <p style={{ marginTop: "200px" }}>
-          Sorry, no blogs found with these filters...
-        </p>
+        loading ? (
+          <div
+            className="spinner-border "
+            role="status"
+            data-testid="spinner"
+            style={{ marginTop: "200px" }}
+          >
+            <span className="sr-only">Loading...</span>
+          </div>
+        ) : (
+          <p style={{ marginTop: "200px" }}>
+            Sorry, no blogs found with these filters...
+          </p>
+        )
       ) : (
         <InfiniteScroll
           dataLength={blogs.length} //This is important field to render the next data
