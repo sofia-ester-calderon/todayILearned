@@ -64,7 +64,12 @@ const AllBlogsContainer = (props) => {
   }
 
   async function onApplyFilter() {
+    if (tagContext.usedTags.length === 0) {
+      onClearAllFilter();
+      return;
+    }
     setShowFilterModal(false);
+
     console.log("applying filter for", tagContext.usedTags);
     const filteredBlogs = await blogHelper.getBlogsForTags(tagContext.usedTags);
 
@@ -75,6 +80,12 @@ const AllBlogsContainer = (props) => {
     setBlogs(filteredBlogs);
   }
 
+  async function onClearAllFilter() {
+    setShowFilterModal(false);
+    tagContext.onAlterTags(tagOptions.ON_RESET);
+    fetch();
+  }
+
   function onOpenFilter() {
     setShowFilterModal(true);
   }
@@ -83,10 +94,15 @@ const AllBlogsContainer = (props) => {
     <>
       <div className={styles.headerBar}>
         <h1>Today I Learned</h1>
-        {!showFilterModal && <FilterSummary onOpenFilter={onOpenFilter} />}
+        {!showFilterModal && (
+          <FilterSummary
+            onOpenFilter={onOpenFilter}
+            tags={tagContext.usedTags}
+          />
+        )}
       </div>
       <Modal isOpen={showFilterModal} style={{ content: { top: "200px" } }}>
-        <FilterContainer onClose={onApplyFilter} />
+        <FilterContainer onFilter={onApplyFilter} onClear={onClearAllFilter} />
       </Modal>
 
       {!showFilterModal && (

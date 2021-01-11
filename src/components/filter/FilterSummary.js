@@ -1,10 +1,8 @@
 import React from "react";
 import filterIcon from "../../assets/filter.png";
-import { useBlogTagsContext } from "../../hooks/BlogTags";
 import TagList from "../tags/TagList";
 
-const FilterSummary = ({ onOpenFilter }) => {
-  const tagContext = useBlogTagsContext();
+const FilterSummary = ({ onOpenFilter, tags }) => {
   return (
     <div style={{ textAlign: "left", marginLeft: "60px" }}>
       <button
@@ -23,11 +21,7 @@ const FilterSummary = ({ onOpenFilter }) => {
       </button>
       <br />
       <div style={{ marginLeft: "-10px" }}>
-        <TagList
-          tags={tagContext.usedTags}
-          testId={"usedTags"}
-          mode={"light"}
-        />
+        <TagList tags={tags} testId={"usedTags"} mode={"light"} />
       </div>
     </div>
   );

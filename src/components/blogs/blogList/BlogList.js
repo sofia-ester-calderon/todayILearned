@@ -8,7 +8,7 @@ const BlogList = ({ blogs, fetchNext, nextToken, admin, onEdit }) => {
   return (
     <>
       {blogs.length === 0 ? (
-        <p style={{ marginTop: "180px" }}>
+        <p style={{ marginTop: "200px" }}>
           Sorry, no blogs found with these filters...
         </p>
       ) : (

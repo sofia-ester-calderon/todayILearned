@@ -37,7 +37,9 @@ const TagChooser = () => {
 
   return (
     <>
-      {tagContext.usedTags.length === 0 && !loading && <p>No tags chosen</p>}
+      {tagContext.usedTags.length === 0 && !loading && (
+        <p className="ml-3 mt-4">No tags chosen</p>
+      )}
       <TagList
         tags={tagContext.usedTags}
         onClick={onRemoveTagFromBlog}
