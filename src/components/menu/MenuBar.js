@@ -61,7 +61,7 @@ const MenuBar = () => {
                 <div
                   style={{
                     float: "left",
-                    marginTop: "8px",
+                    marginTop: "12px",
                     fontSize: "medium",
                   }}
                 >

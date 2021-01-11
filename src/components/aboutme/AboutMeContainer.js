@@ -7,10 +7,10 @@ const AboutMeContainer = () => {
   return (
     <div style={{ margin: "7% 10% 0 10%", textAlign: "left" }}>
       <div className="row">
-        <div className="col-4">
+        <div className="col-xs-12 col-sm-6 col-md-4">
           <img src={meImage} width="100%" alt="" />
           <h6 className="mt-2">Questions or comments?</h6>
-          <div className="mt-2 mb-2">
+          <div className="mt-4 mb-2">
             <img
               src={linkedInIcon}
               width="25px"
@@ -25,7 +25,7 @@ const AboutMeContainer = () => {
               My LinkedIn Profile
             </a>
           </div>
-          <div>
+          <div className="mb-4">
             <img
               src={githubIcon}
               width="25px"
@@ -39,7 +39,7 @@ const AboutMeContainer = () => {
             </a>
           </div>
         </div>
-        <div className="col-8">
+        <div className="col-xs-12 col-sm-6 col-md-8">
           <p>
             Hi! My Name is Sofia Calderon and I have been a Software Developer
             since 2016. I am originally an architect, but after how learning to

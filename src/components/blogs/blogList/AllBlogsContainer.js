@@ -115,7 +115,7 @@ const AllBlogsContainer = (props) => {
   return (
     <>
       <div className={styles.headerBar}>
-        <h1>Today I Learned</h1>
+        <h1 className="mb-3">Today I Learned</h1>
         {!showFilterModal && (
           <FilterSummary
             onOpenFilter={onOpenFilter}
