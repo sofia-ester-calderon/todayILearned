@@ -1,6 +1,7 @@
 import collections from "../config/FirestoreConfig";
 
-const limit = 30;
+const filterLimit = 100;
+const allLimit = 30;
 
 const fetchTags = async () => {
   const tags = [];
@@ -31,56 +32,49 @@ const deleteTag = async (name) => {
   }
 };
 
-const getBlogsForTags = async (tags, last) => {
-  let blogs = await getBlogsForTag(tags[0], last);
-  console.log("blogs for 1st tag", tags[0], blogs.length);
+const getBlogsForTags = async (tags, date, last) => {
+  console.log(tags, date, last);
+  let blogs = await getBlogsForTag(tags[0], date, last);
 
-  console.log("checking rest of filters");
-
-  const filteredBlogs = await filterNext(blogs, tags);
+  const filteredBlogs = await filterNext(blogs, date, tags);
   return filteredBlogs;
 };
 
-const filterNext = async (blogs, tags) => {
+const filterNext = async (blogs, date, tags) => {
   for (const [i, value] of tags.entries()) {
     if (i === 0) continue;
-    console.log("next tag", value);
     let filteredBlogs = blogs.filter((blog) => blog.tags.includes(value));
-    console.log("blogs filtered again", filteredBlogs.length);
     if (filteredBlogs.length === 0) {
       if (blogs.length === 0) return [];
       const last = blogs[blogs.length - 1].date;
-      console.log("no blogs left for this filter, fetching more after", last);
-      let nextBlogs = await getBlogsForTag(tags[0], last);
-      console.log("got next batch of blogs", nextBlogs.length);
+      let nextBlogs = await getBlogsForTag(tags[0], date, last);
       if (nextBlogs.length > 0) {
-        console.log("filtering again");
         filteredBlogs = filterNext(nextBlogs, tags);
       }
     }
-    console.log("blogs for this filter, returning", filteredBlogs.length);
     blogs = filteredBlogs;
   }
-  console.log("returning", blogs);
   return blogs;
 };
 
-const getBlogsForTag = async (tag, last) => {
+const getBlogsForTag = async (tag, date, last) => {
   const blogs = [];
 
   let snapshot;
   if (last) {
     snapshot = await collections.blogs
       .where("tags", "array-contains", tag)
+      .where("date", "<=", date)
       .orderBy("date", "desc")
-      .limit(limit)
+      .limit(filterLimit)
       .startAfter(last)
       .get();
   } else {
     snapshot = await collections.blogs
       .where("tags", "array-contains", tag)
+      .where("date", "<=", date)
       .orderBy("date", "desc")
-      .limit(limit)
+      .limit(filterLimit)
       .get();
   }
 
@@ -106,20 +100,22 @@ const updateBlog = async (blogData, tags) => {
     .set({ date: blogData.date, text: blogData.text, tags: tags });
 };
 
-const fetchBlogs = async (last) => {
+const fetchBlogs = async (date, last) => {
   const blogs = [];
 
   let snapshot;
   if (last) {
     snapshot = await collections.blogs
+      .where("date", "<=", date)
       .orderBy("date", "desc")
-      .limit(limit)
+      .limit(allLimit)
       .startAfter(last)
       .get();
   } else {
     snapshot = await collections.blogs
+      .where("date", "<=", date)
       .orderBy("date", "desc")
-      .limit(limit)
+      .limit(allLimit)
       .get();
   }
 

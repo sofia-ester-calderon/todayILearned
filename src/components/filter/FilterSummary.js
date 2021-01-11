@@ -2,7 +2,7 @@ import React from "react";
 import filterIcon from "../../assets/filter.png";
 import TagList from "../tags/TagList";
 
-const FilterSummary = ({ onOpenFilter, tags }) => {
+const FilterSummary = ({ onOpenFilter, tags, date }) => {
   return (
     <div style={{ textAlign: "left", marginLeft: "60px" }}>
       <button
@@ -21,6 +21,14 @@ const FilterSummary = ({ onOpenFilter, tags }) => {
       </button>
       <br />
       <div style={{ marginLeft: "-10px" }}>
+        {date && (
+          <div
+            style={{ cursor: "default", display: "inline-block" }}
+            className="p-2 m-2 bg-light "
+          >
+            {date}
+          </div>
+        )}
         <TagList tags={tags} testId={"usedTags"} mode={"light"} />
       </div>
     </div>
