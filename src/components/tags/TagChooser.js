@@ -10,7 +10,11 @@ const TagChooser = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    fetchTags();
+    if (tagContext.allTags.length === 0) {
+      fetchTags();
+    } else {
+      setUsedAndUnusedTags(tagContext.allTags);
+    }
   }, []);
 
   async function fetchTags() {

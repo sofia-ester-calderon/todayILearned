@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import tagOptions from "./TagOptions";
 
 export const BlogTagsContext = React.createContext();
@@ -6,6 +6,12 @@ export const BlogTagsContext = React.createContext();
 const BlogTagsProvider = ({ children }) => {
   const [usedTags, setUsedTags] = useState([]);
   const [unusedTags, setUnusedTags] = useState([]);
+  const [allTags, setAllTags] = useState([]);
+
+  useEffect(() => {
+    const allTags = [...unusedTags, ...usedTags];
+    setAllTags(allTags.sort(compare));
+  }, [usedTags, unusedTags]);
 
   function onAlterTags(type, tagValue) {
     switch (type) {
@@ -39,6 +45,10 @@ const BlogTagsProvider = ({ children }) => {
         setUnusedTags(tagValue.sort(compare));
         break;
       case tagOptions.ON_RESET:
+        setUnusedTags((prevData) => {
+          let tags = [...prevData, ...usedTags];
+          return tags.sort(compare);
+        });
         setUsedTags([]);
         break;
       case tagOptions.ON_INIT_USED:
@@ -58,6 +68,7 @@ const BlogTagsProvider = ({ children }) => {
   const tagContext = {
     usedTags,
     unusedTags,
+    allTags,
     onAlterTags,
   };
 

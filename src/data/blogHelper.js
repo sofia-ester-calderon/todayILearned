@@ -67,8 +67,11 @@ const getBlogsForTags = async (tags, date, last) => {
 };
 
 const filterNext = async (blogs, date, tags) => {
+  if (!tags || !blogs) return [];
+
   for (const [i, value] of tags.entries()) {
     if (i === 0) continue;
+    if (!Array.isArray(blogs)) return [];
     let filteredBlogs = blogs.filter((blog) => blog.tags.includes(value));
     if (filteredBlogs.length === 0) {
       if (blogs.length === 0) return [];
