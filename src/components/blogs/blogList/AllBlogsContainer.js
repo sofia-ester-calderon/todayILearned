@@ -9,13 +9,16 @@ import FilterContainer from "../../filter/FilterContainer";
 import { useBlogTagsContext } from "../../../hooks/BlogTags";
 import tagOptions from "../../../hooks/TagOptions";
 import FilterSummary from "../../filter/FilterSummary";
+var dateFormat = require("dateformat");
 
 const AllBlogsContainer = (props) => {
   const tagContext = useBlogTagsContext();
+  const today = dateFormat(new Date(), "yyyy-mm-dd");
 
   const [blogs, setBlogs] = useState([]);
   const [nextToken, setNextToken] = useState();
   const [showFilterModal, setShowFilterModal] = useState(false);
+  const [filterDate, setFilterDate] = useState(today);
 
   useEffect(() => {
     Modal.setAppElement("body");
@@ -32,7 +35,7 @@ const AllBlogsContainer = (props) => {
   }
 
   async function fetch() {
-    const blogsFromApi = await blogHelper.fetchBlogs(null);
+    const blogsFromApi = await blogHelper.fetchBlogs(filterDate, null);
     setEditorStateForBlogs(blogsFromApi);
     setBlogs(blogsFromApi);
     setNextToken(blogsFromApi[blogsFromApi.length - 1].date);
@@ -44,10 +47,11 @@ const AllBlogsContainer = (props) => {
       console.log("searching next with filter");
       nextBlogs = await blogHelper.getBlogsForTags(
         tagContext.usedTags,
+        filterDate,
         nextToken
       );
     } else {
-      nextBlogs = await blogHelper.fetchBlogs(nextToken);
+      nextBlogs = await blogHelper.fetchBlogs(filterDate, nextToken);
     }
     setEditorStateForBlogs(nextBlogs);
     setBlogs((prevData) => {
@@ -64,14 +68,20 @@ const AllBlogsContainer = (props) => {
   }
 
   async function onApplyFilter() {
-    if (tagContext.usedTags.length === 0) {
+    if (tagContext.usedTags.length === 0 && filterDate === today) {
       onClearAllFilter();
       return;
     }
     setShowFilterModal(false);
+    if (tagContext.usedTags.length === 0) {
+      fetch();
+      return;
+    }
 
-    console.log("applying filter for", tagContext.usedTags);
-    const filteredBlogs = await blogHelper.getBlogsForTags(tagContext.usedTags);
+    const filteredBlogs = await blogHelper.getBlogsForTags(
+      tagContext.usedTags,
+      filterDate
+    );
 
     if (filteredBlogs.length > 0) {
       setNextToken(filteredBlogs[filteredBlogs.length - 1].date);
@@ -82,12 +92,17 @@ const AllBlogsContainer = (props) => {
 
   async function onClearAllFilter() {
     setShowFilterModal(false);
+    setFilterDate(today);
     tagContext.onAlterTags(tagOptions.ON_RESET);
     fetch();
   }
 
   function onOpenFilter() {
     setShowFilterModal(true);
+  }
+
+  function onChangeFilterDate(event) {
+    setFilterDate(event.target.value);
   }
 
   return (
@@ -98,11 +113,22 @@ const AllBlogsContainer = (props) => {
           <FilterSummary
             onOpenFilter={onOpenFilter}
             tags={tagContext.usedTags}
+            date={
+              filterDate !== today
+                ? dateFormat(new Date(filterDate), "dd.mm.yyyy")
+                : null
+            }
+            x
           />
         )}
       </div>
       <Modal isOpen={showFilterModal} style={{ content: { top: "200px" } }}>
-        <FilterContainer onFilter={onApplyFilter} onClear={onClearAllFilter} />
+        <FilterContainer
+          onFilter={onApplyFilter}
+          onClear={onClearAllFilter}
+          date={filterDate}
+          onChangeDate={onChangeFilterDate}
+        />
       </Modal>
 
       {!showFilterModal && (
