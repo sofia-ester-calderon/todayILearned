@@ -32,6 +32,32 @@ const deleteTag = async (name) => {
   }
 };
 
+const deleteAllUnusedTags = async () => {
+  const unusedTags = [];
+  const tags = [];
+  const snapshot = await collections.tags.get();
+
+  snapshot.forEach((doc) => {
+    tags.push({ id: doc.id, name: doc.data().name });
+  });
+
+  for (const tag of tags) {
+    const blogsWithTag = await collections.blogs
+      .where("tags", "array-contains", tag.name)
+      .get();
+    if (blogsWithTag.size === 0) {
+      console.log("unused tag: ", tag.name);
+      unusedTags.push(tag.id);
+    }
+  }
+  for (const tag of unusedTags) {
+    await collections.tags.doc(tag).delete();
+  }
+  return tags
+    .filter((tag) => unusedTags.includes(tag.id))
+    .map((tag) => tag.name);
+};
+
 const getBlogsForTags = async (tags, date, last) => {
   console.log(tags, date, last);
   let blogs = await getBlogsForTag(tags[0], date, last);
@@ -77,8 +103,6 @@ const getBlogsForTag = async (tag, date, last) => {
       .limit(filterLimit)
       .get();
   }
-
-  console.log("blogs with tag", snapshot.size);
 
   snapshot.forEach((doc) => {
     blogs.push({ ...doc.data(), ...{ id: doc.id } });
@@ -145,6 +169,7 @@ const blogHelper = {
   deleteTag,
   deleteBlog,
   getBlogsForTags,
+  deleteAllUnusedTags,
 };
 
 export default blogHelper;

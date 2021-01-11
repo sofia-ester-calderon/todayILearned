@@ -10,6 +10,7 @@ const TagConfigurerContainer = ({ onClose, error }) => {
   const [tagName, setTagName] = useState("");
   const [mutating, setMutating] = useState(false);
   const [errors, setErrors] = useState();
+  const [deletedTags, setDeletedTags] = useState();
 
   useEffect(() => {
     setErrors((prevData) => ({ ...prevData, tag: error }));
@@ -62,6 +63,16 @@ const TagConfigurerContainer = ({ onClose, error }) => {
     setMutating(false);
   }
 
+  async function onDeleteAllTags(event) {
+    event.preventDefault();
+    setMutating(true);
+    const deletedTags = await blogHelper.deleteAllUnusedTags();
+    deletedTags.forEach((tag) =>
+      tagContext.onAlterTags(tagOptions.DELETE, tag)
+    );
+    setMutating(false);
+  }
+
   return (
     <>
       <TagOverview
@@ -72,6 +83,7 @@ const TagConfigurerContainer = ({ onClose, error }) => {
         mutating={mutating}
         errors={errors}
         onDeleteTag={onDeleteTag}
+        onDeleteAllTags={onDeleteAllTags}
       />
     </>
   );

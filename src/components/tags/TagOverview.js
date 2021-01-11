@@ -9,6 +9,7 @@ const TagOverview = ({
   onClose,
   mutating,
   errors = {},
+  onDeleteAllTags,
 }) => {
   return (
     <>
@@ -42,16 +43,22 @@ const TagOverview = ({
           <button className="btn btn-dark mb-4 mr-3" onClick={onDeleteTag}>
             Delete Tag
           </button>
-          {mutating && (
-            <div
-              className="spinner-border"
-              role="status"
-              data-testid="spinner-create"
-            >
-              <span className="sr-only">Loading...</span>
-            </div>
-          )}
         </div>
+        <button
+          className="btn btn-dark mb-4 mr-3 ml-3"
+          onClick={onDeleteAllTags}
+        >
+          Delete All Unused Tags
+        </button>
+        {mutating && (
+          <div
+            className="spinner-border"
+            role="status"
+            data-testid="spinner-create"
+          >
+            <span className="sr-only">Loading...</span>
+          </div>
+        )}
       </div>
       {errors.create && (
         <div role="alert" className="text-danger">
