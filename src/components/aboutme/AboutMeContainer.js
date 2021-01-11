@@ -95,6 +95,13 @@ const AboutMeContainer = () => {
         </a>
         {", "}
         <a
+          href="https://www.flaticon.com/authors/kiranshastry"
+          title="Kiranshastry"
+        >
+          Kiranshastry
+        </a>
+        {", "}
+        <a
           href="https://www.flaticon.com/authors/pixel-perfect"
           title="Pixel perfect"
         >

@@ -8,6 +8,7 @@ import Modal from "react-modal";
 import FilterContainer from "../../filter/FilterContainer";
 import { useBlogTagsContext } from "../../../hooks/BlogTags";
 import tagOptions from "../../../hooks/TagOptions";
+import FilterSummary from "../../filter/FilterSummary";
 
 const AllBlogsContainer = (props) => {
   const tagContext = useBlogTagsContext();
@@ -66,12 +67,12 @@ const AllBlogsContainer = (props) => {
     setShowFilterModal(false);
     console.log("applying filter for", tagContext.usedTags);
     const filteredBlogs = await blogHelper.getBlogsForTags(tagContext.usedTags);
-    //TODO: what if filter returns 0?
-    console.log(filteredBlogs);
-    setEditorStateForBlogs(filteredBlogs);
 
+    if (filteredBlogs.length > 0) {
+      setNextToken(filteredBlogs[filteredBlogs.length - 1].date);
+      setEditorStateForBlogs(filteredBlogs);
+    }
     setBlogs(filteredBlogs);
-    setNextToken(filteredBlogs[filteredBlogs.length - 1].date);
   }
 
   function onOpenFilter() {
@@ -82,13 +83,13 @@ const AllBlogsContainer = (props) => {
     <>
       <div className={styles.headerBar}>
         <h1>Today I Learned</h1>
-        <button onClick={onOpenFilter}>Filter</button>
+        {!showFilterModal && <FilterSummary onOpenFilter={onOpenFilter} />}
       </div>
-      <Modal isOpen={showFilterModal} style={{ content: { top: "240px" } }}>
+      <Modal isOpen={showFilterModal} style={{ content: { top: "200px" } }}>
         <FilterContainer onClose={onApplyFilter} />
       </Modal>
 
-      {blogs.length > 0 && !showFilterModal && (
+      {!showFilterModal && (
         <div style={{ paddingTop: "1px" }}>
           <FirebaseAuthConsumer>
             {({ isSignedIn }) => {

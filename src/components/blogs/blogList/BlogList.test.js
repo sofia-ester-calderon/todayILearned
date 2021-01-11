@@ -59,3 +59,9 @@ it("should display the edit button", () => {
   renderComponent({ blogs, admin: true });
   screen.getByText("Edit");
 });
+
+it("should display text when blog list is empty", () => {
+  const blogs = [];
+  renderComponent({ blogs });
+  screen.getByText("Sorry, no blogs found with these filters...");
+});
