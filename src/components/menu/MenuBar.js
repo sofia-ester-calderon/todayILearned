@@ -31,15 +31,26 @@ const MenuBar = () => {
               </NavLink>
             </div>
             {isSignedIn && (
-              <div className="navbar-brand">
-                <NavLink
-                  className="nav-link"
-                  to={"/new"}
-                  style={{ color: "black" }}
-                >
-                  Create Blog
-                </NavLink>
-              </div>
+              <>
+                <div className="navbar-brand">
+                  <NavLink
+                    className="nav-link"
+                    to={"/new"}
+                    style={{ color: "black" }}
+                  >
+                    Create Blog
+                  </NavLink>
+                </div>
+                <div className="navbar-brand">
+                  <NavLink
+                    className="nav-link"
+                    to={"/logout"}
+                    style={{ color: "black" }}
+                  >
+                    Logout
+                  </NavLink>
+                </div>
+              </>
             )}
             <div className="navbar-brand">
               <NavLink

@@ -6,6 +6,7 @@ import LoginContainer from "../login/LoginContainer";
 import GuardedRoute from "./GuardedRoute";
 import CrupdateBlogContainer from "../blogs/edit-create/CrupdateBlogContainer";
 import { FirebaseAuthConsumer } from "@react-firebase/auth";
+import Logout from "../login/Logout";
 
 const RoutingComponent = () => {
   return (
@@ -26,6 +27,7 @@ const RoutingComponent = () => {
               component={CrupdateBlogContainer}
               auth={isSignedIn}
             />
+            <GuardedRoute path="/logout" component={Logout} auth={isSignedIn} />
             <Route component={AllBlogsContainer} />
           </Switch>
         );
