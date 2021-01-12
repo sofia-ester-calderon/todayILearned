@@ -131,7 +131,10 @@ const AllBlogsContainer = (props) => {
           />
         )}
       </div>
-      <Modal isOpen={showFilterModal} style={{ content: { top: "240px" } }}>
+      <Modal
+        isOpen={showFilterModal}
+        style={{ content: { top: "240px", left: style, right: style } }}
+      >
         <FilterContainer
           onFilter={onApplyFilter}
           onClear={onClearAllFilter}

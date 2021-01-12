@@ -3,7 +3,7 @@ import TagChooser from "../tags/TagChooser";
 
 const FilterContainer = ({ onFilter, onClear, date, onChangeDate }) => {
   return (
-    <>
+    <div style={{ margin: "2%" }}>
       <h2 className="d-flex justify-content-center mb-5">Filter</h2>
       <h4 className="ml-2">Tags</h4>
       <TagChooser />
@@ -25,7 +25,7 @@ const FilterContainer = ({ onFilter, onClear, date, onChangeDate }) => {
           Apply Filters
         </button>
       </div>
-    </>
+    </div>
   );
 };
 
