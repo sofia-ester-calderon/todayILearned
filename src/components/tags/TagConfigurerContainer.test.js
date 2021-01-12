@@ -4,9 +4,10 @@ import blogHelper from "../../data/blogHelper";
 import { BlogTagsContext } from "../../hooks/BlogTags";
 import tagOptions from "../../hooks/TagOptions";
 import TagConfigurerContainer from "./TagConfigurerContainer";
+var dateFormat = require("dateformat");
 
+const today = dateFormat(new Date(), "yyyy-mm-dd");
 const tags = ["React", "Java"];
-
 const onAlterTags = jest.fn();
 
 async function renderTagConfigurerContainer(usedTags, unusedTags) {
@@ -21,6 +22,7 @@ async function renderTagConfigurerContainer(usedTags, unusedTags) {
       value={{
         usedTags: actualUsedTags,
         unusedTags: actualUnusedTags,
+        allTags: [],
         onAlterTags,
       }}
     >
@@ -75,7 +77,7 @@ describe("given a tag is deleted", () => {
       target: { value: "React" },
     });
     fireEvent.click(screen.getByText("Delete Tag"));
-    expect(blogHelper.getBlogsForTag).toHaveBeenCalledWith("React");
+    expect(blogHelper.getBlogsForTag).toHaveBeenCalledWith("React", today);
     expect(blogHelper.deleteTag).not.toHaveBeenCalled();
     await screen.findByText(
       "Tag cannot be deleted, because its being used by other blogs."
@@ -94,7 +96,7 @@ describe("given a tag is deleted", () => {
 
     fireEvent.click(screen.getByText("Delete Tag"));
 
-    expect(blogHelper.getBlogsForTag).toHaveBeenCalledWith("React");
+    expect(blogHelper.getBlogsForTag).toHaveBeenCalledWith("React", today);
 
     await waitFor(() => {
       expect(blogHelper.deleteTag).toHaveBeenCalledWith("React");

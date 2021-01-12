@@ -17,6 +17,7 @@ function renderTagOverview(args) {
       value={{
         usedTags: [],
         unusedTags: [],
+        allTags: [],
         onAlterTags: jest.fn(),
       }}
     >

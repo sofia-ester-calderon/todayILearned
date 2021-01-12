@@ -19,7 +19,9 @@ function renderCrupdateBlogContainer(blogTags, blogId) {
   const actualBlogTags = blogTags ? blogTags : [];
   const match = { params: { id: blogId } };
   render(
-    <BlogTagsContext.Provider value={{ usedTags: actualBlogTags, onAlterTags }}>
+    <BlogTagsContext.Provider
+      value={{ usedTags: actualBlogTags, onAlterTags, allTags: [] }}
+    >
       <Router history={memoryHistory}>
         <CrupdateBlogContainer history={memoryHistory} match={match} />
       </Router>

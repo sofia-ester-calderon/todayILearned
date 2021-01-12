@@ -21,6 +21,7 @@ async function renderTagChooser(usedTags, unusedTags) {
       value={{
         usedTags: actualUsedTags,
         unusedTags: actualUnusedTags,
+        allTags: [],
         onAlterTags,
       }}
     >

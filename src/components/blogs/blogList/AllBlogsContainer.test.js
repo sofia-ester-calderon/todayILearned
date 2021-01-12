@@ -5,7 +5,9 @@ import blogHelper from "../../../data/blogHelper";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
 import { BlogTagsContext } from "../../../hooks/BlogTags";
+var dateFormat = require("dateformat");
 
+const today = dateFormat(new Date(), "yyyy-mm-dd");
 const memoryHistory = createMemoryHistory();
 
 const mockContext = jest.fn();
@@ -22,6 +24,7 @@ function renderComponent() {
         value={{
           usedTags: [],
           unusedTags: [],
+          allTags: [],
           onAlterTags: jest.fn(),
         }}
       >
@@ -75,14 +78,10 @@ describe("given the page is rendered", () => {
           '{"blocks":[{"key":"9c8ie","text":"","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}',
       },
     ];
-
     blogHelper.fetchBlogs = jest.fn().mockResolvedValue(blogsNext);
     fireEvent.scroll(window, { target: { scrollY: 100 } });
 
-    expect(blogHelper.fetchBlogs).toHaveBeenCalledWith(
-      "2021-01-11",
-      "2020-12-01"
-    );
+    expect(blogHelper.fetchBlogs).toHaveBeenCalledWith(today, "2020-12-01");
 
     await screen.findByText("December 02, 2020");
   });
