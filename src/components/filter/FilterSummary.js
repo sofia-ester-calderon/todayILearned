@@ -4,7 +4,7 @@ import TagList from "../tags/TagList";
 
 const FilterSummary = ({ onOpenFilter, tags, date }) => {
   return (
-    <div style={{ textAlign: "left", marginLeft: "60px" }}>
+    <div>
       <button
         type="button"
         className="btn btn-outline-secondary mb-2"

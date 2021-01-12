@@ -32,7 +32,7 @@ const BlogTagsProvider = ({ children }) => {
         });
         break;
       case tagOptions.CREATE:
-        setUnusedTags((prevData) => {
+        setUsedTags((prevData) => {
           const newTags = [...prevData, tagValue];
           return newTags.sort(compare);
         });

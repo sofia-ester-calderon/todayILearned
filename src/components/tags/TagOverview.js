@@ -25,7 +25,6 @@ const TagOverview = ({
         >
           Name
         </label>
-
         <div className="col">
           <input
             id="tagName"
@@ -35,7 +34,6 @@ const TagOverview = ({
             className="form-control"
           />
         </div>
-
         <div className="col-6">
           <button className="btn btn-dark mb-4 mr-3" onClick={onCreateTag}>
             Create Tag
@@ -43,23 +41,23 @@ const TagOverview = ({
           <button className="btn btn-dark mb-4 mr-3" onClick={onDeleteTag}>
             Delete Tag
           </button>
-        </div>
-        <button
-          className="btn btn-dark mb-4 mr-3 ml-3"
-          onClick={onDeleteAllTags}
-        >
+        </div>{" "}
+      </div>
+      <div className="row ml-2">
+        <button className="btn btn-dark mb-4 mr-3" onClick={onDeleteAllTags}>
           Delete All Unused Tags
         </button>
-        {mutating && (
-          <div
-            className="spinner-border"
-            role="status"
-            data-testid="spinner-create"
-          >
-            <span className="sr-only">Loading...</span>
-          </div>
-        )}
       </div>
+      {mutating && (
+        <div
+          className="spinner-border"
+          role="status"
+          data-testid="spinner-create"
+        >
+          <span className="sr-only">Loading...</span>
+        </div>
+      )}
+
       {errors.create && (
         <div role="alert" className="text-danger">
           {errors.create}

@@ -9,11 +9,13 @@ import FilterContainer from "../../filter/FilterContainer";
 import { useBlogTagsContext } from "../../../hooks/BlogTags";
 import tagOptions from "../../../hooks/TagOptions";
 import FilterSummary from "../../filter/FilterSummary";
+import { useMediaQuery } from "react-responsive";
 var dateFormat = require("dateformat");
 
 const AllBlogsContainer = (props) => {
   const tagContext = useBlogTagsContext();
   const today = dateFormat(new Date(), "yyyy-mm-dd");
+  const style = useMediaQuery({ query: "(max-width: 1224px)" }) ? "2%" : "10%";
 
   const [blogs, setBlogs] = useState([]);
   const [nextToken, setNextToken] = useState();
@@ -113,9 +115,9 @@ const AllBlogsContainer = (props) => {
   }
 
   return (
-    <>
+    <div style={{ marginLeft: style, marginRight: style }}>
       <div className={styles.headerBar}>
-        <h1 className="mb-3">Today I Learned</h1>
+        <h1 className="mb-5">Today I Learned</h1>
         {!showFilterModal && (
           <FilterSummary
             onOpenFilter={onOpenFilter}
@@ -129,7 +131,7 @@ const AllBlogsContainer = (props) => {
           />
         )}
       </div>
-      <Modal isOpen={showFilterModal} style={{ content: { top: "220px" } }}>
+      <Modal isOpen={showFilterModal} style={{ content: { top: "240px" } }}>
         <FilterContainer
           onFilter={onApplyFilter}
           onClear={onClearAllFilter}
@@ -156,7 +158,7 @@ const AllBlogsContainer = (props) => {
           </FirebaseAuthConsumer>
         </div>
       )}
-    </>
+    </div>
   );
 };
 
