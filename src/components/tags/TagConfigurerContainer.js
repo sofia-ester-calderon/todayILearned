@@ -3,14 +3,15 @@ import TagOverview from "./TagOverview";
 import blogHelper from "../../data/blogHelper";
 import { useBlogTagsContext } from "../../hooks/BlogTags";
 import tagOptions from "../../hooks/TagOptions";
+var dateFormat = require("dateformat");
 
 const TagConfigurerContainer = ({ onClose, error }) => {
+  const today = dateFormat(new Date(), "yyyy-mm-dd");
   const tagContext = useBlogTagsContext();
 
   const [tagName, setTagName] = useState("");
   const [mutating, setMutating] = useState(false);
   const [errors, setErrors] = useState();
-  const [deletedTags, setDeletedTags] = useState();
 
   useEffect(() => {
     setErrors((prevData) => ({ ...prevData, tag: error }));
@@ -49,7 +50,7 @@ const TagConfigurerContainer = ({ onClose, error }) => {
     }
     setMutating(true);
 
-    const blogsWithTag = await blogHelper.getBlogsForTag(tagName);
+    const blogsWithTag = await blogHelper.getBlogsForTag(tagName, today);
     if (blogsWithTag.length > 0) {
       setMutating(false);
       setErrors((prevData) => ({
