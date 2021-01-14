@@ -41,26 +41,26 @@ const AboutMeContainer = () => {
         </div>
         <div className="col-xs-12 col-sm-6 col-md-8">
           <p>
-            Hi! My Name is Sofia Calderon and I have been a Software Developer
-            since 2016. I am originally an architect, but after how learning to
-            code in Java and discovering my passion for software development I
-            quit my job. And I have never looked back!
+            Hi! My Name is Sofia and I have been a Software Developer since
+            2016. I am originally an architect, but after how learning to code
+            in Java and discovering my passion for software development I quit
+            my job. And I have never looked back!
           </p>
           <p>
             I was very nervous starting my new career. I was learning so many
-            new things every day. At the beginning I thought that was because I
+            new things each day. At the beginning I thought that was because I
             did not study Computer Science and that some glorious day I would
-            keep up with all the CS graduates never ask of google "stupid"
+            keep up with all the CS graduates never ask or google "stupid"
             questions again.
           </p>
           <p>
-            But after several years, I relized that the learning curve is still
+            But after a few years, I realized that the learning curve is still
             as steep. There are new tech stacks to discover, problems I hadn't
-            encountered before... Each day I discover one thing I did not know.
-            It can be a massive revelation or a just a teeniest thing like a new
-            shortcut. And then there are also things I rediscover. I know that I
-            had this problem before and solved it, but cannot remember exactly
-            how.
+            encountered before... Just as when I was starting, each day I
+            discover one thing I did not know before. It can be a massive
+            revelation or a just a teeniest thing like a new shortcut. And then
+            there are also the things I rediscover. I know that I've had this
+            problem before and solved it, but cannot remember exactly how.
           </p>
           <p>
             So I decided to write down each day that thing I learned. It started
