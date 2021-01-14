@@ -46,6 +46,7 @@ const BlogTagsProvider = ({ children }) => {
         break;
       case tagOptions.ON_RESET:
         setUnusedTags((prevData) => {
+          if (prevData.length === 0) return [];
           let tags = [...prevData, ...usedTags];
           return tags.sort(compare);
         });
