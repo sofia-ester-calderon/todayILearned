@@ -27,7 +27,7 @@ const BlogList = ({ blogs, fetchNext, nextToken, admin, onEdit, loading }) => {
           dataLength={blogs.length} //This is important field to render the next data
           next={fetchNext}
           hasMore={nextToken}
-          style={{ marginTop: "180px" }}
+          style={{ marginTop: "220px" }}
           endMessage={
             <p style={{ textAlign: "center" }}>
               <b>Yay! You have seen it all</b>
