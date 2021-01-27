@@ -9,6 +9,9 @@ import config from "./config/config";
 import firebase from "firebase/app";
 import "firebase/auth";
 import { FirebaseAuthProvider } from "@react-firebase/auth";
+import ReactGA from "react-ga";
+
+ReactGA.initialize(process.env.REACT_APP_GA_ID);
 
 ReactDOM.render(
   <React.StrictMode>
