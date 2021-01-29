@@ -9,10 +9,18 @@ import config from "./config/config";
 import firebase from "firebase/app";
 import "firebase/auth";
 import { FirebaseAuthProvider } from "@react-firebase/auth";
-import ReactGA from "react-ga";
+import GA4React from "ga-4-react";
 
-ReactGA.initialize(process.env.REACT_APP_GA_ID);
-ReactGA.pageview(window.location.pathname + window.location.search);
+const ga4react = new GA4React(process.env.REACT_APP_GA_ID);
+ga4react.initialize().then(
+  (ga4) => {
+    ga4.pageview("path");
+    ga4.gtag("event", "pageview", "path"); // or your custom gtag event
+  },
+  (err) => {
+    console.error(err);
+  }
+);
 
 ReactDOM.render(
   <React.StrictMode>
